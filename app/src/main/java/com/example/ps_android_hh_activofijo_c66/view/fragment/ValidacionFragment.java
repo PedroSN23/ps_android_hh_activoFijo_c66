@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ps_android_hh_activofijo_c66.R;
-import com.example.ps_android_hh_activofijo_c66.model.SortHolder;
-import com.example.ps_android_hh_activofijo_c66.model.UHFTagsGroup;
+import com.example.ps_android_hh_activofijo_c66.model.clases.SortHolder;
+import com.example.ps_android_hh_activofijo_c66.model.clases.UHFTagsGroup;
 import com.example.ps_android_hh_activofijo_c66.view.adapter.ValidacionAdapter;
 import com.example.ps_android_hh_activofijo_c66.view.dialog.DetalleValidacionDialog;
 import com.example.ps_android_hh_activofijo_c66.view.dialog.DetalleValidacionDialogListener;

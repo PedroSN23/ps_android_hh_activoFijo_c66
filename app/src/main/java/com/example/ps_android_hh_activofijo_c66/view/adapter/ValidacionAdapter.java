@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ps_android_hh_activofijo_c66.R;
-import com.example.ps_android_hh_activofijo_c66.model.UHFTagsGroup;
+import com.example.ps_android_hh_activofijo_c66.model.clases.UHFTagsGroup;
 import com.example.pp_android_handheld_library.model.TagsTipo;
 import com.example.pp_android_handheld_library.model.resources.ColorEnum;
 import com.example.pp_android_handheld_library.model.resources.IconGenericEnum;

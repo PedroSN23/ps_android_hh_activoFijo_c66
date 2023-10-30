@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ps_android_hh_activofijo_c66.R;
-import com.example.ps_android_hh_activofijo_c66.model.BarcodeData;
+import com.example.ps_android_hh_activofijo_c66.model.clases.BarcodeData;
 
 import java.util.ArrayList;
 import java.util.Locale;

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_drawable"
+    android:padding="20dp"
+    style="@style/LoginDialogTheme">
+    <ImageView
+        android:id="@+id/logoImg"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:src="@drawable/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="@string/logo_astlix" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layUsr"
+        android:layout_width="250dp"
+        android:layout_height="48dp"
+        app:startIconDrawable="@drawable/ic_action_user"
+        android:hint="@string/usuario_hint"
+        android:layout_below="@id/logoImg"
+        android:layout_centerHorizontal="true"
+        android:textColorHint="@color/white"
+        android:layout_marginBottom="10dp"
+        style="@style/MyEditTextStylemenuLogin"
+        android:background="@drawable/rounded_edittext">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/admUser"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/transparent"
+            android:text=""
+            android:textColor="@color/white"
+            android:inputType="text"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layPass"
+        android:layout_width="250dp"
+        android:layout_height="48dp"
+        app:startIconDrawable="@drawable/ic_action_pass"
+        android:hint="@string/contrase_a"
+        android:textColorHint="@color/white"
+        app:endIconMode="password_toggle"
+        android:layout_below="@id/layUsr"
+        android:layout_centerHorizontal="true"
+        style="@style/MyEditTextStylemenuLogin"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rounded_edittext">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/admPass"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/transparent"
+            android:textColor="@color/white"
+            android:text=""
+            android:inputType="textPassword"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layPass"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="4"
+            android:background="@drawable/buttonlogin_down"
+            android:elevation="10dp"
+            android:text="@string/butCancelar"
+            android:textColor="@color/grisAstlix" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="4"
+            android:background="@drawable/buttonlogin_down"
+            android:elevation="10dp"
+            android:text="@string/butEntrar"
+            android:textColor="@color/grisAstlix" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <RelativeLayout
+        android:id="@+id/progresoLogin"
+        android:layout_width="391dp"
+        android:layout_height="244dp"
+        android:background="@color/grisTrans"
+        android:visibility="gone">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimationView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            app:lottie_autoPlay="true"
+            android:layout_centerInParent="true"
+            app:lottie_fileName="rfid.json"
+            app:lottie_loop="true" />
+    </RelativeLayout>
+</RelativeLayout>

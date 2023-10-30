@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.ps_android_hh_activofijo_c66.R;
 import com.example.ps_android_hh_activofijo_c66.controller.MainHandler;
 import com.example.ps_android_hh_activofijo_c66.controller.files.FileController;
-import com.example.ps_android_hh_activofijo_c66.model.BarcodeData;
+import com.example.ps_android_hh_activofijo_c66.model.clases.BarcodeData;
 import com.example.ps_android_hh_activofijo_c66.view.fragment.BarcodeFragment;
 import com.example.pp_android_handheld_library.controller.mail.MailController;
 import com.example.pp_android_handheld_library.controller.rfid.RFIDController;

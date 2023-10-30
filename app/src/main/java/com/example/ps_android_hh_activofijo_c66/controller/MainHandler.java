@@ -8,7 +8,7 @@ import android.os.Message;
 import androidx.annotation.NonNull;
 
 import com.example.ps_android_hh_activofijo_c66.controller.files.FileResp;
-import com.example.ps_android_hh_activofijo_c66.model.DevicesLocal;
+import com.example.ps_android_hh_activofijo_c66.model.clases.DevicesLocal;
 import com.example.ps_android_hh_activofijo_c66.view.activity.BarcodeActivity;
 import com.example.ps_android_hh_activofijo_c66.view.activity.RFIDActivity;
 import com.example.ps_android_hh_activofijo_c66.view.activity.ValidacionActivity;

@@ -32,5 +32,18 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimaryDark">@color/white</item>
+
+    </style>
+    <style name="MyEditTextStylemenu4p2" parent="Widget.Design.TextInputLayout">
+        <item name="endIconTint">@color/azul_synlab2</item>
+        <item name="hintTextColor">@color/azul_synlab2</item>
+        <item name="colorAccent">@color/azul_synlab2</item>
+    </style>
+
+    <style name="MyEditTextStylemenuLogin" parent="Widget.Design.TextInputLayout">
+        <item name="endIconTint">@color/white</item>
+        <item name="hintTextColor">@color/white</item>
+        <item name="colorAccent">@color/white</item>
+        <item name="startIconTint">@color/white</item>
     </style>
 </resources>

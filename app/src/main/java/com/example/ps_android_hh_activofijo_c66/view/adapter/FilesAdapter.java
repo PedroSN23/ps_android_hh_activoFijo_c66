@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ps_android_hh_activofijo_c66.R;
-import com.example.ps_android_hh_activofijo_c66.model.Archivos;
+import com.example.ps_android_hh_activofijo_c66.model.clases.Archivos;
 
 import java.util.ArrayList;
 

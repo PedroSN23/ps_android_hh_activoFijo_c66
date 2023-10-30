@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ps_android_hh_activofijo_c66.R;
-import com.example.ps_android_hh_activofijo_c66.model.BarcodeData;
+import com.example.ps_android_hh_activofijo_c66.model.clases.BarcodeData;
 import com.example.ps_android_hh_activofijo_c66.view.adapter.BarcodeAdapter;
 import com.example.pp_android_handheld_library.model.resources.ColorEnum;
 import com.google.android.material.snackbar.Snackbar;

@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ps_android_hh_activofijo_c66.R;
-import com.example.ps_android_hh_activofijo_c66.model.Archivos;
+import com.example.ps_android_hh_activofijo_c66.model.clases.Archivos;
 import com.example.ps_android_hh_activofijo_c66.view.adapter.FilesAdapter;
 import com.example.pp_android_handheld_library.model.resources.ColorEnum;
 import com.google.android.material.snackbar.Snackbar;

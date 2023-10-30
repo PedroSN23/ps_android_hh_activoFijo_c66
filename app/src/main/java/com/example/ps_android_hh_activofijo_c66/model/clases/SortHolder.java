@@ -1,4 +1,4 @@
-package com.example.ps_android_hh_activofijo_c66.model;
+package com.example.ps_android_hh_activofijo_c66.model.clases;
 
 import android.content.Context;
 import android.util.Log;

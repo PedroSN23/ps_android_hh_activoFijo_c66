@@ -6,7 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-import com.example.ps_android_hh_activofijo_c66.model.Archivos;
+import com.example.ps_android_hh_activofijo_c66.model.clases.Archivos;
 
 import java.lang.ref.WeakReference;
 

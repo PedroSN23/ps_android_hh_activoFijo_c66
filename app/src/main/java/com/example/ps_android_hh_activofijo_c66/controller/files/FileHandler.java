@@ -11,9 +11,9 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.ps_android_hh_activofijo_c66.model.Archivos;
-import com.example.ps_android_hh_activofijo_c66.model.DevicesLocal;
-import com.example.ps_android_hh_activofijo_c66.model.UHFTagsGroup;
+import com.example.ps_android_hh_activofijo_c66.model.clases.Archivos;
+import com.example.ps_android_hh_activofijo_c66.model.clases.DevicesLocal;
+import com.example.ps_android_hh_activofijo_c66.model.clases.UHFTagsGroup;
 import com.example.pp_android_handheld_library.controller.rfid.UHFTagsRead;
 import com.example.pp_android_handheld_library.model.TagsTipo;
 

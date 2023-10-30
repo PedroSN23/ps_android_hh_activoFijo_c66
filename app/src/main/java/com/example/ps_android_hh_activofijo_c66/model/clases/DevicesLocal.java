@@ -1,4 +1,4 @@
-package com.example.ps_android_hh_activofijo_c66.model;
+package com.example.ps_android_hh_activofijo_c66.model.clases;
 public enum DevicesLocal {
     none(-1),
     mail(0),

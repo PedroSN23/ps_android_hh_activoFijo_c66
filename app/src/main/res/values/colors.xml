@@ -48,6 +48,7 @@
     <color name="menu4s">@color/grisAstlix2</color>
     <color name="menu4to">@color/black</color>
 
+    <color name="azul_synlab2">#3F51B5</color>
     <color name="sobrante">#AA0000</color>
     <color name="faltante">#ffa34c</color>
     <color name="bien">#00AA00</color>
