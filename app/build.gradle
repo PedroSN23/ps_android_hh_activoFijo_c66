@@ -1,0 +1,69 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.example.ps_android_hh_activofijo_c66'
+    compileSdk 33
+
+    signingConfigs {
+        release {
+            storeFile file("C:\\Users\\Pedro Sandoval\\Documents\\GitHub\\KEYS\\astkey.jks")
+            storePassword "astlix2023"
+            keyAlias "key1"
+            keyPassword "astlix2023"
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.example.ps_android_hh_activofijo_c66"
+        minSdk 30
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [appNameVer:"ACTIVO FIJO"]
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.release
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${buildTypes.release.manifestPlaceholders.appNameVer}_v${defaultConfig.versionName}.apk"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(includes: ['*.jar'], dir: 'libs')
+    implementation fileTree(dir:'../../pp_android_handheld_library2/app/build/outputs/aar/', include: ['*.aar'])
+    implementation fileTree(dir:'libs', includes: ['*.aar'])
+    implementation fileTree(dir:'libs', includes: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
+    implementation 'com.google.zxing:core:3.2.1'
+    implementation 'com.android.volley:volley:1.2.1'
+    implementation 'com.github.Piashsarker:AndroidAppUpdateLibrary:1.0.4'
+    implementation 'io.github.muddz:styleabletoast:2.4.0'
+    implementation 'com.airbnb.android:lottie:3.4.2'
+}

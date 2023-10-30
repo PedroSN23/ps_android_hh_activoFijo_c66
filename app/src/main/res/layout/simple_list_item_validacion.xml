@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentLl"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:listPreferredItemHeight"
+    android:layout_margin="5dip"
+    android:background="@drawable/faltantes_rectangle"
+    tools:ignore="PrivateResource"
+    android:orientation="horizontal">
+    <com.example.pp_android_handheld_library.view.clases.IconGeneric
+        android:id="@+id/icon_type"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:text="@string/flaticon_rfid"
+        android:tag="flaticon"
+        android:textColor="@color/grisAstlix"
+        tools:ignore="PrivateResource" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="8"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/descTv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:textColor="@color/grisAstlix"
+            android:text=""
+            android:maxLines="1"
+            android:ellipsize="middle"
+            android:gravity="center_horizontal|bottom"
+            tools:ignore="NestedWeights,PrivateResource" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/menu1p"
+            tools:ignore="PrivateResource" />
+        <TextView
+            android:id="@+id/descTitTv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textSize="8sp"
+            android:textColor="@color/grisAstlix"
+            android:gravity="center_horizontal|top"
+            tools:ignore="NestedWeights,PrivateResource,SmallSp" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/cantidadLl"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:layout_marginStart="5dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/cantTv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:ellipsize="middle"
+            android:textSize="14sp"
+            android:layout_marginStart="5dp"
+            android:text="@string/zero"
+            android:textColor="@color/grisAstlix"
+            android:gravity="center_horizontal|bottom"
+            tools:ignore="NestedWeights,PrivateResource" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/menu1p"
+            tools:ignore="PrivateResource" />
+        <TextView
+            android:id="@+id/espTv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:textColor="@color/grisAstlix"
+            android:text="@string/zero"
+            android:gravity="center_horizontal|top"
+            tools:ignore="PrivateResource,SmallSp" />
+    </LinearLayout>
+    <com.example.pp_android_handheld_library.view.clases.IconGeneric
+        android:id="@+id/selicon"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:text="@string/question_circle"
+        android:tag="fontawesome"
+        android:textColor="@color/status_yellow"
+        tools:ignore="PrivateResource" />
+</LinearLayout>

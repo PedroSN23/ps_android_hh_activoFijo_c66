@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="6dip"
+    tools:ignore="PrivateResource">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/menu3_rectangle"
+        android:orientation="horizontal">
+        <com.example.pp_android_handheld_library.view.clases.IconGeneric
+            android:id="@+id/icon_type"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:text="@string/flaticon_rfid"
+            android:tag="flaticon"
+            android:textColor="@color/grisAstlix"
+            tools:ignore="PrivateResource" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:padding="5dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/epcText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/grisAstlix"
+                android:text=""
+                android:maxLines="1"
+                android:ellipsize="middle"
+                android:gravity="center"
+                tools:ignore="NestedWeights,PrivateResource" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/verdeAstlix"
+                tools:ignore="PrivateResource" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="8sp"
+                android:textColor="@color/grisAstlix"
+                android:text="@string/epc"
+                android:gravity="center"
+                tools:ignore="NestedWeights,PrivateResource,SmallSp" />
+            <TextView
+                android:id="@+id/detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="middle"
+                android:textSize="16sp"
+                android:layout_marginTop="5dp"
+                android:text=""
+                android:textColor="@color/grisAstlix"
+                android:gravity="center"
+                tools:ignore="PrivateResource" />
+            <View
+                android:layout_width="250dp"
+                android:layout_height="2dp"
+                android:background="@color/verdeAstlix"
+                tools:ignore="PrivateResource" />
+            <TextView
+                android:id="@+id/codtypeTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="8sp"
+                android:textColor="@color/grisAstlix"
+                android:text="@string/codetype"
+                android:gravity="center"
+                tools:ignore="NestedWeights,PrivateResource,SmallSp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:padding="5dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/countText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="middle"
+                android:textSize="16sp"
+                android:layout_marginStart="5dp"
+                android:text="@string/zero"
+                android:textColor="@color/grisAstlix"
+                android:gravity="center"
+                tools:ignore="PrivateResource" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/verdeAstlix"
+                tools:ignore="PrivateResource" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="8sp"
+                android:textColor="@color/grisAstlix"
+                android:text="@string/cant_reads"
+                android:gravity="center"
+                tools:ignore="PrivateResource,SmallSp" />
+            <TextView
+                android:id="@+id/rssiText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="middle"
+                android:layout_marginTop="5dp"
+                android:textSize="16sp"
+                android:layout_marginStart="5dp"
+                android:text="@string/zero"
+                android:textColor="@color/grisAstlix"
+                android:gravity="center"
+                tools:ignore="PrivateResource" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/verdeAstlix"
+                tools:ignore="PrivateResource" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="8sp"
+                android:textColor="@color/grisAstlix"
+                android:text="@string/rssi"
+                android:gravity="center"
+                tools:ignore="PrivateResource,SmallSp" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

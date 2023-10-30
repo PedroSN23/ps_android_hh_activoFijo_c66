@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/sgtin"
+        android:title="SGTIN-96"
+        android:checkable="true"
+        android:checked="true" />
+    <item
+        android:id="@+id/contgray"
+        android:title="Contenedores Gray"
+        android:checkable="true"
+        android:checked="true"/>
+    <item
+        android:id="@+id/contscc"
+        android:title="Contenedores SSCC"
+        android:checkable="true"
+        android:checked="true"/>
+    <item
+        android:id="@+id/actfix"
+        android:title="Activo Fijo"
+        android:checkable="true"
+        android:checked="true"/>
+    <item
+        android:id="@+id/ascii"
+        android:title="ASCII"
+        android:checkable="true"
+        android:checked="true"/>
+    <item
+        android:id="@+id/lpn"
+        android:title="LPN"
+        android:checkable="true"
+        android:checked="true"/>
+    <item
+        android:id="@+id/repuve"
+        android:title="REPUVE"
+        android:checkable="true"
+        android:checked="false"/>
+    <item
+        android:id="@+id/sincode"
+        android:title="Sin Codificación"
+        android:checkable="true"
+        android:checked="true"/>
+</menu>

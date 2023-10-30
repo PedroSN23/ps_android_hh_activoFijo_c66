@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">ACTIVO FIJO</string>
+
+    <string-array name="serial">
+        <item>a33e8c8b930e63be</item> <!-- Ventas Fernanda -->
+    </string-array>
+
+    <string name="deshacer">DESHACER</string>
+    <string name="zero">0</string>
+    <string name="le_dos">Leídos</string>
+    <string name="codigo">CÓDIGO</string>
+    <string name="tipo">TIPO</string>
+    <string name="codetype">CODIFICACIÓN</string>
+    <string name="epc">EPC</string>
+    <string name="cant_reads">No. Lecturas</string>
+    <string name="rssi">Max. RSSI</string>
+    <string name="filtro">Filtro</string>
+    <string name="nomb_arch">Nombre Archivo</string>
+    <string name="correctos">Correctos</string>
+    <string name="faltantes">Faltantes</string>
+    <string name="sobrante">Sobrantes</string>
+    <string name="butCancelar">CANCELAR</string>
+    <string name="butAceptar">ACEPTAR</string>
+    <string name="partition">PARTICIÓN</string>
+    <string name="sort">ORDENAR</string>
+
+    <array name="encabezados_rfid">
+        <item>@string/epc</item>
+        <item>@string/codetype</item>
+        <item>@string/cant_reads</item>
+        <item>@string/rssi</item>
+        <item>Tag Tipo</item>
+        <item>RESULTADO</item>
+    </array>
+
+    <array name="encabezados_barcode">
+        <item>Código</item>
+        <item>Tipo</item>
+        <item>Cantidad</item>
+    </array>
+
+    <!--********************DATOS ASTLIX*******************************-->
+    <string name="imagen_astlix">Astlix SA de CV</string>
+    <string name="telefono_astlix">+52 (55) 4051 7099</string>
+    <string name="mail_astlix">soporte@astlix.com</string>
+    <string name="paginaweb">https://www.astlix.com</string>
+
+    <!--********************DIALOGO POTENCIA*******************************-->
+    <string name="potTit">Potencia</string>
+    <string name="potMsg">Establezca la potencia de Lectura</string>
+    <string name="butInit">INIT</string>
+    <string name="esperar">ESPERAR...</string>
+    <string name="menu">MENU</string>
+    <string name="cerca"> CERCA</string>
+    <string name="medio"> MEDIO</string>
+    <string name="lejos"> LEJOS</string>
+    <string name="enviar">ENVIAR</string>
+    <string name="cancel">CANCELAR</string>
+    <string name="mail">Correo</string>
+    <string name="descargar">Descargar</string>
+    <string name="telefono">Teléfono</string>
+    <string name="correo">Correo</string>
+    <string name="pagina">Página</string>
+    <string name="version">Versión</string>
+
+</resources>
