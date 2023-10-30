@@ -35,7 +35,7 @@ public class BarcodeFragment extends Fragment {
     private LinearLayout padre;
     public BarcodeFragment() {
     }
-
+//hola
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
