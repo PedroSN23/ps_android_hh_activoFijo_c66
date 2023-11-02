@@ -39,10 +39,10 @@ public class InterfazBD {
 
         if (numRegistros < 1) {
             content = new ContentValues();
-            content.put("ip", "192.168.0.184");
-            content.put("base", "xcaret_cascos");
-            content.put("usuario", "root");
-            content.put("contrasena", "impinj");
+            content.put("ip", "0.0.0.0");
+            content.put("base", "");
+            content.put("usuario", "");
+            content.put("contrasena", "");
             content.put("potencia", 5);
             db.insert("config", null, content);
         }

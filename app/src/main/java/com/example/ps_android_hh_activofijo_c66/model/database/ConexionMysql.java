@@ -21,7 +21,7 @@ public class ConexionMysql {
     private String msg = "Internet/DB_Credentials/Windows_FireWall_TurnOn Error, See Android Monitor in the bottom For details!";
     private boolean connected = false;
     private Context context;
-    public ConexionMysql(String ip, String database, String user, String pass,Context context) {
+    public ConexionMysql(String ip, String database, String user, String pass) {
         this.context = context;
         System.out.println("LOS VALORES SON ESTOS: LA IP ES " + ip + " Y LA BASE DE DATOS ES " + database);
         String db_url = "jdbc:mysql://" + ip + "/" + database;

@@ -72,6 +72,7 @@ public class MainActivity extends MenuMainActivity {
         subMenusList.add(new SubMenus("Búsqueda", IconGenericEnum.flaticon_search, getPackageName() + ".view.activity.BusquedaActivity", false, TemplateActivityEnum.four, groupStyles[1], DevicesEnabled.both));
         subMenusList.add(new SubMenus("RFID", IconGenericEnum.flaticon_rfid_3, getPackageName() + ".view.activity.RFIDActivity", false, TemplateActivityEnum.four, groupStyles[2], DevicesEnabled.only_rfid));
         subMenusList.add(new SubMenus("Barcode", IconGenericEnum.flaticon_barcode, getPackageName() + ".view.activity.BarcodeActivity", false, TemplateActivityEnum.four, groupStyles[2], DevicesEnabled.only_barcode));
+        subMenusList.add(new SubMenus("Servidor", IconGenericEnum.fontawesome_cloud, getPackageName() + ".view.activity.ServidorActivity", false, TemplateActivityEnum.two, groupStyles[3], DevicesEnabled.none));
         subMenusList.add(new SubMenus("Usuarios", IconGenericEnum.fontawesome_user, getPackageName() + ".view.activity.UsuariosActivity", false, TemplateActivityEnum.two, groupStyles[3], DevicesEnabled.none));
         subMenusList.add(new SubMenus("Acerca", IconGenericEnum.flaticon_about, getPackageName() + ".view.activity.AboutActivity", false, TemplateActivityEnum.two, groupStyles[3], DevicesEnabled.none));
         sendSubMenuList(subMenusList);

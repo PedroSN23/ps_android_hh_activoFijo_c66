@@ -2,7 +2,8 @@
     <string name="app_name">ACTIVO FIJO</string>
 
     <string-array name="serial">
-        <item>a33e8c8b930e63be</item> <!-- Ventas Fernanda -->
+        <item>a33e8c8b930e63be</item> <!-- ´Pruebas Pedro -->
+        <item>5f8aaa87577450c8</item> <!-- Emulador -->
     </string-array>
 
     <string name="deshacer">DESHACER</string>
@@ -82,5 +83,10 @@
     <string name="permisos">Rol:</string>
     <string name="logo_astlix">Astlix SA de CV</string>
     <string name="butEntrar">ENTRAR</string>
-
+    <string name="url_sql_server">URL SQL Server</string>
+    <string name="base_de_datos_sql_server">Base de Datos SQL Server</string>
+    <string name="usuario_sql_server">Usuario SQL Server</string>
+    <string name="contrase_a_sql_server">Contraseña SQL Server</string>
+    <string name="test">test</string>
+    <string name="butGuardar">GUARDAR</string>
 </resources>
