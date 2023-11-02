@@ -34,7 +34,7 @@ public class UsuariosAdapter extends RecyclerView.Adapter<UsuariosAdapter.ViewHo
         return usuarios.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class    ViewHolder extends RecyclerView.ViewHolder {
         TextView usuario;
         TextView rol;
 

@@ -241,4 +241,43 @@ public class InterfazBD {
         return user;
     }
 
+    /********************************FILTROS*****************************/
+    public ArrayList<String> obtenerFiltros() {
+        ArrayList<String> filtros = new ArrayList<>();
+        open();
+        String query = "select filtro from filtros;";
+        try {
+            Cursor c = db.rawQuery(query, null);
+            if (c.moveToFirst()) {
+                while (!c.isAfterLast()) {
+                    filtros.add(c.getString(0));
+                    c.moveToNext();
+                }
+            }
+            c.close();
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+        return filtros;
+    }
+
+    public void insertarFiltro(String filtro) {
+        ContentValues content;
+        open();
+        content = new ContentValues();
+        try {
+            content.put("filtro", filtro);
+            db.insert("filtros", null, content);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void eliminarFiltro(String s) {
+        String query= "delete from filtros where filtro='"+s+"';";
+        db.execSQL(query);
+    }
+
+
+
 }

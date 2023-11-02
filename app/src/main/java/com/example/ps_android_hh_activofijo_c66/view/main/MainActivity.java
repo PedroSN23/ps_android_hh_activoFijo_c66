@@ -74,9 +74,11 @@ public class MainActivity extends MenuMainActivity {
         subMenusList.add(new SubMenus("Búsqueda", IconGenericEnum.fontawesome_search_location, getPackageName() + ".view.activity.BusquedaActivity", false, TemplateActivityEnum.four, groupStyles[1], DevicesEnabled.both));
         subMenusList.add(new SubMenus("RFID", IconGenericEnum.fontawesome_broadcast_tower, getPackageName() + ".view.activity.RFIDActivity", false, TemplateActivityEnum.four, groupStyles[2], DevicesEnabled.only_rfid));
         subMenusList.add(new SubMenus("Barcode", IconGenericEnum.fontawesome_barcode, getPackageName() + ".view.activity.BarcodeActivity", false, TemplateActivityEnum.four, groupStyles[2], DevicesEnabled.only_barcode));
+        subMenusList.add(new SubMenus("Archivos", IconGenericEnum.fontawesome_file_excel, getPackageName() + ".view.activity.AboutActivity", false, TemplateActivityEnum.two, groupStyles[3], DevicesEnabled.none));
         subMenusList.add(new SubMenus("Servidor", IconGenericEnum.fontawesome_cloud, getPackageName() + ".view.activity.ServidorActivity", false, TemplateActivityEnum.two, groupStyles[3], DevicesEnabled.none));
         subMenusList.add(new SubMenus("Usuarios", IconGenericEnum.fontawesome_user, getPackageName() + ".view.activity.UsuariosActivity", false, TemplateActivityEnum.two, groupStyles[3], DevicesEnabled.none));
         subMenusList.add(new SubMenus("Acerca", IconGenericEnum.fontawesome_info, getPackageName() + ".view.activity.AboutActivity", false, TemplateActivityEnum.two, groupStyles[3], DevicesEnabled.none));
+        subMenusList.add(new SubMenus("Filtros", IconGenericEnum.fontawesome_filter, getPackageName() + ".view.activity.AboutActivity", false, TemplateActivityEnum.two, groupStyles[3], DevicesEnabled.none));
         sendSubMenuList(subMenusList);
 
 

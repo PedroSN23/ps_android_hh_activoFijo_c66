@@ -88,5 +88,16 @@
     <string name="usuario_sql_server">Usuario SQL Server</string>
     <string name="contrase_a_sql_server">Contraseña SQL Server</string>
     <string name="test">test</string>
-    <string name="butGuardar">GUARDAR</string>
+    <string name="butGuardar">Guardar</string>
+
+    <!--********************FILTROS*******************************-->
+    <string name="FILTRO">FILTRO</string>
+    <string name="CLEAN">BORRAR</string>
+    <string name="NEW">NUEVO</string>
+    <string name="errFitlRep">Filtro repetido</string>
+    <string name="errFiltFormat">Error de formato de Filtro</string>
+    <string name="errFiltEmpty">Filtro vacío</string>
+    <string name="advEraseFilt">Si continúna, se borrará el filtro</string>
+    <string name="butCont">Continuar</string>
+    <string name="butCancel">Cancelar</string>
 </resources>
