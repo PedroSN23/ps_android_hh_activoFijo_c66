@@ -55,4 +55,9 @@
         <item name="colorControlActivated">@color/menu4p</item>
         <item name="colorControlNormal">@color/menu4p</item>
     </style>
+
+    <style name="MyEditTextStyleGrey" parent="Widget.AppCompat.EditText">
+        <item name="colorControlActivated">@color/grisClaro</item>
+        <item name="colorControlNormal">@color/grisClaro</item>
+    </style>
 </resources>

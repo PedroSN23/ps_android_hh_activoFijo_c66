@@ -12,36 +12,7 @@
         android:orientation="vertical"
         android:weightSum="20">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@color/iconColor"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="3"
-                android:gravity="center"
-                android:text="@string/FILTRO"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:ignore="NestedWeights" />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/CLEAN"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
+       <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listViewFiltros"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -50,50 +21,52 @@
         <LinearLayout
             android:id="@+id/menu4BotonesFiltros"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="20"
             tools:ignore="UselessParent">
+
             <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="7"
                 tools:ignore="NestedWeights" />
+
             <LinearLayout
                 android:id="@+id/butNuevoFiltro"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="6"
-                android:background="@drawable/menu4_button"
+                android:background="@drawable/button_menu4_blue"
                 android:clickable="true"
                 android:focusable="true"
                 android:layout_marginTop="4dp"
-                android:onClick="NuevoFiltro">
+                android:onClick="NuevoFiltro"
+                android:orientation="horizontal"
+                android:gravity="center">
+
                 <TextView
                     android:id="@+id/menu4TextoIniciarUsuario"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:gravity="center"
                     android:text="@string/NEW"
-                    android:textColor="@color/menu1to"
+                    android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:layout_gravity="center"
+                    android:gravity="center"
                     tools:ignore="NestedWeights" />
+
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:layout_weight="1"
+                    android:layout_gravity="center"
                     tools:ignore="NestedWeights">
 
                     <com.example.pp_android_handheld_library.view.clases.IconGeneric
                         android:id="@+id/selicon"
                         android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
                         android:tag="fontawesome"
                         android:text="@string/plus"
@@ -102,7 +75,9 @@
                         tools:ignore="PrivateResource" />
                 </RelativeLayout>
             </LinearLayout>
-            <Space
+
+
+        <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="7" />

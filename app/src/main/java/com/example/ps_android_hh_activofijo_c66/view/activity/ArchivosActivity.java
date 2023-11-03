@@ -7,10 +7,11 @@ import androidx.fragment.app.Fragment;
 
 import com.example.pp_android_handheld_library.view.herencia.GenericActivity;
 import com.example.ps_android_hh_activofijo_c66.model.database.InterfazBD;
+import com.example.ps_android_hh_activofijo_c66.view.fragment.ArchivosFragment;
 import com.example.ps_android_hh_activofijo_c66.view.fragment.FiltrosFragment;
 import com.example.ps_android_hh_activofijo_c66.view.fragment.UsuariosFragment;
 
-public class FiltrosActivity extends  GenericActivity {
+public class ArchivosActivity extends  GenericActivity {
     public InterfazBD interfazBD;
 
     @Override
@@ -19,12 +20,11 @@ public class FiltrosActivity extends  GenericActivity {
     }
     @Override
     protected Fragment setContentFragment() {
-        return new FiltrosFragment();
+        return new ArchivosFragment();
     }
     @Override
     protected Fragment setControlsFragment() {
         return null;
     }
 }
-
 

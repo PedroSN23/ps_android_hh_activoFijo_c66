@@ -1,31 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/lista_back"
+    android:id="@+id/fondoList"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeightSmall"
     android:orientation="horizontal">
+
     <TextView
-        android:id="@+id/valorFiltro"
+        android:id="@+id/idArchivo"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text=""
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"/>
+        android:layout_height="match_parent"
+        android:layout_weight="13"
+        android:text="@string/archTxt"
+        android:textSize="16sp"
+        android:gravity="center"/>
 
     <com.example.pp_android_handheld_library.view.clases.IconGeneric
+        android:id="@+id/semaforo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_gravity="center"
-        android:gravity="center"
         android:textSize="24sp"
-        android:textColor="@color/grisTrans"
+        android:textColor="@color/grisAstlix"
         android:tag="fontawesome"
-        android:text="@string/trash" />
-
+        android:text="@string/chevron_right" />
 </LinearLayout>

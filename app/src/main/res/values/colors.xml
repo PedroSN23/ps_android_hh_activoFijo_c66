@@ -47,6 +47,8 @@
     <color name="menu4p">#ffffff    </color>
     <color name="menu4s">@color/grisAstlix2</color>
     <color name="menu4to">@color/black</color>
+    <color name="grisClaro">#9F9DA0</color>
+    <color name="filaGris">#EDEBEC</color>
 
     <color name="azul_synlab2">#3F51B5</color>
     <color name="sobrante">#AA0000</color>

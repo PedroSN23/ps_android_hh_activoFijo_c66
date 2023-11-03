@@ -19,17 +19,25 @@
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"/>
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="5dp"
+        android:layout_weight="1"/>
     <EditText
         android:id="@+id/editFiltro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/MyEditTextStylemenu4"
+        android:theme="@style/MyEditTextStyleGrey"
         android:textSize="14sp"
         android:padding="9dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:inputType="text"
         tools:ignore="Autofill,LabelFor" />
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_weight="1"/>
     <LinearLayout
         android:id="@+id/diagBotonesFilt"
         android:layout_width="match_parent"
@@ -44,7 +52,7 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="4"
-            android:background="@drawable/menu4_button"
+            android:background="@drawable/button_menu4_blue"
             android:clickable="true"
             android:focusable="true">
             <TextView
@@ -54,7 +62,7 @@
                 android:textSize="16sp"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:textColor="@color/menu4to"
+                android:textColor="@color/white"
                 android:text="@string/butGuardar"
                 android:textStyle="bold"
                 tools:ignore="NestedWeights" />
@@ -65,7 +73,7 @@
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:textSize="18sp"
-                android:textColor="@color/menu4to"
+                android:textColor="@color/white"
                 android:text="@string/save"
                 tools:ignore="NestedWeights" />
         </LinearLayout>
@@ -78,7 +86,7 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="4"
-            android:background="@drawable/menu4_button"
+            android:background="@drawable/button_menu4_blue"
             android:clickable="true"
             android:focusable="true">
             <TextView
@@ -88,7 +96,7 @@
                 android:textSize="16sp"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:textColor="@color/menu4to"
+                android:textColor="@color/white"
                 android:text="@string/butCancel"
                 android:textStyle="bold"
                 tools:ignore="NestedWeights" />
@@ -99,7 +107,7 @@
                 android:gravity="center"
                 android:textSize="18sp"
                 android:layout_gravity="center"
-                android:textColor="@color/menu4to"
+                android:textColor="@color/white"
                 android:text="@string/times"
                 tools:ignore="NestedWeights" />
 

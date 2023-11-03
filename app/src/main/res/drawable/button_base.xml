@@ -1,0 +1,13 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Fondo blanco -->
+    <item android:drawable="@android:color/white" />
+
+    <!-- Borde azul -->
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <stroke android:width="2dp" android:color="@color/azulAstlix" />
+            <solid android:color="@android:color/transparent" />
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+</layer-list>

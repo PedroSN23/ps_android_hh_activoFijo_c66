@@ -6,9 +6,15 @@
         android:topLeftRadius="5dip"
         android:topRightRadius="5dip" />
 
-    <solid android:color="@color/azulAstlix" />
+    <padding
+        android:bottom="10dip"
+        android:left="5dip"
+        android:right="5dip"
+        android:top="10dip" />
+
+    <solid android:color="@color/menu2p" />
 
     <stroke
         android:width="1dip"
-        android:color="@color/azulAstlix" />
+        android:color="@color/menu2p" />
 </shape>

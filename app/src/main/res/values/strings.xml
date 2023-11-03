@@ -89,6 +89,7 @@
     <string name="contrase_a_sql_server">Contraseña SQL Server</string>
     <string name="test">test</string>
     <string name="butGuardar">Guardar</string>
+    <string name="butClose">Cerrar</string>
 
     <!--********************FILTROS*******************************-->
     <string name="FILTRO">FILTRO</string>
@@ -100,4 +101,57 @@
     <string name="advEraseFilt">Si continúna, se borrará el filtro</string>
     <string name="butCont">Continuar</string>
     <string name="butCancel">Cancelar</string>
+    <string name="confirmDelete">Eliminar Filtro</string>
+
+
+    <!--********************ARCHIVOS*******************************-->
+    <string name="menu4s1Tit">CONFIGURAR ARCHIVO</string>
+    <string name="menu4s1InpF">Archivo:</string>
+    <string name="menu4s1InpFTip">archivo entrada</string>
+    <string name="menu4s1OutP">Salida:</string>
+    <string name="menu4s1OutFTip">sufijo archivo salida</string>
+    <string name="menu4s1Col1">Encabezados</string>
+    <string name="menu4s1ResInv">Resultado:</string>
+    <string name="menu4s1FechaInv">Fecha:</string>
+    <string name="butOff">Off</string>
+    <string name="butOn">On</string>
+    <string name="emptyTxt">Algo</string>
+
+    <string name="menu4s1DiaVis">Visible:</string>
+    <string name="menu4s1DiaEdit">Editable:</string>
+    <string name="menu4s1DiaFil">Filtro:</string>
+    <string name="menu4s1DiaIndex">Indexable:</string>
+    <string name="menu4s1DiaPrimKey">Llave:</string>
+    <string name="menu4s1ErrVacio">Campos vacíos</string>
+
+
+    <!--********************ENCABEZADOS*******************************-->
+    <string name="errBDdat">No se pueden obtener datos de la Base de Datos</string>
+    <string name="errArchTerm">El archivo de salida debe tener la terminación .xlsx</string>
+    <string name="errNoColumn">No se encontró la columna </string>
+    <string name="errIdDup">Id duplicado </string>
+    <string name="errFileNF">No se encontró el archivo</string>
+    <string name="errReadInpS">Error al leer archivo</string>
+    <string name="errPermisos">No se tienen los permisos</string>
+    <string name="errLinRep">Se encontraron</string>
+    <string name="errLinRep2">lineas repetidas</string>
+    <string name="errLinEnc">lineas con encabezado erróneo</string>
+    <string name="errLinLen">lineas con longitud errónea</string>
+    <string name="errNoFilt">No se encontraron filtros</string>
+    <string name="errNoEnc">No se encontraron encabezados para mostrar</string>
+    <string name="errInvVacio">Inventario vacío</string>
+    <string name="errConfEmpty">No hay configuración</string>
+    <string name="errNoPk">No se encontró llave primaria</string>
+    <string name="errSecEmpty">Secret vacío</string>
+    <string name="errIdRep">Error Tag Repetido</string>
+    <string name="errIdLen">Error de longitud de Tag</string>
+    <string name="errIdEnc">Error de encabezado de Tag</string>
+    <string name="errDesc">Error desconocido</string>
+    <string name="errProCan">Proceso cancelado</string>
+    <string name="menu4s1DiaTit">Archivos Excel</string>
+    <string name="menu4s1DiaPhra">Seleccione un archivo de la lista.</string>
+    <string name="archTxt">archivos</string>
+    <string name="check">check</string>
+    <string name="times">times</string>
+
 </resources>

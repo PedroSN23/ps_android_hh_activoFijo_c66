@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeightSmall"
+    android:orientation="horizontal">
+    <TextView
+        android:layout_marginStart="5dp"
+        android:id="@+id/nombreEnc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="6"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/emptyTxt"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/grisClaro"/>
+    <com.example.pp_android_handheld_library.view.clases.IconGeneric
+        android:id="@+id/viewIcon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="@color/bien"
+        android:tag="fontawesome"
+        android:text="@string/check" />
+    <com.example.pp_android_handheld_library.view.clases.IconGeneric
+        android:id="@+id/editIcon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="@color/bien"
+        android:tag="fontawesome"
+        android:text="@string/check" />
+    <com.example.pp_android_handheld_library.view.clases.IconGeneric
+        android:id="@+id/filtroIcon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="@color/bien"
+        android:tag="fontawesome"
+        android:text="@string/check" />
+    <com.example.pp_android_handheld_library.view.clases.IconGeneric
+        android:id="@+id/indexIcon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="@color/bien"
+        android:tag="fontawesome"
+        android:text="@string/check" />
+    <com.example.pp_android_handheld_library.view.clases.IconGeneric
+        android:id="@+id/keyIcon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="@color/bien"
+        android:tag="fontawesome"
+        android:text="@string/check" />
+
+</LinearLayout>

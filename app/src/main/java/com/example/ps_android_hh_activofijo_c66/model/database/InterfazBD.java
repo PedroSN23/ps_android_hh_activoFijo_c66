@@ -7,7 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import com.example.ps_android_hh_activofijo_c66.model.clases.Configuracion;
 import com.example.ps_android_hh_activofijo_c66.model.clases.DatabaseConf;
+import com.example.ps_android_hh_activofijo_c66.model.clases.Encabezados;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Usuario;
 
 import java.util.ArrayList;
@@ -85,6 +87,35 @@ public class InterfazBD {
         db.execSQL(query);
         String query2 = "delete from sqlite_sequence where name='" + tabla + "';";
         db.execSQL(query2);
+    }
+    public Configuracion obtenerConfiguracion() {
+        Configuracion configuracion=null;
+        open();
+
+        String consulta = "select archivo_in_name, archivo_in_path, prefijo_out, fecha, result from configuracion where _id = 1;";
+        try {
+            Cursor c = db.rawQuery(consulta, null);
+            c.moveToFirst();
+            if(c.getCount() != 0) {
+                configuracion = new Configuracion(c.getInt(4), c.getInt(3), c.getString(0), c.getString(1), c.getString(2));
+            }
+            c.close();
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+        return configuracion;
+    }
+
+    public long modificarConfiguracion (Configuracion configuracion) {
+        ContentValues content;
+        open();
+        content = new ContentValues();
+        content.put("archivo_in_path", configuracion.getArchivoInPath());
+        content.put("archivo_in_name", configuracion.getArchivoInName());
+        content.put("prefijo_out", configuracion.getPrefijoOut());
+        content.put("fecha", (configuracion.isFecha())? 1:0);
+        content.put("result", (configuracion.isResult())? 1:0);
+        return db.update("configuracion", content, "_id=1",  null);
     }
 
     public Usuario obtenerUsuario(String usuario) {
@@ -239,6 +270,60 @@ public class InterfazBD {
         c.close();
 
         return user;
+    }
+    /*********************ENCABEZADOS*************************/
+    public ArrayList<Encabezados> obtenerEncabezados() {
+        ArrayList<Encabezados> encabezados = new ArrayList<>();
+        open();
+
+        String consulta = "select _id, nombre, llave_primaria, indexado, editable, visible, filtro from encabezados;";
+        try {
+            Cursor c = db.rawQuery(consulta, null);
+            if (c.moveToFirst()) {
+                while (!c.isAfterLast()) {
+                    encabezados.add(new Encabezados(c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5), c.getInt(6)));
+                    c.moveToNext();
+                }
+            }
+            c.close();
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+        return encabezados;
+    }
+
+    public long modificarEncabezado (Encabezados encabezado) {
+        ContentValues content;
+        open();
+        content = new ContentValues();
+        content.put("nombre", encabezado.getNombre());
+        content.put("llave_primaria", (encabezado.isLlavePrimaria())? 1:0);
+        content.put("indexado", (encabezado.isIndexado())? 1:0);
+        content.put("editable", (encabezado.isEditable())? 1:0);
+        content.put("visible", (encabezado.isVisible())? 1:0);
+        return db.update("encabezados", content, "_id="+encabezado.getId(),  null);
+    }
+
+    public void insertarEncabezado(Encabezados encabezado) {
+        ContentValues content;
+        open();
+        content = new ContentValues();
+        try {
+            content.put("_id", encabezado.getId());
+            content.put("nombre", encabezado.getNombre());
+            content.put("llave_primaria", (encabezado.isLlavePrimaria())? 1:0);
+            content.put("indexado", (encabezado.isIndexado())? 1:0);
+            content.put("editable", (encabezado.isEditable())? 1:0);
+            content.put("visible", (encabezado.isVisible())? 1:0);
+            content.put("filtro", (encabezado.isFiltro())? 1:0);
+            db.insert("encabezados", null, content);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void vaciarEncabezados() {
+        truncarTabla("encabezados");
     }
 
     /********************************FILTROS*****************************/
