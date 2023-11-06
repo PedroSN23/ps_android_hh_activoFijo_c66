@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4"
+            android:layout_marginBottom="5dp"
             android:background="@color/white"
             android:orientation="vertical"
             tools:ignore="UselessParent">
@@ -251,12 +252,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="7"
                 tools:ignore="NestedWeights" />
+
+
             <LinearLayout
                 android:id="@+id/butNuevoFiltro"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="6"
-                android:background="@drawable/menu4_button"
+                android:background="@drawable/button_base"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="GuardarConfiguracion">
@@ -264,7 +267,6 @@
                     android:id="@+id/menu4TextoIniciarUsuario"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
                     android:layout_weight="3"
                     android:gravity="center"
                     android:text="@string/butGuardar"
@@ -274,7 +276,7 @@
                     tools:ignore="NestedWeights" />
                 <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     tools:ignore="NestedWeights">
@@ -289,6 +291,8 @@
                         android:text="@string/save" />
                 </RelativeLayout>
             </LinearLayout>
+
+
 
             <Space
                 android:layout_width="0dp"

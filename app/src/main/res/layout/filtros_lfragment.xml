@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.activity.FiltrosActivity">
 
     <LinearLayout
@@ -16,7 +16,7 @@
             android:id="@+id/listViewFiltros"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="15" />
+            android:layout_weight="18" />
 
         <LinearLayout
             android:id="@+id/menu4BotonesFiltros"
@@ -31,50 +31,17 @@
                 android:layout_weight="7"
                 tools:ignore="NestedWeights" />
 
-            <LinearLayout
+            <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/butNuevoFiltro"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:layout_weight="6"
-                android:background="@drawable/button_menu4_blue"
                 android:clickable="true"
                 android:focusable="true"
                 android:layout_marginTop="4dp"
-                android:onClick="NuevoFiltro"
                 android:orientation="horizontal"
                 android:gravity="center">
-
-                <TextView
-                    android:id="@+id/menu4TextoIniciarUsuario"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="@string/NEW"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    tools:ignore="NestedWeights" />
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    tools:ignore="NestedWeights">
-
-                    <com.example.pp_android_handheld_library.view.clases.IconGeneric
-                        android:id="@+id/selicon"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:tag="fontawesome"
-                        android:text="@string/plus"
-                        android:textColor="@color/white"
-                        android:textSize="20sp"
-                        tools:ignore="PrivateResource" />
-                </RelativeLayout>
-            </LinearLayout>
+            </com.airbnb.lottie.LottieAnimationView>
 
 
         <Space

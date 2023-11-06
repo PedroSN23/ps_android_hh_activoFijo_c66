@@ -34,7 +34,8 @@ public class ArchivosAdapter extends BaseAdapter {
         this.encabezadosArrayList = encabezados;
     }
 
-    public ArchivosAdapter() {
+    public ArchivosAdapter(Context context) {
+        this.context = context;
         this.encabezadosArrayList = new ArrayList<>();
     }
 
@@ -59,7 +60,7 @@ public class ArchivosAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if(rowView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.list_archivos, parent, false);
+            rowView = inflater.inflate(R.layout.list_encabezados, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.nombreTv = rowView.findViewById(R.id.nombreEnc);
             viewHolder.viewIcon = rowView.findViewById(R.id.viewIcon);

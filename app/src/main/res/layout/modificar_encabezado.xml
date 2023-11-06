@@ -14,18 +14,14 @@
         android:layout_height="wrap_content"
         android:text="@string/emptyTxt"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:gravity="center"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/iconColor">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black"
-            android:layout_marginBottom="20dp" />
+        android:background="@color/white">
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/swVis"
             android:layout_width="match_parent"
@@ -40,7 +36,7 @@
             android:thumb="@drawable/thumb_gray"
             app:showText="true"
             app:switchMinWidth="70dp"
-            app:track="@drawable/track_switch_black"
+            app:track="@drawable/track_switch_green"
             android:paddingEnd="70dp"
             android:paddingStart="70dp"/>
         <androidx.appcompat.widget.SwitchCompat
@@ -58,7 +54,7 @@
             android:thumb="@drawable/thumb_gray"
             app:showText="true"
             app:switchMinWidth="70dp"
-            app:track="@drawable/track_switch_black"
+            app:track="@drawable/track_switch_green"
             android:paddingEnd="70dp"
             android:paddingStart="70dp"/>
         <androidx.appcompat.widget.SwitchCompat
@@ -76,7 +72,7 @@
             android:thumb="@drawable/thumb_gray"
             app:showText="true"
             app:switchMinWidth="70dp"
-            app:track="@drawable/track_switch_black"
+            app:track="@drawable/track_switch_green"
             android:paddingEnd="70dp"
             android:paddingStart="70dp"/>
         <androidx.appcompat.widget.SwitchCompat
@@ -94,7 +90,7 @@
             android:thumb="@drawable/thumb_gray"
             app:showText="true"
             app:switchMinWidth="70dp"
-            app:track="@drawable/track_switch_black"
+            app:track="@drawable/track_switch_green"
             android:paddingEnd="70dp"
             android:paddingStart="70dp"/>
         <androidx.appcompat.widget.SwitchCompat
@@ -112,14 +108,9 @@
             android:thumb="@drawable/thumb_gray"
             app:showText="true"
             app:switchMinWidth="70dp"
-            app:track="@drawable/track_switch_black"
+            app:track="@drawable/track_switch_green"
             android:paddingEnd="70dp"
             android:paddingStart="70dp"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black"
-            android:layout_marginTop="20dp"/>
     </LinearLayout>
 
     <LinearLayout

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.pp_android_handheld_library.model.resources.ColorEnum;
 import com.example.ps_android_hh_activofijo_c66.R;
 import com.example.ps_android_hh_activofijo_c66.model.database.InterfazBD;
@@ -30,7 +31,7 @@ public class FiltrosFragment extends Fragment {
     private InterfazBD interfazBD;
     private FiltrosAdapter FiltrosAdapter;
     private Pattern p;
-
+    private  LottieAnimationView nuevoFiltroButton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.filtros_lfragment, container, false);
@@ -39,8 +40,10 @@ public class FiltrosFragment extends Fragment {
 
         RecyclerView recyclerView = rootView.findViewById(R.id.listViewFiltros);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        LinearLayout nuevoFiltroButton = rootView.findViewById(R.id.butNuevoFiltro);
-
+        nuevoFiltroButton = rootView.findViewById(R.id.butNuevoFiltro);
+        String animationFileName = "plus.json";
+        nuevoFiltroButton.setAnimation(animationFileName);
+        nuevoFiltroButton.setSpeed(0.5f);
         nuevoFiltroButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,6 +125,7 @@ public class FiltrosFragment extends Fragment {
                     if (!FiltrosAdapter.agregarFiltro(f)) {
                         FiltrosAdapter.notifyDataSetChanged();
                         interfazBD.insertarFiltro(f);
+                        nuevoFiltroButton.playAnimation();
                         dialog.dismiss();
                     } else {
                         Toast.makeText(getActivity(), getResources().getString(R.string.errFitlRep), Toast.LENGTH_LONG).show();

@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ConexionBd extends SQLiteOpenHelper {
     public ConexionBd(Context context) {
-        super(context, "activoFijo.db", null, 8);
+        super(context, "activoFijo.db", null, 10);
     }
 
     @Override
@@ -30,9 +30,11 @@ public class ConexionBd extends SQLiteOpenHelper {
                 "_id integer primary key autoincrement, " +
                 "usuario text not null, " +
                 "rol integer not null);";
+
         String filtros = "create table if not exists filtros (" +
                         "_id integer primary key autoincrement, " +
                         "filtro text not null);";
+
         String encabezados = "create table if not exists encabezados( " +
                 "_id integer primary key," +
                 " nombre text not null," +
@@ -42,7 +44,15 @@ public class ConexionBd extends SQLiteOpenHelper {
                 " visible integer not null," +
                 " filtro integer not null);";
 
+        String configuracion = "create table if not exists configuracion ( "+
+                "_id integer primary key autoincrement," +
+                "archivo_in_name text not null," +
+                "archivo_in_path text not null," +
+                "prefijo_out text not null," +
+                "fecha integer not null," +
+                "result integer not null);";
 
+        db.execSQL(configuracion);
         db.execSQL(config);
         db.execSQL(usuarios);
         db.execSQL(encabezados);
@@ -54,7 +64,8 @@ public class ConexionBd extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("drop table if exists config;");
         db.execSQL("drop table if exists usuarios;");
-        String encabezadosUpdate = "drop table if exists encabezados;";
+        db.execSQL("drop table if exists encabezadosUpdate;");
+        db.execSQL("drop table if exists configuracion;");
         db.execSQL("drop table if exists sesiones;");
         db.execSQL("drop table if exists filtros;");
         onCreate(db);

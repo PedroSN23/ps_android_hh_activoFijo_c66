@@ -76,12 +76,17 @@ public class ArchivosFragment extends Fragment {
         archEditOut = rootView.findViewById(R.id.confArchOut);
         switchResult = rootView.findViewById(R.id.switchResult);
         switchFecha = rootView.findViewById(R.id.switchFecha);
+        archEdit[0] = rootView.findViewById(R.id.confArchIn);
+        archEdit[1] = rootView.findViewById(R.id.confArchOut);
+        switches[0] = rootView.findViewById(R.id.switchResult);
+        switches[1] = rootView.findViewById(R.id.switchFecha);
+
         ListView listView = rootView.findViewById(R.id.lvArchivos);
         progreso = rootView.findViewById(R.id.menu4ProgresoArchivo);
         pattern = Pattern.compile("^.*\\.xlsx$");
 
         interfazBD = new InterfazBD(context);
-        ArchivoAdapter = new ArchivosAdapter();
+        ArchivoAdapter = new ArchivosAdapter(context);
         listView.setAdapter(ArchivoAdapter);
 
         listView.setOnItemClickListener((adapterView, view, i, l) -> crearDialogo(i));

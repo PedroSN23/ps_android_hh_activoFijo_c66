@@ -58,6 +58,17 @@ public class InterfazBD {
             content.put("rol", "1");
             db.insert("usuarios", null, content);
         }
+        if(numRegistros == 0) {
+            content = new ContentValues();
+            content.put("_id", "1");
+            content.put("archivo_in_path", "");
+            content.put("archivo_in_name", "");
+            content.put("prefijo_out", "Salida");
+            content.put("fecha", 0);
+            content.put("result", 0);
+            content.put("secret", "");
+            db.insert("configuracion", null, content);
+        }
     }
 
     private int getLastInsertedId() {
@@ -88,6 +99,7 @@ public class InterfazBD {
         String query2 = "delete from sqlite_sequence where name='" + tabla + "';";
         db.execSQL(query2);
     }
+
     public Configuracion obtenerConfiguracion() {
         Configuracion configuracion=null;
         open();
