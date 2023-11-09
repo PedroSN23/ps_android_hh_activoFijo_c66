@@ -246,13 +246,12 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal"
+            android:baselineAligned="false"
             android:weightSum="20">
             <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
-                tools:ignore="NestedWeights" />
-
+                android:layout_weight="7"/>
 
             <LinearLayout
                 android:id="@+id/butNuevoFiltro"
@@ -291,13 +290,10 @@
                         android:text="@string/save" />
                 </RelativeLayout>
             </LinearLayout>
-
-
-
             <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="7" />
+                android:layout_weight="5"/>
         </LinearLayout>
 
         <Space

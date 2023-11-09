@@ -142,7 +142,7 @@ public class ArchivosFragment extends Fragment {
         final LinearLayout butGuardar = promptsView.findViewById(R.id.guardarEnc);
 
         final AlertDialog alertDialog = alertDialogBuilder.create();
-
+        //5534443986 Ing raul roldan
         alertDialog.setOnShowListener(dialogInterface -> butGuardar.setOnClickListener(view -> {
             ArchivoAdapter.encabezadosArrayList.get(indexAdapter).setVisible(switches[0].isChecked());
             ArchivoAdapter.encabezadosArrayList.get(indexAdapter).setEditable(switches[1].isChecked());

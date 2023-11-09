@@ -55,7 +55,7 @@ public class MainActivity extends MenuMainActivity {
         //establecer textos e íconos de menú principal
         setGroupIconText(0, IconGenericEnum.fontawesome_boxes, "INVENTARIO");
         setGroupIconText(1, IconGenericEnum.fontawesome_search, "BUSQUEDA");
-        setGroupIconText(2, IconGenericEnum.fontawesome_building, "HERRAMIENTAS");
+        setGroupIconText(2, IconGenericEnum.fontawesome_tools, "HERRAMIENTAS");
         setGroupIconText(3, IconGenericEnum.zmdi_settings, "CONFIGURACIÓN");
         //setGroupIconTextSize(0, 50);
         //setGroupColor(3, this, R.color.prueba);

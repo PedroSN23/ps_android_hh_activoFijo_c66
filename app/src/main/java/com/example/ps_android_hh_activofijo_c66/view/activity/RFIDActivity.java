@@ -170,7 +170,7 @@ public class RFIDActivity extends RFIDBarcodeControllActivity {
                 true,
                 ColorEnum.menu3p.getCode()));
         controlButtons.add(new ControlButtonsCircular(2, "EXPORTAR",
-                IconGenericEnum.flaticon_excel,
+                IconGenericEnum.fontawesome_file_excel,
                 false,
                 "EXPORTAR",
                 false,

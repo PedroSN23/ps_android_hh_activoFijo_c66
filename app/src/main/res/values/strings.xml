@@ -154,4 +154,9 @@
     <string name="check">check</string>
     <string name="times">times</string>
 
+
+    <!--********************TAGS*******************************-->
+    <string name="tag_buscar">Tag a buscar</string>
+
+
 </resources>
