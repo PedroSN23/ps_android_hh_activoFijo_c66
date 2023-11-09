@@ -40,6 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:layout_marginBottom="5dp"
         android:orientation="horizontal">
         <Space
             android:layout_width="0dp"
@@ -54,7 +55,7 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="4"
-            android:background="@drawable/button_menu4_blue"
+            android:background="@drawable/button_created"
             android:clickable="true"
             android:focusable="true">
             <TextView
@@ -64,7 +65,7 @@
                 android:textSize="16sp"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="@string/butCancel"
                 android:textStyle="bold"
                 tools:ignore="NestedWeights" />
@@ -75,7 +76,7 @@
                 android:gravity="center"
                 android:textSize="18sp"
                 android:layout_gravity="center"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="@string/times"
                 tools:ignore="NestedWeights" />
 
@@ -89,7 +90,7 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="4"
-            android:background="@drawable/button_menu4_blue"
+            android:background="@drawable/button_created"
             android:clickable="true"
             android:focusable="true">
             <TextView
@@ -99,7 +100,7 @@
                 android:textSize="16sp"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="@string/butGuardar"
                 android:textStyle="bold"
                 tools:ignore="NestedWeights" />
@@ -110,7 +111,7 @@
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="@string/save"
                 tools:ignore="NestedWeights" />
         </LinearLayout>

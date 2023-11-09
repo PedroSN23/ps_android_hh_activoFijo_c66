@@ -251,14 +251,14 @@
             <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"/>
+                android:layout_weight="6"/>
 
             <LinearLayout
                 android:id="@+id/butNuevoFiltro"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="6"
-                android:background="@drawable/button_base"
+                android:layout_weight="7"
+                android:background="@drawable/button_created"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="GuardarConfiguracion">

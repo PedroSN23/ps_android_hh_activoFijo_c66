@@ -18,6 +18,7 @@
     <string name="filtro">Filtro</string>
     <string name="nomb_arch">Nombre Archivo</string>
     <string name="correctos">Correctos</string>
+    <string name="butCambiar">Cambiar</string>
     <string name="faltantes">Faltantes</string>
     <string name="sobrante">Sobrantes</string>
     <string name="butCancelar">CANCELAR</string>
@@ -157,6 +158,10 @@
 
     <!--********************TAGS*******************************-->
     <string name="tag_buscar">Tag a buscar</string>
+    <string name="menu2s1tit">CONSULTA DE ACTIVOS</string>
+    <string name="menu2s1enc">Información de Registro</string>
+    <string name="menu2s1promptTit">Activo a buscar</string>
+    <string name="menu2s1GuardarForm">Está a punto de guardar los cambios del formulario</string>
 
 
 </resources>

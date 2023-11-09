@@ -129,7 +129,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="6"
-            android:background="@drawable/button_base"
+            android:background="@drawable/button_created"
             android:clickable="true"
             android:focusable="true"
             android:onClick="GuardarConfiguracion">

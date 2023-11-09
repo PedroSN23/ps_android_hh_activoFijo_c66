@@ -1,0 +1,15 @@
+<!-- res/drawable/button_border_selector.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape>
+            <stroke android:color="@color/verdeAstlix" android:width="1dp"/>
+            <corners android:radius="10dp"/>
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <stroke android:color="@color/azulAstlix" android:width="1dp"/>
+            <corners android:radius="10dp"/>
+        </shape>
+    </item>
+</selector>
