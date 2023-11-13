@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/rootSlideButForm"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="horizontal"
+    android:background="@drawable/menu2_button"
+    android:layout_marginStart="2dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:onClick="SlideButton">
+    <com.example.pp_android_handheld_library.view.clases.IconGeneric
+        android:id="@+id/iconSlideButForm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/iconColor"
+        android:textSize="35sp"
+        android:text="@string/zmdi_key"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginEnd="5dp"/>
+    <TextView
+        android:id="@+id/textSlideButForm"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="@string/emptyTxt"
+        android:textStyle="bold"
+        android:textColor="@color/menu2to"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:ellipsize="end"
+        android:maxLines="1"/>
+</LinearLayout>

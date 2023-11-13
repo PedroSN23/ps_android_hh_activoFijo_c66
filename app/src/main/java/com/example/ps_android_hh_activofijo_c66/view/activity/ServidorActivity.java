@@ -31,6 +31,16 @@ public class ServidorActivity extends GenericActivity {
     }
 
     @Override
+    protected void onNextPressed() {
+
+    }
+
+    @Override
+    protected void onPrevPressed() {
+        onBackPressed();
+    }
+
+    @Override
     protected Fragment setContentFragment() {
 
         ServidorFragment servidorFragment = new ServidorFragment();

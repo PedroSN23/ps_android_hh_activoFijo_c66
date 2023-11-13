@@ -64,6 +64,8 @@
     <string name="correo">Correo</string>
     <string name="pagina">Página</string>
     <string name="version">Versión</string>
+    <string name="seleccionar">Seleccionar</string>
+    <string name="exit">Salir</string>
 
     <!--********************DIALOGOS*******************************-->
     <string name="administrador">Administrador</string>
@@ -103,6 +105,9 @@
     <string name="butCont">Continuar</string>
     <string name="butCancel">Cancelar</string>
     <string name="confirmDelete">Eliminar Filtro</string>
+    <string name="advBackPrs">Si continúa, no se guardará el progreso del inventario</string>
+    <string name="advCleanPrs">Si continúna, se borrará el progreso del inventario</string>
+    <string name="warNoChanges">No se encontraron cambios en el formulario</string>
 
 
     <!--********************ARCHIVOS*******************************-->
@@ -164,4 +169,7 @@
     <string name="menu2s1GuardarForm">Está a punto de guardar los cambios del formulario</string>
 
 
-</resources>
+
+    <string name="zmdi_key">zmdi_key</string>
+    <string name="zmdi_bookmark">zmdi_bookmark</string>
+ </resources>

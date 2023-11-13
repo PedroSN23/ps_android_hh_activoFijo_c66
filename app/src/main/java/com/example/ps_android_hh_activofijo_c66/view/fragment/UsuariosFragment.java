@@ -20,11 +20,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ps_android_hh_activofijo_c66.R;
-import com.example.ps_android_hh_activofijo_c66.model.clases.DatabaseConf;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Usuario;
-import com.example.ps_android_hh_activofijo_c66.model.database.ConexionMysql;
 import com.example.ps_android_hh_activofijo_c66.model.database.InterfazBD;
-import com.example.ps_android_hh_activofijo_c66.view.adapter.CustomDividerItemDecoration;
+import com.example.ps_android_hh_activofijo_c66.model.clases.CustomDividerItemDecoration;
 import com.example.ps_android_hh_activofijo_c66.view.adapter.UsuariosAdapter;
 import com.example.ps_android_hh_activofijo_c66.view.dialog.EditUserDialog;
 import com.example.pp_android_handheld_library.model.resources.ColorEnum;

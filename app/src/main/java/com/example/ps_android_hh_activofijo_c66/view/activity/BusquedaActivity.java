@@ -79,6 +79,16 @@ public class BusquedaActivity extends RFIDBarcodeControllActivity {
     }
 
     @Override
+    protected void onNextPressed() {
+
+    }
+
+    @Override
+    protected void onPrevPressed() {
+        onBackPressed();
+    }
+
+    @Override
     public void rfidReading(boolean b) {
     }
 
@@ -127,6 +137,11 @@ public class BusquedaActivity extends RFIDBarcodeControllActivity {
 
     @Override
     public void writeSuccess() {
+    }
+
+    @Override
+    public void writeError() {
+
     }
 
     @Override

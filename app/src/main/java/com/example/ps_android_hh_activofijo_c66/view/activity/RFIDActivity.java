@@ -53,6 +53,16 @@ public class RFIDActivity extends RFIDBarcodeControllActivity {
     }
 
     @Override
+    protected void onNextPressed() {
+
+    }
+
+    @Override
+    protected void onPrevPressed() {
+        onBackPressed();
+    }
+
+    @Override
     protected void onDestroy() {
         fileController.end();
         mailController.end();
@@ -94,6 +104,11 @@ public class RFIDActivity extends RFIDBarcodeControllActivity {
 
     @Override
     public void writeSuccess() {
+
+    }
+
+    @Override
+    public void writeError() {
 
     }
 

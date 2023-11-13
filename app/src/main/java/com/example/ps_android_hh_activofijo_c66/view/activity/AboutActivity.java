@@ -13,6 +13,17 @@ public class AboutActivity extends GenericActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
+    @Override
+    protected void onNextPressed() {
+
+    }
+
+    @Override
+    protected void onPrevPressed() {
+        onBackPressed();
+    }
+
     @Override
     protected Fragment setContentFragment() {
         return new AboutFragment();

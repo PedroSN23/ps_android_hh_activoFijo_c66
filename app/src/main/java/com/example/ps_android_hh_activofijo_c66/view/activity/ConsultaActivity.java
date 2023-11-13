@@ -54,6 +54,16 @@ public class ConsultaActivity extends RFIDBarcodeControllActivity {
     }
 
     @Override
+    protected void onNextPressed() {
+
+    }
+
+    @Override
+    protected void onPrevPressed() {
+        onBackPressed();
+    }
+
+    @Override
     protected void onDestroy() {
         fileController.end();
         mailController.end();
@@ -74,11 +84,6 @@ public class ConsultaActivity extends RFIDBarcodeControllActivity {
     @Override
     protected void onStartRFIDLectura(RFIDController rfidController) {
         controlsFragment.setButtonPressed(1, true);
-        if(consultaFragment.isRepuveFiltered()) {
-            startRfidInventory(false, "", ReadingMode.epc_tid_user, 4, 9);
-        } else {
-            startRfidInventory(false, "", ReadingMode.epc, 0, 0);
-        }
     }
 
     @Override
@@ -95,6 +100,11 @@ public class ConsultaActivity extends RFIDBarcodeControllActivity {
 
     @Override
     public void writeSuccess() {
+
+    }
+
+    @Override
+    public void writeError() {
 
     }
 
@@ -123,9 +133,7 @@ public class ConsultaActivity extends RFIDBarcodeControllActivity {
     @Override
     public void reportTag(UHFTagsRead uhfTagsRead) {
         if(consultaFragment!=null) {
-            if(consultaFragment.sendTagsAlt(uhfTagsRead)) {
-                soundTagRead();
-            }
+
         }
     }
 
@@ -170,16 +178,16 @@ public class ConsultaActivity extends RFIDBarcodeControllActivity {
                 "FINALIZAR",
                 true,
                 ColorEnum.menu3p.getCode()));
-        controlButtons.add(new ControlButtonsCircular(2, "EXPORTAR",
-                IconGenericEnum.fontawesome_file_excel,
+        controlButtons.add(new ControlButtonsCircular(2, "CAMBIAR",
+                IconGenericEnum.fontawesome_edit,
                 false,
-                "EXPORTAR",
+                "CAMBIAR",
                 false,
                 ColorEnum.excel.getCode()));
-        controlButtons.add(new ControlButtonsCircular(3, "BORRAR",
-                IconGenericEnum.fontawesome_trash,
+        controlButtons.add(new ControlButtonsCircular(3, "GUARDAR",
+                IconGenericEnum.fontawesome_save,
                 false,
-                "BORRAR",
+                "GUARDAR",
                 false,
                 ColorEnum.sobrante.getCode()));
 
@@ -200,15 +208,10 @@ public class ConsultaActivity extends RFIDBarcodeControllActivity {
                         }
                         break;
                     case 2:
-                        ArrayList<UHFTagsRead> uhfTagsReadArrayList = consultaFragment.getList();
-                        if(uhfTagsReadArrayList.size()>0) {
-                            solicitarNombreArchivo(uhfTagsReadArrayList);
-                        } else {
-                            mostrarMensajeDeErrorDialog("No hay lecturas");
-                        }
+                        consultaFragment.AbrirDialogo();
                         break;
                     case 3: //limpiar
-                        consultaFragment.clearList();
+                        consultaFragment.GuardarFormularioForm();
                         break;
                 }
                 toggleShowMenuPack(controlsFragment);
