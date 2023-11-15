@@ -1,6 +1,7 @@
 package com.example.ps_android_hh_activofijo_c66.view.activity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -177,19 +178,25 @@ public class ConsultaActivity extends RFIDBarcodeControllActivity {
                 true,
                 "FINALIZAR",
                 true,
-                ColorEnum.menu3p.getCode()));
+                ColorEnum.bien.getCode()));
         controlButtons.add(new ControlButtonsCircular(2, "CAMBIAR",
                 IconGenericEnum.fontawesome_edit,
                 false,
                 "CAMBIAR",
                 false,
-                ColorEnum.excel.getCode()));
+                ColorEnum.status_blue.getCode()));
         controlButtons.add(new ControlButtonsCircular(3, "GUARDAR",
                 IconGenericEnum.fontawesome_save,
                 false,
                 "GUARDAR",
                 false,
-                ColorEnum.sobrante.getCode()));
+                ColorEnum.amarillo.getCode()));
+        controlButtons.add(new ControlButtonsCircular(4, "BUSCAR",
+                IconGenericEnum.fontawesome_search,
+                false,
+                "BUSCAR",
+                false,
+                ColorEnum.status_orange.getCode()));
 
         controlsFragment = new ControlsFragment(controlButtons, subMenus.getGroupStyle());
         controlsFragment.addControlsFragmentAdapter((view, pressed) -> {
@@ -210,70 +217,19 @@ public class ConsultaActivity extends RFIDBarcodeControllActivity {
                     case 2:
                         consultaFragment.AbrirDialogo();
                         break;
-                    case 3: //limpiar
+                    case 3:
                         consultaFragment.GuardarFormularioForm();
+                        break;
+                    case 4:
+                        String activo = consultaFragment.getActiveText();
+                        Intent intent = new Intent(ConsultaActivity.this, BusquedaActivity.class);
+                        intent.putExtra("ACT", activo);
+                        startActivity(intent);
                         break;
                 }
                 toggleShowMenuPack(controlsFragment);
             }
         });
         return controlsFragment;
-    }
-
-    private void solicitarNombreArchivo(ArrayList<UHFTagsRead> uhfTagsReadArrayList) {
-        LayoutInflater li = LayoutInflater.from(ConsultaActivity.this);
-        View promptsView = li.inflate(R.layout.archivos_prompt_export, null);
-
-        TextInputEditText nombreArchivoEt = promptsView.findViewById(R.id.textArchivo);
-        TextInputLayout textInputLayout = promptsView.findViewById(R.id.inputArchivo);
-        textInputLayout.setHintTextColor(ColorStateList.valueOf(ContextCompat.getColor(ConsultaActivity.this, ColorEnum.menu3p.getCode())));
-        textInputLayout.setBoxStrokeColor(ContextCompat.getColor(ConsultaActivity.this, ColorEnum.menu3p.getCode()));
-        final AlertDialog alertDialog = new AlertDialog.Builder(ConsultaActivity.this).setView(promptsView)
-                .setTitle("Nombre de Archivo")
-                .setMessage("Ingrese el nombre del archivo a exportar")
-                .setPositiveButton(android.R.string.ok, null)
-                .setNegativeButton(android.R.string.cancel, null)
-                .show();
-
-        Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        b.setOnClickListener(view -> {
-            @SuppressWarnings("ConstantConditions") String archName = nombreArchivoEt.getText().toString();
-            if(!archName.isEmpty()) {
-                fileController.generarArchivoExcel(obtenerArreglo(uhfTagsReadArrayList),
-                        getResources().getStringArray(R.array.encabezados_rfid),
-                        archName,
-                        "rfid");
-                setProgresoVisible(true);
-                alertDialog.dismiss();
-            } else {
-                mostrarMensajeDeErrorDialog("Nombre de archivo vacío");
-            }
-        });
-    }
-
-    private String[][] obtenerArreglo(ArrayList<UHFTagsRead> uhfTagsReadArrayList) {
-        String[][] valores = new String[uhfTagsReadArrayList.size()][6];
-        int i=0;
-        for(UHFTagsRead utr: uhfTagsReadArrayList) {
-            valores[i][0]=utr.getEpc();
-            valores[i][1]=utr.getDetail();
-            valores[i][2]=String.format(Locale.getDefault(), "%d", utr.getCantidad());
-            valores[i][3]=utr.getRssi();
-            valores[i][4]=utr.getTipo().name();
-            valores[i][5]=String.format(Locale.getDefault(), "%d", utr.getInventariado());
-            i++;
-        }
-        return valores;
-    }
-
-    public void setFileExported(String[] msg) {
-        setProgresoVisible(false);
-        FragmentManager fm = getSupportFragmentManager();
-        MailDialog mailDialog = new MailDialog();
-        mailDialog.setMailDialogListener(s -> {
-            setProgresoVisible(true);
-            mailController.enviarCorreoAdjunto(s, msg[1], msg[0],"Archivo Lectura", "Se anexa el archivo de la lectura realizada por la terminal móvil");
-        });
-        mailDialog.show(fm, "dialog");
     }
 }

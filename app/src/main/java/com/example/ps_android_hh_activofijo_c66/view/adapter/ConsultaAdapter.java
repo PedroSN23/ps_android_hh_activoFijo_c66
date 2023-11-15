@@ -18,7 +18,7 @@ public class ConsultaAdapter extends ArrayAdapter<Activos> {
     private LayoutInflater inflater;
     public ConsultaAdapter(Context context, int resourceId, int textViewId, List<Activos> catalogos) {
         super(context, resourceId, textViewId, catalogos);
-        inflater = LayoutInflater.from(context);
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override

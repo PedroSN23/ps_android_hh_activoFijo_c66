@@ -170,6 +170,6 @@
 
 
 
-    <string name="zmdi_key">zmdi_key</string>
-    <string name="zmdi_bookmark">zmdi_bookmark</string>
+    <string name="key">key</string>
+    <string name="bookmark">bookmark</string>
  </resources>

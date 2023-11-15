@@ -35,12 +35,11 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/chevron_left"
-                        android:onClick="ImagenAnterior"
                         android:textSize="60sp"/>
                     <RelativeLayout
+                        android:id="@+id/TomarFoto"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:onClick="TomarFoto"
                         android:layout_weight="2">
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/img_act"
@@ -65,16 +64,11 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/chevron_right"
-                        android:onClick="ImagenSiguiente"
                         android:textSize="60sp"/>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
     </LinearLayout>
 
     <RelativeLayout
@@ -93,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textColor="@color/verdeAstlix"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="16sp"
             android:text="@string/zeroTxt"
