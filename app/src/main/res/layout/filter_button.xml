@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioButton xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@android:style/Widget.Material.CompoundButton.RadioButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="20dp"
+    android:buttonTint="@color/menu1p"
+    android:text="@string/emptyTxt"
+    android:textAlignment="textEnd" />

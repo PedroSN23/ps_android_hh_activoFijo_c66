@@ -109,7 +109,7 @@ public class ArchivosFragment extends Fragment {
         butNuevoFiltro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GuardarConfiguracion(v);
+                GuardarConfiguracion();
             }
         });
 
@@ -205,7 +205,7 @@ public class ArchivosFragment extends Fragment {
         }
     }
 
-    public void GuardarConfiguracion(View view) {
+    public void GuardarConfiguracion() {
         if(configuracion!=null) {
             configuracion.setPrefijoOut(archEdit[1].getText().toString());
             configuracion.setResult(switches[0].isChecked());

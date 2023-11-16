@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import com.example.ps_android_hh_activofijo_c66.model.clases.Cambios;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Configuracion;
 import com.example.ps_android_hh_activofijo_c66.model.clases.DatabaseConf;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Encabezados;
@@ -38,6 +39,7 @@ public class InterfazBD {
 
         int numRegistros = countRegistro("config");
         int usuariosRegistros = countRegistro("usuarios");
+        int configuracionRegistros = countRegistro("configuracion");
 
         if (numRegistros < 1) {
             content = new ContentValues();
@@ -58,7 +60,7 @@ public class InterfazBD {
             content.put("rol", "1");
             db.insert("usuarios", null, content);
         }
-        if(numRegistros == 0) {
+        if(configuracionRegistros == 0) {
             content = new ContentValues();
             content.put("_id", "1");
             content.put("archivo_in_path", "");
@@ -66,7 +68,6 @@ public class InterfazBD {
             content.put("prefijo_out", "Salida");
             content.put("fecha", 0);
             content.put("result", 0);
-            content.put("secret", "");
             db.insert("configuracion", null, content);
         }
     }
@@ -376,5 +377,83 @@ public class InterfazBD {
     }
 
 
+    /********************************CAMBIOS*****************************/
+    public ArrayList<Cambios> obtenerCambios() {
+        ArrayList<Cambios> cambios = new ArrayList<>();
+        open();
+        String query = "select num_tag, indice_data, valor from cambios;";
+        try {
+            Cursor c = db.rawQuery(query, null);
+            if (c.moveToFirst()) {
+                while (!c.isAfterLast()) {
+                    cambios.add(new Cambios(c.getString(0), c.getInt(1), c.getString(2)));
+                    c.moveToNext();
+                }
+            }
+            c.close();
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+        return cambios;
+    }
+
+    public void insertarCambios(String tag, String data, int index) {
+        ContentValues content;
+        open();
+        content = new ContentValues();
+        try {
+            content.put("num_tag", tag);
+            content.put("indice_data", index);
+            content.put("valor", data);
+            db.insert("cambios", null, content);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void eliminarCambios() {
+        truncarTabla("cambios");
+    }
+
+
+
+    /********************************INVENTARIO*****************************/
+    public ArrayList<String[]> obtenerInventario() {
+        ArrayList<String[]> tags = new ArrayList<>();
+        open();
+        String query = "select num_tag, fecha from inventario;";
+        try {
+            Cursor c = db.rawQuery(query, null);
+            if (c.moveToFirst()) {
+                while (!c.isAfterLast()) {
+                    String[] tmp = new String[2];
+                    tmp[0]=c.getString(0);
+                    tmp[1]=c.getString(1);
+                    tags.add(tmp);
+                    c.moveToNext();
+                }
+            }
+            c.close();
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+        return tags;
+    }
+
+    public void insertarInventariado(String tag, String fecha) {
+        ContentValues content;
+        open();
+        content = new ContentValues();
+        try {
+            content.put("num_tag", tag);
+            content.put("fecha", fecha);
+            db.insertWithOnConflict("inventario", null, content, SQLiteDatabase.CONFLICT_REPLACE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void eliminarInventario() {
+        truncarTabla("inventario");
+    }
 
 }

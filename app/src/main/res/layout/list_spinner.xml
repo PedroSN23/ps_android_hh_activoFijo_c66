@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:id="@+id/textSlideBut"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/emptyTxt"
+    android:textStyle="bold"
+    android:textColor="@color/black"
+    android:textSize="20sp"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:ellipsize="end"
+    android:maxLines="1"
+    android:background="@color/white"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"/>

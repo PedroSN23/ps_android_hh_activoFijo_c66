@@ -16,6 +16,7 @@
     <string name="cant_reads">No. Lecturas</string>
     <string name="rssi">Max. RSSI</string>
     <string name="filtro">Filtro</string>
+    <string name="esperados">Esperados</string>
     <string name="nomb_arch">Nombre Archivo</string>
     <string name="correctos">Correctos</string>
     <string name="butCambiar">Cambiar</string>
@@ -109,7 +110,6 @@
     <string name="advCleanPrs">Si continúna, se borrará el progreso del inventario</string>
     <string name="warNoChanges">No se encontraron cambios en el formulario</string>
 
-
     <!--********************ARCHIVOS*******************************-->
     <string name="menu4s1Tit">CONFIGURAR ARCHIVO</string>
     <string name="menu4s1InpF">Archivo:</string>
@@ -122,6 +122,7 @@
     <string name="butOff">Off</string>
     <string name="butOn">On</string>
     <string name="emptyTxt">Algo</string>
+    <string name="status">Status</string>
 
     <string name="menu4s1DiaVis">Visible:</string>
     <string name="menu4s1DiaEdit">Editable:</string>
@@ -167,7 +168,14 @@
     <string name="menu2s1enc">Información de Registro</string>
     <string name="menu2s1promptTit">Activo a buscar</string>
     <string name="menu2s1GuardarForm">Está a punto de guardar los cambios del formulario</string>
+    <string name="menu1s1DiaTit">Filtros</string>
+    <string name="menu1s1DiaPhra">Seleccionar filtro</string>
 
+    <string name="menu1s1TitModAct">Modificar Activo</string>
+    <string name="menu1s1DiagMsgModAct">Ingrese los datos del Activo:</string>
+    <string name="menu1s1GuardarInv">Está a punto de guardar el avance del inventario</string>
+    <string name="menu1s1NoCambios">NO HAY CAMBIOS</string>
+    <string name="menu1s1ActBusc">Activo a buscar:</string>
 
 
     <string name="key">key</string>

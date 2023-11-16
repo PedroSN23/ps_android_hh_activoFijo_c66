@@ -62,7 +62,6 @@ public class BusquedaActivity extends RFIDBarcodeControllActivity {
     private InterfazBD interfazBD;
     private EditText userinput;
     private String epcFin;
-    private String act;
     private String Vfinal;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,17 +69,14 @@ public class BusquedaActivity extends RFIDBarcodeControllActivity {
         context = this;
         Bundle bundle = getIntent().getExtras();
         String act = bundle.getString("ACT");
-        String epc = bundle.getString("epc");
-        if(epc!=null) {
-            freeRfid(false);
-            epcStr=epc;
+        if(act!=null) {
         }
         filtros = interfazBD.obtenerFiltros();
         super.onCreate(savedInstanceState);
         if (act == null) {
             crearDialogo();
         }else{
-
+            Vfinal = Utils.getEPCActifoFijo(act);
         }
     }
 

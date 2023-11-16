@@ -10,8 +10,8 @@ import androidx.annotation.NonNull;
 import com.example.ps_android_hh_activofijo_c66.controller.files.FileResp;
 import com.example.ps_android_hh_activofijo_c66.model.clases.DevicesLocal;
 import com.example.ps_android_hh_activofijo_c66.view.activity.BarcodeActivity;
+import com.example.ps_android_hh_activofijo_c66.view.activity.InventarioActivity;
 import com.example.ps_android_hh_activofijo_c66.view.activity.RFIDActivity;
-import com.example.ps_android_hh_activofijo_c66.view.activity.ValidacionActivity;
 import com.example.pp_android_handheld_library.controller.mail.MailResp;
 import com.example.pp_android_handheld_library.view.herencia.GenericActivity;
 
@@ -62,8 +62,7 @@ public class MainHandler extends Handler {
         Bundle bundle;
         switch (FileResp.valueOf((String) msg.obj)) {
             case ready:
-                if(activity.getClass().getSimpleName().compareTo(ValidacionActivity.class.getSimpleName())==0) {
-                    ((ValidacionActivity)activity).ready();
+                if(activity.getClass().getSimpleName().compareTo(InventarioActivity.class.getSimpleName())==0) {
                 }
                 break;
             case excel_error:
@@ -80,30 +79,26 @@ public class MainHandler extends Handler {
                     if(activity.getClass().getSimpleName().compareTo(BarcodeActivity.class.getSimpleName())==0) {
                         ((BarcodeActivity) activity).setFileExported(bundle.getStringArray("filepath"));
                     } else {
-                        if(activity.getClass().getSimpleName().compareTo(ValidacionActivity.class.getSimpleName())==0) {
-                            ((ValidacionActivity) activity).setFileExported(bundle.getStringArray("filepath"));
+                        if(activity.getClass().getSimpleName().compareTo(InventarioActivity.class.getSimpleName())==0) {
                         }
                     }
                 }
                 break;
             case archborrado:
-                if(activity.getClass().getSimpleName().compareTo(ValidacionActivity.class.getSimpleName())==0) {
-                    ((ValidacionActivity)activity).archivoBorrado();
+                if(activity.getClass().getSimpleName().compareTo(InventarioActivity.class.getSimpleName())==0) {
                 }
                 ((GenericActivity)activity).mostrarMensajeExito("Archivo borrado");
                 break;
             case files:
                 bundle = msg.getData();
-                if(activity.getClass().getSimpleName().compareTo(ValidacionActivity.class.getSimpleName())==0) {
-                    ((ValidacionActivity)activity).showDialogFiles(bundle.getParcelableArrayList("foundfiles"));
+                if(activity.getClass().getSimpleName().compareTo(InventarioActivity.class.getSimpleName())==0) {
                 }
                 break;
             case respEnvio:
                 break;
             case excel_content:
                 bundle = msg.getData();
-                if(activity.getClass().getSimpleName().compareTo(ValidacionActivity.class.getSimpleName())==0) {
-                    ((ValidacionActivity)activity).detallesDeTabla(bundle.getParcelableArrayList("list"), bundle.getParcelable("file"));
+                if(activity.getClass().getSimpleName().compareTo(InventarioActivity.class.getSimpleName())==0) {
                 }
                 break;
         }

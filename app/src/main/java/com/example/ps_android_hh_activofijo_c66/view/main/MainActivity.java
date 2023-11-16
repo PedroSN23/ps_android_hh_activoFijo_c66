@@ -68,8 +68,7 @@ public class MainActivity extends MenuMainActivity {
 
         ArrayList<SubMenus> subMenusList = new ArrayList<>();
 
-        subMenusList.add(new SubMenus("Inventario", IconGenericEnum.fontawesome_clipboard_check, getPackageName() + ".view.activity.ValidacionActivity", false, TemplateActivityEnum.four, groupStyles[0], DevicesEnabled.only_rfid));
-        subMenusList.add(new SubMenus("Exportar Archivo", IconGenericEnum.fontawesome_file_excel, getPackageName() + ".view.activity.ValidacionActivity", false, TemplateActivityEnum.four, groupStyles[0], DevicesEnabled.only_rfid));
+        subMenusList.add(new SubMenus("Inventario", IconGenericEnum.fontawesome_clipboard_check, getPackageName() + ".view.activity.InventarioActivity", false, TemplateActivityEnum.four, groupStyles[0], DevicesEnabled.both));
         subMenusList.add(new SubMenus("Consulta de Activo", IconGenericEnum.fontawesome_table, getPackageName() + ".view.activity.ConsultaActivity", false, TemplateActivityEnum.four, groupStyles[1], DevicesEnabled.none));
         subMenusList.add(new SubMenus("Búsqueda", IconGenericEnum.fontawesome_search, getPackageName() + ".view.activity.BusquedaActivity", false, TemplateActivityEnum.four, groupStyles[1], DevicesEnabled.only_rfid));
         subMenusList.add(new SubMenus("RFID", IconGenericEnum.fontawesome_broadcast_tower, getPackageName() + ".view.activity.RFIDActivity", false, TemplateActivityEnum.four, groupStyles[2], DevicesEnabled.only_rfid));

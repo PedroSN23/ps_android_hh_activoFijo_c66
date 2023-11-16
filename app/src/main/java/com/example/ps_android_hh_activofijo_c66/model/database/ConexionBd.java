@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ConexionBd extends SQLiteOpenHelper {
     public ConexionBd(Context context) {
-        super(context, "activoFijo.db", null, 10);
+        super(context, "activoFijo.db", null, 13);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ConexionBd extends SQLiteOpenHelper {
                 " visible integer not null," +
                 " filtro integer not null);";
 
-        String configuracion = "create table if not exists configuracion ( "+
+        String configuracion = "create table if not exists configuracion ( " +
                 "_id integer primary key autoincrement," +
                 "archivo_in_name text not null," +
                 "archivo_in_path text not null," +
@@ -52,12 +52,25 @@ public class ConexionBd extends SQLiteOpenHelper {
                 "fecha integer not null," +
                 "result integer not null);";
 
+        String cambios = "create table if not exists cambios (" +
+                "num_tag text not null," +
+                "indice_data integer not null," +
+                "valor text not null);";
+
+        String inventario = "create table if not exists inventario (" +
+                "num_tag text primary key," +
+                "fecha text not null);";
+
+
+
         db.execSQL(configuracion);
         db.execSQL(config);
         db.execSQL(usuarios);
         db.execSQL(encabezados);
         db.execSQL(sesion);
+        db.execSQL(cambios);
         db.execSQL(filtros);
+        db.execSQL(inventario);
     }
 
     @Override
@@ -67,7 +80,9 @@ public class ConexionBd extends SQLiteOpenHelper {
         db.execSQL("drop table if exists encabezadosUpdate;");
         db.execSQL("drop table if exists configuracion;");
         db.execSQL("drop table if exists sesiones;");
+        db.execSQL("drop table if exists cambios;");
         db.execSQL("drop table if exists filtros;");
+        db.execSQL("drop table if exists inventario;");
         onCreate(db);
     }
 }
