@@ -51,8 +51,13 @@ public class InventarioActivity extends RFIDBarcodeControllActivity {
         MainHandler mainHandler1 = new MainHandler(this);
         fileController = FileController.getInstance(mainHandler1, this);
         mailController = MailController.getInstance(mainHandler1);
+        selectBarcode(false);
     }
-
+    public boolean handleBarcodeBasedOnSwitchState() {
+        boolean switchState = inventarioFragment.estadoSwitch();
+        selectBarcode(!switchState);
+        return switchState;
+    }
     @Override
     protected void onNextPressed() {
 
@@ -134,6 +139,7 @@ public class InventarioActivity extends RFIDBarcodeControllActivity {
     @Override
     public void reportTag(UHFTagsRead uhfTagsRead) {
         if(inventarioFragment!=null) {
+
         }
     }
 
@@ -148,10 +154,23 @@ public class InventarioActivity extends RFIDBarcodeControllActivity {
 
     @Override
     public void barcodeReading(boolean b) {
+        if(isBarcodeSelected()) {
+            if (b) {
+                controlsFragment.setButtonPressed(1, true);
+                setStatusBarIcon(StatusIcon.readingb);
+                setStatusBarTextMessage("Reading...");
+            } else {
+                controlsFragment.setButtonPressed(1, false);
+                setStatusBarIcon(StatusIcon.ok);
+                setStatusBarTextMessage("Connected");
+            }
+        }
     }
-
     @Override
     public void reportBarcode(String s, String s1) {
+        if (!handleBarcodeBasedOnSwitchState()) {
+            inventarioFragment.BarcodeOperation(s);
+        }
     }
 
     @Override

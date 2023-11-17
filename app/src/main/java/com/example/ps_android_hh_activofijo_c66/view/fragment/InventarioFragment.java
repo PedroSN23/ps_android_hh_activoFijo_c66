@@ -1,7 +1,10 @@
 package com.example.ps_android_hh_activofijo_c66.view.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -32,6 +36,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pp_android_handheld_library.controller.rfid.UHFTagsRead;
+import com.example.pp_android_handheld_library.model.TagsTipo;
 import com.example.pp_android_handheld_library.model.resources.ColorEnum;
 import com.example.pp_android_handheld_library.model.resources.IconGenericEnum;
 import com.example.pp_android_handheld_library.view.clases.IconGeneric;
@@ -40,7 +46,9 @@ import com.example.ps_android_hh_activofijo_c66.model.clases.Activos;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Cambios;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Configuracion;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Encabezados;
+import com.example.ps_android_hh_activofijo_c66.model.clases.UHFTagsGroup;
 import com.example.ps_android_hh_activofijo_c66.model.database.InterfazBD;
+import com.example.ps_android_hh_activofijo_c66.view.activity.InventarioActivity;
 
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
@@ -61,6 +69,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -83,11 +92,14 @@ public class InventarioFragment extends Fragment {
     private Configuracion configuracion;
     private ArrayList<Encabezados> encabezadosArrayList;
     private AsyncTask asyncTask;
+    private Spinner spinerIndex;
     private MyInnerHandlerInv myInnerHandler;
     private final AtomicBoolean excelReady = new AtomicBoolean(false);
     private boolean cambios=false;
     private int filtInd = -1;
     private ArrayList<String> filtrosColumna;
+    private static ArrayList<UHFTagsGroup> tagsGroups = null;
+    private boolean filterTags=false;
     public InventarioFragment() {
     }
 
@@ -102,7 +114,7 @@ public class InventarioFragment extends Fragment {
         int indexPk = 0;
         inpSel = 0;
 
-        Spinner spinerIndex = v.findViewById(R.id.indexSpinner);
+        spinerIndex = v.findViewById(R.id.indexSpinner);
         ArrayList<String> encabezadosIndex = new ArrayList<>();
         encabezadoPosicion = new ArrayList<>();
         filterbut = v.findViewById(R.id.butSelectFiltro);
@@ -115,13 +127,12 @@ public class InventarioFragment extends Fragment {
         cantidades[1]= v.findViewById(R.id.cantLeidosval);
 
         switchRfid = v.findViewById(R.id.menu1s1switchRfid);
-        switchRfid.setEnabled(false);
 
         myInnerHandler = new MyInnerHandlerInv(progressBar, getActivity(), cantidades[0], cantidades[1], excelReady, switchRfid, filtrosPrefijo);
 
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            private static final float MAX_SWIPE_DISTANCE = 120;
+            private static final float MAX_SWIPE_DISTANCE = 110;
 
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -243,8 +254,73 @@ public class InventarioFragment extends Fragment {
                 ToggleSort();
             }
         });
+
         return v;
     }
+
+    public boolean estadoSwitch(){
+        return switchRfid.isChecked();
+    }
+
+    public void BarcodeOperation(String barCode){
+        switch(inventarioAdapter.newTagRead(barCode)) {
+            case 0:
+                myInnerHandler.playToneWrong();
+                break;
+            case 1:
+                myInnerHandler.playToneOk();
+                inventarioAdapter.notifyDataSetChanged();
+                myInnerHandler.agregarCantidades(1);
+                break;
+            default:
+                myInnerHandler.playToneWrong();
+                break;
+        }
+    }
+    public boolean sendTagsAlt(UHFTagsRead uhfTagsRead) {
+        System.out.println("ENTRO AQUI");
+        boolean temp = processTag(uhfTagsRead);
+        if(temp) {
+            Log.e("tags", "El tag es : " + temp);
+        }
+        return temp;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private boolean processTag(UHFTagsRead uhfTagsRead) {
+        boolean beep = false;
+        boolean found = false;
+        uhfTagsRead.compileTipo();
+        int i=0;
+        for(UHFTagsGroup tr: tagsGroups) {
+            if (uhfTagsRead.getTipo() == TagsTipo.activof) {
+                if (tr.getDetail().compareTo(uhfTagsRead.getDetail()) == 0) {
+                    found = true;
+                    beep = tr.addLectura(uhfTagsRead, filterTags);
+                    if(beep) {
+                    }
+                    break;
+                }
+            } else {
+                if (uhfTagsRead.getEpc().compareTo(tr.getEpcAt(0)) == 0) {
+                    found = true;
+                    if (tr.getInventariadoAt(0) == 0) {
+                        tr.setInventariadoAt(0, 1);
+                        beep=true;
+                    }
+                    break;
+                }
+            }
+            i++;
+        }
+        if(!found && !filterTags) {
+            uhfTagsRead.setInventariado(-1);
+            tagsGroups.add(new UHFTagsGroup(uhfTagsRead));
+            beep=true;
+        }
+        return beep;
+    }
+
 
     public void ReiniciarInventario() {
         if(excelReady.get()) {
@@ -308,7 +384,6 @@ public class InventarioFragment extends Fragment {
     }
     private void rutinaEspera() {
         progressBar.setVisibility(View.VISIBLE);
-        switchRfid.setEnabled(false);
     }
 
     public void ToggleSort() {
@@ -620,10 +695,18 @@ public class InventarioFragment extends Fragment {
         int cantCorrecta;
         int cantFaltante;
         private boolean genAdRdy=false;
+
+        private final ToneGenerator tonG;
         ArrayList<String>filtros;
         ArrayList<Double> history=new ArrayList<>();
         int sort=1;
+        void playToneOk() {
+            tonG.startTone(ToneGenerator.TONE_PROP_ACK, 100);
+        }
 
+        void playToneWrong() {
+            tonG.startTone(ToneGenerator.TONE_CDMA_CONFIRM, 500);
+        }
         int changeSort() {
             sort*=-1;
             return sort;
@@ -636,6 +719,7 @@ public class InventarioFragment extends Fragment {
             this.cantidadCorrecta = new WeakReference<>(cantidadCorrecta);
             this.excelReady = new WeakReference<>(excelReady);
             this.switchRfid = new WeakReference<>(switchRfid);
+            tonG = new ToneGenerator(AudioManager.STREAM_ALARM, ToneGenerator.MAX_VOLUME);
             cantCorrecta=0;
             cantFaltante=0;
         }

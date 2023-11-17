@@ -158,6 +158,7 @@ public class RFIDActivity extends RFIDBarcodeControllActivity {
 
     @Override
     public void reportBarcode(String s, String s1) {
+        System.out.println("String " +s+ " Y EL OTRO ES " +s1);
     }
 
     @Override
