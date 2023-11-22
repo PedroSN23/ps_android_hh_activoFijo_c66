@@ -1,6 +1,5 @@
 package com.example.ps_android_hh_activofijo_c66.view.fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.media.AudioManager;
@@ -14,9 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -36,8 +33,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.pp_android_handheld_library.controller.rfid.UHFTagsRead;
-import com.example.pp_android_handheld_library.model.TagsTipo;
+import com.example.pp_android_handheld_library.model.Utils;
 import com.example.pp_android_handheld_library.model.resources.ColorEnum;
 import com.example.pp_android_handheld_library.model.resources.IconGenericEnum;
 import com.example.pp_android_handheld_library.view.clases.IconGeneric;
@@ -48,7 +46,6 @@ import com.example.ps_android_hh_activofijo_c66.model.clases.Configuracion;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Encabezados;
 import com.example.ps_android_hh_activofijo_c66.model.clases.UHFTagsGroup;
 import com.example.ps_android_hh_activofijo_c66.model.database.InterfazBD;
-import com.example.ps_android_hh_activofijo_c66.view.activity.InventarioActivity;
 
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
@@ -69,7 +66,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -100,6 +96,10 @@ public class InventarioFragment extends Fragment {
     private ArrayList<String> filtrosColumna;
     private static ArrayList<UHFTagsGroup> tagsGroups = null;
     private boolean filterTags=false;
+    private boolean genAdRdy=false;
+    private ArrayList<String> epcs;
+    private LottieAnimationView prog;
+    ArrayList<String>filtros;
     public InventarioFragment() {
     }
 
@@ -110,7 +110,8 @@ public class InventarioFragment extends Fragment {
         mList = v.findViewById(R.id.recyler1);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mList.setLayoutManager(layoutManager);
-
+        tagsGroups = new ArrayList<>();
+        epcs = new ArrayList<>();
         int indexPk = 0;
         inpSel = 0;
 
@@ -179,7 +180,7 @@ public class InventarioFragment extends Fragment {
 
         interfazBD = new InterfazBD(getActivity());
         filtrosPrefijo = interfazBD.obtenerFiltros();
-
+        filtros = new ArrayList<>();
         myInnerHandler = new MyInnerHandlerInv(progressBar, getActivity(), cantidades[0], cantidades[1], excelReady, switchRfid, filtrosPrefijo);
 
         SyncDataStInvExcel invSync = new SyncDataStInvExcel();
@@ -277,49 +278,29 @@ public class InventarioFragment extends Fragment {
                 break;
         }
     }
-    public boolean sendTagsAlt(UHFTagsRead uhfTagsRead) {
-        System.out.println("ENTRO AQUI");
-        boolean temp = processTag(uhfTagsRead);
-        if(temp) {
-            Log.e("tags", "El tag es : " + temp);
+    public void sendTagsAlt(UHFTagsRead uhfTagsRead) {
+        String epc = uhfTagsRead.getEpc();
+        String activo = Utils.convertirActivo(epc);
+        ArrayList<String> filtros = interfazBD.obtenerFiltros();
+
+        boolean positive = false;
+        for (String filtro : filtros) {
+            if (activo.startsWith(filtro)) {
+                positive = true;
+                break;
+            }
         }
-        return temp;
+        if (positive && !epcs.contains(epc)) {
+            epcs.add(epc);
+            inventarioAdapter.newTagRead(activo);
+            myInnerHandler.agregarCantidades(1);
+            myInnerHandler.playToneOk();
+            inventarioAdapter.notifyDataSetChanged();
+        } else {
+
+        }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private boolean processTag(UHFTagsRead uhfTagsRead) {
-        boolean beep = false;
-        boolean found = false;
-        uhfTagsRead.compileTipo();
-        int i=0;
-        for(UHFTagsGroup tr: tagsGroups) {
-            if (uhfTagsRead.getTipo() == TagsTipo.activof) {
-                if (tr.getDetail().compareTo(uhfTagsRead.getDetail()) == 0) {
-                    found = true;
-                    beep = tr.addLectura(uhfTagsRead, filterTags);
-                    if(beep) {
-                    }
-                    break;
-                }
-            } else {
-                if (uhfTagsRead.getEpc().compareTo(tr.getEpcAt(0)) == 0) {
-                    found = true;
-                    if (tr.getInventariadoAt(0) == 0) {
-                        tr.setInventariadoAt(0, 1);
-                        beep=true;
-                    }
-                    break;
-                }
-            }
-            i++;
-        }
-        if(!found && !filterTags) {
-            uhfTagsRead.setInventariado(-1);
-            tagsGroups.add(new UHFTagsGroup(uhfTagsRead));
-            beep=true;
-        }
-        return beep;
-    }
 
 
     public void ReiniciarInventario() {
@@ -327,7 +308,7 @@ public class InventarioFragment extends Fragment {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage(getResources().getString(R.string.advCleanPrs))
                     .setCancelable(false)
-                    .setPositiveButton(getResources().getString(R.string.butCont), (dialogInterface, i) -> {
+                    .setPositiveButton( getResources().getString(R.string.butCont), (dialogInterface, i) -> {
                         interfazBD.eliminarCambios();
                         interfazBD.eliminarInventario();
                         excelReady.set(false);
@@ -743,7 +724,7 @@ public class InventarioFragment extends Fragment {
             this.cantidadCorrecta.get().setText(String.format(Locale.getDefault(), "%d", cantCorrecta));
         }
 
-        private void agregarCantidades(int cant) {
+        public void agregarCantidades(int cant) {
             this.cantCorrecta+=cant;
             this.cantFaltante-=cant;
             if(this.cantFaltante<0) this.cantFaltante=0;
@@ -815,6 +796,25 @@ public class InventarioFragment extends Fragment {
         public int getSelected() {
             return selected;
         }
+
+        private int newTagRead(String[] epcs) {
+            int ret = -1;
+            for (String epcAscii : epcs) {
+                for (Activos activo : this.activos) {
+                    if (activo.compareTo(epcAscii)) {
+                        ret = 0;
+                        if (!activo.isInventariado()) {
+                            activo.setInventariado(true);
+                            ret = 1;
+                            cambios = true;
+                        }
+                        break;
+                    }
+                }
+            }
+            return ret;
+        }
+
         private int newTagRead(String epcAscii) {
             int ret=-1;
             for(Activos activo: this.activos) {

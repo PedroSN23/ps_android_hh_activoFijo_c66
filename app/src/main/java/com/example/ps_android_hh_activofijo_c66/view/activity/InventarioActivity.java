@@ -1,11 +1,17 @@
 package com.example.ps_android_hh_activofijo_c66.view.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.res.ColorStateList;
+import android.media.MediaScannerConnection;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -15,6 +21,11 @@ import androidx.fragment.app.FragmentManager;
 import com.example.ps_android_hh_activofijo_c66.R;
 import com.example.ps_android_hh_activofijo_c66.controller.MainHandler;
 import com.example.ps_android_hh_activofijo_c66.controller.files.FileController;
+import com.example.ps_android_hh_activofijo_c66.model.clases.Cambios;
+import com.example.ps_android_hh_activofijo_c66.model.clases.Configuracion;
+import com.example.ps_android_hh_activofijo_c66.model.clases.Encabezados;
+import com.example.ps_android_hh_activofijo_c66.model.clases.SyncDataSaveInven;
+import com.example.ps_android_hh_activofijo_c66.model.database.InterfazBD;
 import com.example.ps_android_hh_activofijo_c66.view.fragment.InventarioFragment;
 import com.example.ps_android_hh_activofijo_c66.view.fragment.RFIDFragment;
 import com.example.pp_android_handheld_library.controller.mail.MailController;
@@ -33,19 +44,38 @@ import com.example.pp_android_handheld_library.view.herencia.RFIDBarcodeControll
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellValue;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.ref.WeakReference;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InventarioActivity extends RFIDBarcodeControllActivity {
     private InventarioFragment inventarioFragment;
     private ControlsFragment controlsFragment;
     private MailController mailController;
     private FileController fileController;
+    private InterfazBD interfazBD;
+    private final AtomicBoolean busy= new AtomicBoolean(false);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        interfazBD = new InterfazBD(this);
         getProgresBar();
 
         MainHandler mainHandler1 = new MainHandler(this);
@@ -90,6 +120,7 @@ public class InventarioActivity extends RFIDBarcodeControllActivity {
     @Override
     protected void onStartRFIDLectura(RFIDController rfidController) {
         controlsFragment.setButtonPressed(1, true);
+        startRfidInventory(false,"",ReadingMode.epc,0,0);
     }
 
     @Override
@@ -138,8 +169,8 @@ public class InventarioActivity extends RFIDBarcodeControllActivity {
 
     @Override
     public void reportTag(UHFTagsRead uhfTagsRead) {
-        if(inventarioFragment!=null) {
-
+        if(inventarioFragment!=null && handleBarcodeBasedOnSwitchState()) {
+            inventarioFragment.sendTagsAlt(uhfTagsRead);
         }
     }
 
@@ -239,6 +270,13 @@ public class InventarioActivity extends RFIDBarcodeControllActivity {
                         inventarioFragment.ReiniciarInventario();
                         break;
                     case 4:
+                       SyncDataSaveInven syncDataSaveInv = new SyncDataSaveInven(this, busy, interfazBD);
+                        if(syncDataSaveInv.getError()) {
+                            Toast.makeText(this, syncDataSaveInv.getErrMsg(), Toast.LENGTH_LONG).show();
+                        } else {
+                            busy.set(true);
+                            syncDataSaveInv.execute();
+                        }
                         break;
                 }
                 toggleShowMenuPack(controlsFragment);
