@@ -46,6 +46,7 @@ import com.example.ps_android_hh_activofijo_c66.model.clases.Configuracion;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Encabezados;
 import com.example.ps_android_hh_activofijo_c66.model.clases.UHFTagsGroup;
 import com.example.ps_android_hh_activofijo_c66.model.database.InterfazBD;
+import com.example.ps_android_hh_activofijo_c66.view.activity.InventarioActivity;
 
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
@@ -143,10 +144,22 @@ public class InventarioFragment extends Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
+                Activos itemId = inventarioAdapter.getActivos(position);
+
                 if (direction == ItemTouchHelper.LEFT) {
-                    System.out.println("Izquierda");
+                    if (getActivity() instanceof InventarioActivity) {
+                        InventarioActivity inventarioActivity = (InventarioActivity) getActivity();
+                        if (inventarioActivity != null) {
+                            inventarioActivity.consultaMethod(itemId);
+                        }
+                    }
                 } else if (direction == ItemTouchHelper.RIGHT) {
-                    System.out.println("Derecha");
+                    if (getActivity() instanceof InventarioActivity) {
+                        InventarioActivity inventarioActivity = (InventarioActivity) getActivity();
+                        if (inventarioActivity != null) {
+                            inventarioActivity.buscarMethod(itemId);
+                        }
+                    }
                 }
             }
 
@@ -282,6 +295,7 @@ public class InventarioFragment extends Fragment {
         String epc = uhfTagsRead.getEpc();
         String activo = Utils.convertirActivo(epc);
         ArrayList<String> filtros = interfazBD.obtenerFiltros();
+        ArrayList<Activos> activosInventariados = inventarioAdapter.getActivosInventariados();
 
         boolean positive = false;
         for (String filtro : filtros) {
@@ -290,19 +304,25 @@ public class InventarioFragment extends Fragment {
                 break;
             }
         }
-        if (positive && !epcs.contains(epc)) {
+        if (positive && !epcs.contains(epc) && !onInventario(activosInventariados, activo)) {
             epcs.add(epc);
             inventarioAdapter.newTagRead(activo);
             myInnerHandler.agregarCantidades(1);
+            Collections.sort(inventarioAdapter.activos, (activos, a1) -> activos.compareTo(a1.isInventariado(), a1.getId(), myInnerHandler.sort));
             myInnerHandler.playToneOk();
             inventarioAdapter.notifyDataSetChanged();
         } else {
 
         }
     }
-
-
-
+    private boolean onInventario(ArrayList<Activos> activosInventariados, String activo) {
+        for (Activos activoInventariado : activosInventariados) {
+            if (activoInventariado.compareTo(activo)) {
+                return true;
+            }
+        }
+        return false;
+    }
     public void ReiniciarInventario() {
         if(excelReady.get()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -311,6 +331,7 @@ public class InventarioFragment extends Fragment {
                     .setPositiveButton( getResources().getString(R.string.butCont), (dialogInterface, i) -> {
                         interfazBD.eliminarCambios();
                         interfazBD.eliminarInventario();
+                        epcs.clear();
                         excelReady.set(false);
                         SyncDataStInvExcel invSync = new SyncDataStInvExcel();
                         invSync.execute(configuracion.getArchivoInPath(), String.format(Locale.getDefault(), "%d", inventarioAdapter.getSelected()));
@@ -346,23 +367,35 @@ public class InventarioFragment extends Fragment {
         }
     }
 
-    public void rutinaSalir() {
-        if(cambios) {
+    public boolean rutinaSalir() {
+        System.out.println("ENTRO AQUI");
+        if (cambios) {
+            System.out.println("ENTRO AQUI PORQUE NO HAY CAMBIOS");
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            final boolean[] usuarioEligioOk = {false};
             builder.setMessage(getResources().getString(R.string.advBackPrs))
                     .setCancelable(false)
-                    .setPositiveButton(getResources().getString(R.string.butCont), (dialogInterface, i) -> getActivity().finish())
-                    .setNegativeButton(getResources().getString(R.string.butCancel), (dialogInterface, i) -> dialogInterface.cancel());
+                    .setPositiveButton(getResources().getString(R.string.butCont), (dialogInterface, i) -> {
+                        getActivity().finish();
+                        usuarioEligioOk[0] = true;
+                    })
+                    .setNegativeButton(getResources().getString(R.string.butCancel), (dialogInterface, i) -> {
+                        dialogInterface.cancel();
+                        usuarioEligioOk[0] = false;
+                    });
             final AlertDialog alert = builder.create();
             alert.setOnShowListener(arg0 -> {
                 alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.menu1p));
                 alert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.menu1p));
             });
             alert.show();
+            return usuarioEligioOk[0];
         } else {
             getActivity().finish();
+            return true;
         }
     }
+
     private void rutinaEspera() {
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -797,24 +830,6 @@ public class InventarioFragment extends Fragment {
             return selected;
         }
 
-        private int newTagRead(String[] epcs) {
-            int ret = -1;
-            for (String epcAscii : epcs) {
-                for (Activos activo : this.activos) {
-                    if (activo.compareTo(epcAscii)) {
-                        ret = 0;
-                        if (!activo.isInventariado()) {
-                            activo.setInventariado(true);
-                            ret = 1;
-                            cambios = true;
-                        }
-                        break;
-                    }
-                }
-            }
-            return ret;
-        }
-
         private int newTagRead(String epcAscii) {
             int ret=-1;
             for(Activos activo: this.activos) {
@@ -851,6 +866,17 @@ public class InventarioFragment extends Fragment {
                 }
             }
         }
+        public ArrayList<Activos> getActivosInventariados() {
+            ArrayList<Activos> activosInventariados = new ArrayList<>();
+
+            for (Activos activo : activos) {
+                if (activo.isInventariado()) {
+                    activosInventariados.add(activo);
+                }
+            }
+
+            return activosInventariados;
+        }
 
         public ArrayList<Activos> getArrayListActivos() {
             return activos;
@@ -879,11 +905,6 @@ public class InventarioFragment extends Fragment {
                 holder.statusIcon.setTextColor(ContextCompat.getColor(context, R.color.faltante));
             }
 
-            if (position % 2 == 0) {
-                holder.fondo.setBackgroundColor(ContextCompat.getColor(context, R.color.filaGris));
-            } else {
-                holder.fondo.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
-            }
         }
 
         @Override
@@ -895,14 +916,12 @@ public class InventarioFragment extends Fragment {
             TextView textText;
             TextView textId;
             IconGeneric statusIcon;
-            LinearLayout fondo;
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 textText = itemView.findViewById(R.id.maintxt);
                 textId = itemView.findViewById(R.id.maintxtid);
                 statusIcon = itemView.findViewById(R.id.semaforo);
-                fondo = itemView.findViewById(R.id.fondoListainv);
             }
         }
     }

@@ -96,6 +96,9 @@ public class ConsultaFragment extends Fragment {
     private IconGeneric imagensiguiente;
     private IconGeneric imagenanterior;
     private String curentPhotoPath;
+
+    private String key_bund = null;
+
     public ConsultaFragment() {
     }
 
@@ -180,6 +183,9 @@ public class ConsultaFragment extends Fragment {
         });
 
         return v;
+    }
+    public void getActivo(String activo){
+        key_bund = activo;
     }
     public String getActiveText() {
         String activeText = String.valueOf(activoGlobal);
@@ -504,6 +510,41 @@ public class ConsultaFragment extends Fragment {
         alertDialog.show();
     }
 
+    public void notDialog(){
+        Integer keynumber = Integer.valueOf(key_bund.replaceAll("[^0-9]", ""));
+            indActivoGlob = keynumber - 1;
+            activoGlobal = activos.get(indActivoGlob);
+
+            if(activoGlobal!=null) {
+                photo = null;
+                numeroImagen = 1;
+                imgName = activoGlobal.getId();
+                String imgNameSlect = imgName+"("+numeroImagen+").jpg";
+                getImageFromFile(imgNameSlect);
+
+                for(int i=0, j=0; i<encabezadosArrayList.size() && j<et.size(); i++) {
+                    if(encabezadosArrayList.get(i).isVisible()) {
+                        et.get(j).setText(activoGlobal.getData(i));
+                        j++;
+                    }
+                }
+                Toast t;
+                switch (activoGlobal.getErrTipo()) {
+                    case 0: //no error
+                        break;
+                    case 1: //repetido
+                        Toast.makeText(getActivity(), getResources().getString(R.string.errIdRep), Toast.LENGTH_LONG).show();
+                        break;
+                    case 2: //longitud
+                        Toast.makeText(getActivity(), getResources().getString(R.string.errIdLen), Toast.LENGTH_LONG).show();
+                        break;
+                    case 3: //encabezado
+                        Toast.makeText(getActivity(), getResources().getString(R.string.errIdEnc), Toast.LENGTH_LONG).show();
+                        break;
+                }
+                progressBar.setVisibility(View.GONE);
+            }
+        }
     private void rutinaEspera() {
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -694,7 +735,11 @@ public class ConsultaFragment extends Fragment {
             if (s < 0) {
                 Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
             }
-            crearDialogo();
+            if(key_bund == null){
+                crearDialogo();
+            } else {
+                notDialog();
+            }
         }
 
 

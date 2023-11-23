@@ -2,6 +2,7 @@ package com.example.ps_android_hh_activofijo_c66.view.activity;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
@@ -13,14 +14,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.pp_android_handheld_library.controller.DevicesEnabled;
+import com.example.pp_android_handheld_library.model.SubMenus;
+import com.example.pp_android_handheld_library.model.resources.TemplateActivityEnum;
 import com.example.ps_android_hh_activofijo_c66.R;
 import com.example.ps_android_hh_activofijo_c66.controller.MainHandler;
 import com.example.ps_android_hh_activofijo_c66.controller.files.FileController;
+import com.example.ps_android_hh_activofijo_c66.model.clases.Activos;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Cambios;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Configuracion;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Encabezados;
@@ -95,14 +102,15 @@ public class InventarioActivity extends RFIDBarcodeControllActivity {
 
     @Override
     protected void onPrevPressed() {
-        onBackPressed();
         inventarioFragment.rutinaSalir();
     }
 
     @Override
     protected void onDestroy() {
         fileController.end();
-        mailController.end();
+        if (mailController != null) {
+            mailController.end();
+        }
         super.onDestroy();
     }
 
@@ -120,7 +128,9 @@ public class InventarioActivity extends RFIDBarcodeControllActivity {
     @Override
     protected void onStartRFIDLectura(RFIDController rfidController) {
         controlsFragment.setButtonPressed(1, true);
-        startRfidInventory(false,"",ReadingMode.epc,0,0);
+        if(handleBarcodeBasedOnSwitchState()) {
+            startRfidInventory(false, "", ReadingMode.epc, 0, 0);
+        }
     }
 
     @Override
@@ -199,7 +209,7 @@ public class InventarioActivity extends RFIDBarcodeControllActivity {
     }
     @Override
     public void reportBarcode(String s, String s1) {
-        if (!handleBarcodeBasedOnSwitchState()) {
+        if (inventarioFragment!=null && !handleBarcodeBasedOnSwitchState()) {
             inventarioFragment.BarcodeOperation(s);
         }
     }
@@ -284,4 +294,34 @@ public class InventarioActivity extends RFIDBarcodeControllActivity {
         });
         return controlsFragment;
     }
+    private void launchActivity(Class<?> targetActivity, Activos id) {
+        Intent intent = new Intent(InventarioActivity.this, targetActivity);
+        SubMenus subMenus1 = new SubMenus("Búsqueda",
+                IconGenericEnum.fontawesome_table,
+                getPackageName() + ".view.activity.BusquedaActivity",
+                false, TemplateActivityEnum.four,
+                subMenus.getGroupStyle(),
+                DevicesEnabled.only_rfid);
+
+        intent.putExtra("submenu", subMenus1);
+        intent.putExtra("devices", subMenus1);
+        intent.putExtra("ACT", String.valueOf(id));
+        intent.putExtra("boolean", true);
+
+        pedrosActivityResultLauncher.launch(intent);
+    }
+
+    public void buscarMethod(Activos id) {
+        launchActivity(BusquedaActivity.class, id);
+    }
+
+    public void consultaMethod(Activos id) {
+        launchActivity(ConsultaActivity.class, id);
+    }
+
+    ActivityResultLauncher<Intent> pedrosActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {setMainHandler();
+            }
+    );
 }

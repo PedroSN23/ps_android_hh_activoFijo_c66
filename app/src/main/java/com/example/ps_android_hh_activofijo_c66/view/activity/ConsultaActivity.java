@@ -54,10 +54,12 @@ public class ConsultaActivity extends GenericActivity {
         super.onCreate(savedInstanceState);
 
         //getProgresBar();
-
+        Bundle bundle = getIntent().getExtras();
+        String act = bundle.getString("ACT");;
         MainHandler mainHandler1 = new MainHandler(this);
         fileController = FileController.getInstance(mainHandler1, this);
         mailController = MailController.getInstance(mainHandler1);
+        consultaFragment.getActivo(act);
     }
 
     @Override
@@ -123,6 +125,7 @@ public class ConsultaActivity extends GenericActivity {
                         intent.putExtra("submenu", subMenus1);
                         intent.putExtra("devices", subMenus1);
                         intent.putExtra("ACT", activo);
+                        intent.putExtra("boolean", false);
                         pedrosActivityResultLauncher.launch(intent);
                         break;
                     case 2:

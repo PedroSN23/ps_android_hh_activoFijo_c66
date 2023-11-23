@@ -69,7 +69,9 @@ public class BusquedaActivity extends RFIDBarcodeControllActivity {
         context = this;
         Bundle bundle = getIntent().getExtras();
         String act = bundle.getString("ACT");
-        if(act!=null) {
+        Boolean path = bundle.getBoolean("boolean");
+        if (act != null && path != null) {
+            freeRfid(path ? false : true);
         }
         filtros = interfazBD.obtenerFiltros();
         super.onCreate(savedInstanceState);
