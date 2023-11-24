@@ -188,7 +188,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/sort_down"
                 android:textColor="@color/white"
-                android:textSize="25sp" />
+                android:textSize="28sp" />
         </LinearLayout>
     </LinearLayout>
 

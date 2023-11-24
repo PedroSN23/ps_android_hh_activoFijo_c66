@@ -74,7 +74,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class InventarioActivity extends RFIDBarcodeControllActivity {
     private InventarioFragment inventarioFragment;
     private ControlsFragment controlsFragment;
-    private MailController mailController;
     private FileController fileController;
     private InterfazBD interfazBD;
     private final AtomicBoolean busy= new AtomicBoolean(false);
@@ -87,7 +86,6 @@ public class InventarioActivity extends RFIDBarcodeControllActivity {
 
         MainHandler mainHandler1 = new MainHandler(this);
         fileController = FileController.getInstance(mainHandler1, this);
-        mailController = MailController.getInstance(mainHandler1);
         selectBarcode(false);
     }
     public boolean handleBarcodeBasedOnSwitchState() {
@@ -108,9 +106,6 @@ public class InventarioActivity extends RFIDBarcodeControllActivity {
     @Override
     protected void onDestroy() {
         fileController.end();
-        if (mailController != null) {
-            mailController.end();
-        }
         super.onDestroy();
     }
 
@@ -195,7 +190,7 @@ public class InventarioActivity extends RFIDBarcodeControllActivity {
 
     @Override
     public void barcodeReading(boolean b) {
-        if(isBarcodeSelected()) {
+        if(isBarcodeSelected() && !handleBarcodeBasedOnSwitchState()) {
             if (b) {
                 controlsFragment.setButtonPressed(1, true);
                 setStatusBarIcon(StatusIcon.readingb);

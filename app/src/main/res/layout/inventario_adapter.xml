@@ -40,7 +40,6 @@
                 android:textColor="@color/grisAstlix"
                 android:text=""
                 android:maxLines="1"
-                android:ellipsize="middle"
                 android:gravity="center"
                 tools:ignore="NestedWeights,PrivateResource" />
             <View

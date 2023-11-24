@@ -95,11 +95,7 @@ public class InventarioFragment extends Fragment {
     private boolean cambios=false;
     private int filtInd = -1;
     private ArrayList<String> filtrosColumna;
-    private static ArrayList<UHFTagsGroup> tagsGroups = null;
-    private boolean filterTags=false;
-    private boolean genAdRdy=false;
     private ArrayList<String> epcs;
-    private LottieAnimationView prog;
     ArrayList<String>filtros;
     public InventarioFragment() {
     }
@@ -111,7 +107,6 @@ public class InventarioFragment extends Fragment {
         mList = v.findViewById(R.id.recyler1);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mList.setLayoutManager(layoutManager);
-        tagsGroups = new ArrayList<>();
         epcs = new ArrayList<>();
         int indexPk = 0;
         inpSel = 0;
@@ -175,6 +170,7 @@ public class InventarioFragment extends Fragment {
                             .addSwipeRightActionIcon(R.drawable.ic_search)
                             .create()
                             .decorate();
+
                 } else if (dX < 0) { // Deslizar a la izquierda
                     new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                             .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), ColorEnum.amarillo.getCode()))
@@ -237,7 +233,6 @@ public class InventarioFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 String encabezadoSelect = encabezadosIndex.get(position);
                 for (int i = 0; i<encabezadosArrayList.size(); i++){
-                    Log.e("Filtro", "Seleccion: "+encabezadosArrayList.get(i).getNombre());
                     if (encabezadosArrayList.get(i).getNombre().equals(encabezadoSelect)){
                         if (inventarioAdapter!=null){
                             inventarioAdapter.setSelected(i);
@@ -294,9 +289,12 @@ public class InventarioFragment extends Fragment {
     public void sendTagsAlt(UHFTagsRead uhfTagsRead) {
         String epc = uhfTagsRead.getEpc();
         String activo = Utils.convertirActivo(epc);
+        ArrayList<String> listaNombresActivos = new ArrayList<>();
         ArrayList<String> filtros = interfazBD.obtenerFiltros();
         ArrayList<Activos> activosInventariados = inventarioAdapter.getActivosInventariados();
-
+        for (Activos activo1 : inventarioAdapter.getArrayListActivos()) {
+            listaNombresActivos.add(activo1.getId());
+        }
         boolean positive = false;
         for (String filtro : filtros) {
             if (activo.startsWith(filtro)) {
@@ -304,8 +302,8 @@ public class InventarioFragment extends Fragment {
                 break;
             }
         }
-        if (positive && !epcs.contains(epc) && !onInventario(activosInventariados, activo)) {
-            epcs.add(epc);
+        if (positive && !epcs.contains(activo) && listaNombresActivos.contains(activo) && !onInventario(activosInventariados, activo)) {
+            epcs.add(activo);
             inventarioAdapter.newTagRead(activo);
             myInnerHandler.agregarCantidades(1);
             Collections.sort(inventarioAdapter.activos, (activos, a1) -> activos.compareTo(a1.isInventariado(), a1.getId(), myInnerHandler.sort));
@@ -904,7 +902,6 @@ public class InventarioFragment extends Fragment {
                 holder.statusIcon.init(IconGenericEnum.fontawesome_question_circle.getType());
                 holder.statusIcon.setTextColor(ContextCompat.getColor(context, R.color.faltante));
             }
-
         }
 
         @Override

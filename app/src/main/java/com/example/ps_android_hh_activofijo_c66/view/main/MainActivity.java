@@ -87,7 +87,7 @@ public class MainActivity extends MenuMainActivity {
         updateUtils.addUpdateUtilsInterface(new UpdateUtilsInterface() {
             @Override
             public void updateprocedure(String fileName) {
-                String url = String.format(Locale.getDefault(), "https://www.astlix.com/swUpdates/astlixdemo/%s", fileName).replaceAll(" ", "%20");
+                String url = String.format(Locale.getDefault(), "https://www.astlix.com/swUpdates/activofijo/%s", fileName).replaceAll(" ", "%20");
                 updateUtils.updateProcedure(url);
             }
 
