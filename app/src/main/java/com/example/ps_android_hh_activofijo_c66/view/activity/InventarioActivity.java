@@ -1,74 +1,36 @@
 package com.example.ps_android_hh_activofijo_c66.view.activity;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.media.MediaScannerConnection;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.pp_android_handheld_library.controller.DevicesEnabled;
-import com.example.pp_android_handheld_library.model.SubMenus;
-import com.example.pp_android_handheld_library.model.resources.TemplateActivityEnum;
-import com.example.ps_android_hh_activofijo_c66.R;
-import com.example.ps_android_hh_activofijo_c66.controller.MainHandler;
-import com.example.ps_android_hh_activofijo_c66.controller.files.FileController;
-import com.example.ps_android_hh_activofijo_c66.model.clases.Activos;
-import com.example.ps_android_hh_activofijo_c66.model.clases.Cambios;
-import com.example.ps_android_hh_activofijo_c66.model.clases.Configuracion;
-import com.example.ps_android_hh_activofijo_c66.model.clases.Encabezados;
-import com.example.ps_android_hh_activofijo_c66.model.clases.SyncDataSaveInven;
-import com.example.ps_android_hh_activofijo_c66.model.database.InterfazBD;
-import com.example.ps_android_hh_activofijo_c66.view.fragment.InventarioFragment;
-import com.example.ps_android_hh_activofijo_c66.view.fragment.RFIDFragment;
-import com.example.pp_android_handheld_library.controller.mail.MailController;
 import com.example.pp_android_handheld_library.controller.rfid.RFIDController;
 import com.example.pp_android_handheld_library.controller.rfid.UHFTagsRead;
 import com.example.pp_android_handheld_library.model.ControlButtonsCircular;
 import com.example.pp_android_handheld_library.model.ReadingMode;
+import com.example.pp_android_handheld_library.model.SubMenus;
 import com.example.pp_android_handheld_library.model.TagBuscado;
 import com.example.pp_android_handheld_library.model.resources.ColorEnum;
 import com.example.pp_android_handheld_library.model.resources.IconGenericEnum;
 import com.example.pp_android_handheld_library.model.resources.StatusIcon;
+import com.example.pp_android_handheld_library.model.resources.TemplateActivityEnum;
 import com.example.pp_android_handheld_library.view.clases.ButtonsCicularViewHolder;
-import com.example.pp_android_handheld_library.view.dialog.MailDialog;
 import com.example.pp_android_handheld_library.view.fragment.ControlsFragment;
 import com.example.pp_android_handheld_library.view.herencia.RFIDBarcodeControllActivity;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
+import com.example.ps_android_hh_activofijo_c66.controller.MainHandler;
+import com.example.ps_android_hh_activofijo_c66.controller.files.FileController;
+import com.example.ps_android_hh_activofijo_c66.model.clases.Activos;
+import com.example.ps_android_hh_activofijo_c66.model.clases.SyncDataSaveInven;
+import com.example.ps_android_hh_activofijo_c66.model.database.InterfazBD;
+import com.example.ps_android_hh_activofijo_c66.view.fragment.InventarioFragment;
 
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellValue;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.ref.WeakReference;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InventarioActivity extends RFIDBarcodeControllActivity {

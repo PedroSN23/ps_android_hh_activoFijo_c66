@@ -37,7 +37,7 @@ public class InterfazBD {
         open();
         ContentValues content;
 
-        int numRegistros = countRegistro("config");
+        int numRegistros = countRegistro("baseSQL");
         int usuariosRegistros = countRegistro("usuarios");
         int configuracionRegistros = countRegistro("configuracion");
 
@@ -47,8 +47,7 @@ public class InterfazBD {
             content.put("base", "");
             content.put("usuario", "");
             content.put("contrasena", "");
-            content.put("potencia", 5);
-            db.insert("config", null, content);
+            db.insert("baseSQL", null, content);
         }
 
         if (usuariosRegistros < 1) {
@@ -219,7 +218,7 @@ public class InterfazBD {
         open();
         DatabaseConf configuracion = null;
 
-        String consulta = "select ip, base, usuario, contrasena from config where _id = 1;";
+        String consulta = "select ip, base, usuario, contrasena from baseSQL where _id = 1;";
         Cursor c = db.rawQuery(consulta, null);
         c.moveToFirst();
         if (c.getCount() != 0) {
@@ -238,12 +237,12 @@ public class InterfazBD {
         content.put("base", databaseConf.getDatabase());
         content.put("usuario", databaseConf.getUser());
         content.put("contrasena", databaseConf.getPassword());
-        db.update("config", content, "_id=1", null);
+        db.update("baseSQL", content, "_id=1", null);
     }
 
     public String[] obtenerServidor() {
         open();
-        String consulta = "select ip, base, usuario, contrasena from config where _id = 1;";
+        String consulta = "select ip, base, usuario, contrasena from baseSQL where _id = 1;";
 
         Cursor c = db.rawQuery(consulta, null);
         c.moveToFirst();

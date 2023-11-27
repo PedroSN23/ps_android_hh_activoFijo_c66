@@ -1,5 +1,8 @@
 package com.example.ps_android_hh_activofijo_c66.view.fragment;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.media.AudioManager;
@@ -11,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -33,7 +37,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.example.pp_android_handheld_library.controller.rfid.UHFTagsRead;
 import com.example.pp_android_handheld_library.model.Utils;
 import com.example.pp_android_handheld_library.model.resources.ColorEnum;
@@ -44,7 +47,6 @@ import com.example.ps_android_hh_activofijo_c66.model.clases.Activos;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Cambios;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Configuracion;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Encabezados;
-import com.example.ps_android_hh_activofijo_c66.model.clases.UHFTagsGroup;
 import com.example.ps_android_hh_activofijo_c66.model.database.InterfazBD;
 import com.example.ps_android_hh_activofijo_c66.view.activity.InventarioActivity;
 
@@ -400,16 +402,44 @@ public class InventarioFragment extends Fragment {
 
     public void ToggleSort() {
         final int tmpSort = myInnerHandler.changeSort();
-        if(tmpSort==1) {
+        updateSortIcon(tmpSort);
+
+        ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(
+                mList,
+                PropertyValuesHolder.ofFloat("scaleX", 1f, 0.8f),
+                PropertyValuesHolder.ofFloat("scaleY", 1f, 0.8f),
+                PropertyValuesHolder.ofFloat("alpha", 1f, 0.5f)
+        );
+        scaleDown.setDuration(250);
+
+        ObjectAnimator scaleUp = ObjectAnimator.ofPropertyValuesHolder(
+                mList,
+                PropertyValuesHolder.ofFloat("scaleX", 0.8f, 1f),
+                PropertyValuesHolder.ofFloat("scaleY", 0.8f, 1f),
+                PropertyValuesHolder.ofFloat("alpha", 0.5f, 1f)
+        );
+        scaleUp.setDuration(250);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playSequentially(scaleDown, scaleUp);
+        animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
+        animatorSet.start();
+
+        Collections.sort(inventarioAdapter.activos, (activos, a1) -> activos.compareTo(a1.isInventariado(), a1.getId(), tmpSort));
+        inventarioAdapter.notifyDataSetChanged();
+    }
+
+
+    private void updateSortIcon(int tmpSort) {
+        if (tmpSort == 1) {
             sortIcon.setText(getResources().getString(IconGenericEnum.fontawesome_sort_down.getCode()));
             sortIcon.init(IconGenericEnum.fontawesome_sort_down.getType());
         } else {
             sortIcon.setText(getResources().getString(IconGenericEnum.fontawesome_sort_up.getCode()));
             sortIcon.init(IconGenericEnum.fontawesome_sort_up.getType());
         }
-        Collections.sort(inventarioAdapter.activos, (activos, a1) -> activos.compareTo(a1.isInventariado(), a1.getId(), tmpSort));
-        inventarioAdapter.notifyDataSetChanged();
     }
+
 
     public void SeleccionarFiltro(){
         if (filtInd>=0){

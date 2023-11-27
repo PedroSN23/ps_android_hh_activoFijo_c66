@@ -6,18 +6,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ConexionBd extends SQLiteOpenHelper {
     public ConexionBd(Context context) {
-        super(context, "activoFijo.db", null, 13);
+        super(context, "activoFijo.db", null, 14);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String config = "create table if not exists config (" +
+        String baseSQL = "create table if not exists baseSQL (" +
                 "_id integer primary key autoincrement," +
                 "ip text not null," +
                 "base text not null," +
                 "usuario text not null," +
-                "contrasena text not null," +
-                "potencia integer not null);";
+                "contrasena text not null);";
 
         String usuarios = "create table if not exists usuarios (" +
                 "_id integer primary key autoincrement, " +
@@ -64,7 +63,7 @@ public class ConexionBd extends SQLiteOpenHelper {
 
 
         db.execSQL(configuracion);
-        db.execSQL(config);
+        db.execSQL(baseSQL);
         db.execSQL(usuarios);
         db.execSQL(encabezados);
         db.execSQL(sesion);
@@ -75,7 +74,7 @@ public class ConexionBd extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("drop table if exists config;");
+        db.execSQL("drop table if exists baseSQL;");
         db.execSQL("drop table if exists usuarios;");
         db.execSQL("drop table if exists encabezadosUpdate;");
         db.execSQL("drop table if exists configuracion;");
