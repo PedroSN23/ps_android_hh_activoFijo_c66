@@ -1,6 +1,8 @@
 package com.example.ps_android_hh_activofijo_c66.view.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,8 +120,12 @@ public class ServidorFragment extends Fragment {
                 database = datos[1];
                 user = datos[2];
                 pass = datos[3];
+                @SuppressLint("HardwareIds")
+                String serial = Settings.Secure.getString(requireContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
                 ConexionMysql conMysql = new ConexionMysql(ip, database, user, pass);
+
+                String slug = conMysql.obtenerSlug(serial);
 
                 if (conMysql.getConnected()) {
                     success = true;
@@ -131,6 +137,9 @@ public class ServidorFragment extends Fragment {
 
                     if (finalSuccess) {
                         connectionStatus.setAnimation(R.raw.checked);
+                            if(slug != interfazDb.obtenerSlug()){
+                                interfazDb.insertarSlug(slug);
+                            }
                     } else {
                         connectionStatus.setAnimation(R.raw.error);
                     }

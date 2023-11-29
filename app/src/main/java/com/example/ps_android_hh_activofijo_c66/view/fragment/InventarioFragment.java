@@ -131,7 +131,7 @@ public class InventarioFragment extends Fragment {
 
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            private static final float MAX_SWIPE_DISTANCE = 110;
+            private static final float MAX_SWIPE_DISTANCE = 150;
 
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -148,6 +148,7 @@ public class InventarioFragment extends Fragment {
                         InventarioActivity inventarioActivity = (InventarioActivity) getActivity();
                         if (inventarioActivity != null) {
                             inventarioActivity.consultaMethod(itemId);
+                            inventarioAdapter.notifyItemChanged(position);
                         }
                     }
                 } else if (direction == ItemTouchHelper.RIGHT) {
@@ -155,6 +156,7 @@ public class InventarioFragment extends Fragment {
                         InventarioActivity inventarioActivity = (InventarioActivity) getActivity();
                         if (inventarioActivity != null) {
                             inventarioActivity.buscarMethod(itemId);
+                            inventarioAdapter.notifyItemChanged(position);
                         }
                     }
                 }
@@ -162,9 +164,9 @@ public class InventarioFragment extends Fragment {
 
             @Override
             public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                if (Math.abs(dX) > MAX_SWIPE_DISTANCE) {
+               /* if (Math.abs(dX) > MAX_SWIPE_DISTANCE) {
                     dX = Math.signum(dX) * MAX_SWIPE_DISTANCE;
-                }
+                } */
 
                 if (dX > 0) { // Deslizar a la derecha
                     new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)

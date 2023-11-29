@@ -16,7 +16,8 @@ public class ConexionBd extends SQLiteOpenHelper {
                 "ip text not null," +
                 "base text not null," +
                 "usuario text not null," +
-                "contrasena text not null);";
+                "contrasena text not null,"+
+                "slug text not null);";
 
         String usuarios = "create table if not exists usuarios (" +
                 "_id integer primary key autoincrement, " +

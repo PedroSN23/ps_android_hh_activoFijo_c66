@@ -1,0 +1,23 @@
+<!-- res/drawable/bordered_switch.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@android:color/transparent" />
+            <size android:width="5dp" android:height="5dp" />
+            <stroke android:width="5dp" android:color="@android:color/black" />
+        </shape>
+    </item>
+
+    <item android:top="2dp" android:left="2dp" android:right="2dp" android:bottom="2dp">
+        <shape android:shape="oval">
+            <solid android:color="@android:color/white"/>
+            <size android:width="28dp" android:height="28dp"/>
+        </shape>
+    </item>
+
+    <item android:drawable="@drawable/sobresalir"
+        android:left="5dp"
+        android:right="5dp"
+        android:top="5dp"
+        android:bottom="5dp"/>
+</layer-list>

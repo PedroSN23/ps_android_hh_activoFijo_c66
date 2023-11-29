@@ -19,9 +19,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.airbnb.lottie.LottieAnimationView;
-import com.example.ps_android_hh_activofijo_c66.BuildConfig;
-import com.example.ps_android_hh_activofijo_c66.R;
 import com.example.pp_android_handheld_library.controller.DevicesEnabled;
 import com.example.pp_android_handheld_library.controller.update.UpdateUtils;
 import com.example.pp_android_handheld_library.controller.update.UpdateUtilsInterface;
@@ -32,6 +29,8 @@ import com.example.pp_android_handheld_library.model.resources.DefaultButtonsEnu
 import com.example.pp_android_handheld_library.model.resources.IconGenericEnum;
 import com.example.pp_android_handheld_library.model.resources.TemplateActivityEnum;
 import com.example.pp_android_handheld_library.view.gui.MenuMainActivity;
+import com.example.ps_android_hh_activofijo_c66.BuildConfig;
+import com.example.ps_android_hh_activofijo_c66.R;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Usuario;
 import com.example.ps_android_hh_activofijo_c66.model.database.InterfazBD;
 
@@ -50,7 +49,7 @@ public class MainActivity extends MenuMainActivity {
         super.onCreate(savedInstanceState);
 
         revisarListaSeriales();
-        //onCreateLoginDialog();
+        onCreateLoginDialog();
 
         //establecer textos e íconos de menú principal
         setGroupIconText(0, IconGenericEnum.fontawesome_boxes, "INVENTARIO");
@@ -73,7 +72,7 @@ public class MainActivity extends MenuMainActivity {
         subMenusList.add(new SubMenus("Búsqueda", IconGenericEnum.fontawesome_search, getPackageName() + ".view.activity.BusquedaActivity", false, TemplateActivityEnum.four, groupStyles[1], DevicesEnabled.only_rfid));
         subMenusList.add(new SubMenus("RFID", IconGenericEnum.fontawesome_broadcast_tower, getPackageName() + ".view.activity.RFIDActivity", false, TemplateActivityEnum.four, groupStyles[2], DevicesEnabled.only_rfid));
         subMenusList.add(new SubMenus("Barcode", IconGenericEnum.fontawesome_barcode, getPackageName() + ".view.activity.BarcodeActivity", false, TemplateActivityEnum.four, groupStyles[2], DevicesEnabled.only_barcode));
-        subMenusList.add(new SubMenus("Archivos", IconGenericEnum.fontawesome_file_excel, getPackageName() + ".view.activity.ArchivosActivity", false, TemplateActivityEnum.two, groupStyles[3], DevicesEnabled.none));
+        subMenusList.add(new SubMenus("Archivos", IconGenericEnum.fontawesome_file_excel, getPackageName() + ".view.activity.SeleccionActivity", false, TemplateActivityEnum.two, groupStyles[3], DevicesEnabled.none));
         subMenusList.add(new SubMenus("Servidor", IconGenericEnum.fontawesome_cloud, getPackageName() + ".view.activity.ServidorActivity", false, TemplateActivityEnum.two, groupStyles[3], DevicesEnabled.none));
         subMenusList.add(new SubMenus("Usuarios", IconGenericEnum.fontawesome_user, getPackageName() + ".view.activity.UsuariosActivity", false, TemplateActivityEnum.two, groupStyles[3], DevicesEnabled.none));
         subMenusList.add(new SubMenus("Filtros", IconGenericEnum.fontawesome_filter, getPackageName() + ".view.activity.FiltrosActivity", false, TemplateActivityEnum.two, groupStyles[3], DevicesEnabled.none));
@@ -103,7 +102,6 @@ public class MainActivity extends MenuMainActivity {
         });
         updateUtils.updateVerify("https://www.astlix.com/swUpdates/astlixdemo/getlist.php");
     }
-
     private void revisarListaSeriales() {
         boolean found=false;
 
@@ -163,7 +161,7 @@ public class MainActivity extends MenuMainActivity {
                             .backgroundColor(ContextCompat.getColor(this, ColorEnum.sobrante.getCode()))
                             .show();
                 }
-            }, 3000);
+            }, 100);
         });
 
     }

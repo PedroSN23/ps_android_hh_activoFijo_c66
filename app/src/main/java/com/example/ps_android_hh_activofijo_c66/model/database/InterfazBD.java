@@ -47,6 +47,7 @@ public class InterfazBD {
             content.put("base", "");
             content.put("usuario", "");
             content.put("contrasena", "");
+            content.put("slug", "");
             db.insert("baseSQL", null, content);
         }
 
@@ -283,6 +284,30 @@ public class InterfazBD {
 
         return user;
     }
+    /*********************CONSULTAS DE SLUG*************************/
+
+    public void insertarSlug(String slug) {
+        ContentValues content;
+        open();
+        content = new ContentValues();
+        content.put("slug", slug);
+        db.update("baseSQL", content, "_id=1", null);
+    }
+
+    public String obtenerSlug() {
+        String slug = null;
+        open();
+
+        Cursor cursor = db.query("baseSQL", new String[]{"slug"}, "_id=?", new String[]{"1"}, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            slug = cursor.getString(cursor.getColumnIndex("slug"));
+        }
+
+        cursor.close();
+        return slug;
+    }
+
     /*********************ENCABEZADOS*************************/
     public ArrayList<Encabezados> obtenerEncabezados() {
         ArrayList<Encabezados> encabezados = new ArrayList<>();
