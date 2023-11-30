@@ -1,5 +1,7 @@
 package com.example.ps_android_hh_activofijo_c66.view.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.ps_android_hh_activofijo_c66.R;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Archivos;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Configuracion;
@@ -57,7 +60,7 @@ public class ArchivosFragment extends Fragment {
     private EditText archEditIn;
     private EditText archEditOut;
     private LinearLayout butSelectIn;
-    private LinearLayout butNuevoFiltro;
+    private LottieAnimationView butNuevoFiltro;
     private SwitchCompat switchResult;
     private SwitchCompat switchFecha;
     private RelativeLayout progreso;
@@ -67,6 +70,9 @@ public class ArchivosFragment extends Fragment {
     private Configuracion configuracion;
     private ControlEncabezados controlEncabezados = new ControlEncabezados();
 
+    public ArchivosFragment(){
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.archivos_fragment, container, false);
@@ -98,7 +104,7 @@ public class ArchivosFragment extends Fragment {
         obtener_datos();
         butNuevoFiltro = rootView.findViewById(R.id.butNuevoFiltro);
         butSelectIn = rootView.findViewById(R.id.butSelectIn);
-
+        butNuevoFiltro.setSpeed(2.5f);
         butSelectIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,10 +115,15 @@ public class ArchivosFragment extends Fragment {
         butNuevoFiltro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GuardarConfiguracion();
+                butNuevoFiltro.playAnimation();
+                butNuevoFiltro.addAnimatorListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        GuardarConfiguracion();
+                    }
+                });
             }
         });
-
         return rootView;
     }
 
@@ -139,11 +150,16 @@ public class ArchivosFragment extends Fragment {
         switches[3].setChecked(ArchivoAdapter.encabezadosArrayList.get(index).isIndexado());
         switches[4].setChecked(ArchivoAdapter.encabezadosArrayList.get(index).isLlavePrimaria());
 
-        final LinearLayout butGuardar = promptsView.findViewById(R.id.guardarEnc);
+        final LottieAnimationView butGuardar = promptsView.findViewById(R.id.guardarEnc);
+        butGuardar.setSpeed(1.8f);
 
         final AlertDialog alertDialog = alertDialogBuilder.create();
-        //5534443986 Ing raul roldan
+
         alertDialog.setOnShowListener(dialogInterface -> butGuardar.setOnClickListener(view -> {
+            butGuardar.playAnimation();
+            butGuardar.addAnimatorListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
             ArchivoAdapter.encabezadosArrayList.get(indexAdapter).setVisible(switches[0].isChecked());
             ArchivoAdapter.encabezadosArrayList.get(indexAdapter).setEditable(switches[1].isChecked());
             if(switches[2].isChecked()&&!ArchivoAdapter.encabezadosArrayList.get(indexAdapter).isFiltro()) {
@@ -172,6 +188,8 @@ public class ArchivosFragment extends Fragment {
             }
             ArchivoAdapter.notifyDataSetChanged();
             alertDialog.dismiss();
+                }
+            });
         }));
 
         alertDialog.setOnCancelListener(null);

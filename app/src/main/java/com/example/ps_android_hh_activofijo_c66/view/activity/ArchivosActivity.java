@@ -6,13 +6,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.pp_android_handheld_library.view.herencia.GenericActivity;
-import com.example.ps_android_hh_activofijo_c66.model.database.InterfazBD;
 import com.example.ps_android_hh_activofijo_c66.view.fragment.ArchivosFragment;
-import com.example.ps_android_hh_activofijo_c66.view.fragment.FiltrosFragment;
-import com.example.ps_android_hh_activofijo_c66.view.fragment.UsuariosFragment;
 
 public class ArchivosActivity extends  GenericActivity {
-    public InterfazBD interfazBD;
+    private ArchivosFragment archivosFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -23,7 +20,6 @@ public class ArchivosActivity extends  GenericActivity {
     protected void onNextPressed() {
 
     }
-
     @Override
     protected void onPrevPressed() {
         onBackPressed();
@@ -31,7 +27,8 @@ public class ArchivosActivity extends  GenericActivity {
 
     @Override
     protected Fragment setContentFragment() {
-        return new ArchivosFragment();
+        archivosFragment = new ArchivosFragment();
+        return archivosFragment;
     }
     @Override
     protected Fragment setControlsFragment() {

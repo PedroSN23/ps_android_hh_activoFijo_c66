@@ -115,62 +115,20 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="200dp"
         android:orientation="horizontal"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:baselineAligned="false">
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"/>
-        <LinearLayout
+
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/guardarEnc"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="6"
-            android:background="@drawable/button_created"
+            app:lottie_fileName="next.json"
             android:clickable="true"
-            android:focusable="true"
-            android:onClick="GuardarConfiguracion">
-            <TextView
-                android:id="@+id/menu3TextoModoLectura"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="3"
-                android:gravity="center"
-                android:text="@string/butGuardar"
-                android:textColor="@color/menu4to"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:ignore="NestedWeights" />
+            android:focusable="true" />
 
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                tools:ignore="NestedWeights">
-
-                <com.example.pp_android_handheld_library.view.clases.IconGeneric
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:textSize="24sp"
-                    android:textColor="@color/grisAstlix"
-                    android:tag="fontawesome"
-                    android:text="@string/save" />
-            </RelativeLayout>
-
-
-        </LinearLayout>
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"/>
     </LinearLayout>
+
 </LinearLayout>

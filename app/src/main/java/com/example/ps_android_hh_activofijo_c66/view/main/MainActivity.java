@@ -63,7 +63,7 @@ public class MainActivity extends MenuMainActivity {
         groupStyles[0] = new GroupStyle(0, DefaultButtonsEnum.button1.getCode(), DefaultButtonsEnum.button1_alt.getCode(), ColorEnum.menu1p.getCode(), ColorEnum.white.getCode());
         groupStyles[1] = new GroupStyle(1, DefaultButtonsEnum.button2.getCode(), DefaultButtonsEnum.button2_alt.getCode(), ColorEnum.menu2p.getCode(), ColorEnum.white.getCode());
         groupStyles[2] = new GroupStyle(2, DefaultButtonsEnum.button3.getCode(), DefaultButtonsEnum.button3_alt.getCode(), ColorEnum.menu3p.getCode(), ColorEnum.black.getCode());
-        groupStyles[3] = new GroupStyle(3, DefaultButtonsEnum.button4.getCode(), DefaultButtonsEnum.button4_alt.getCode(), ColorEnum.menu4p.getCode(), ColorEnum.black.getCode());
+        groupStyles[3] = new GroupStyle(3, DefaultButtonsEnum.button1.getCode(), DefaultButtonsEnum.button4_alt.getCode(), ColorEnum.menu4p.getCode(), ColorEnum.black.getCode());
 
         ArrayList<SubMenus> subMenusList = new ArrayList<>();
 
@@ -72,10 +72,9 @@ public class MainActivity extends MenuMainActivity {
         subMenusList.add(new SubMenus("Búsqueda", IconGenericEnum.fontawesome_search, getPackageName() + ".view.activity.BusquedaActivity", false, TemplateActivityEnum.four, groupStyles[1], DevicesEnabled.only_rfid));
         subMenusList.add(new SubMenus("RFID", IconGenericEnum.fontawesome_broadcast_tower, getPackageName() + ".view.activity.RFIDActivity", false, TemplateActivityEnum.four, groupStyles[2], DevicesEnabled.only_rfid));
         subMenusList.add(new SubMenus("Barcode", IconGenericEnum.fontawesome_barcode, getPackageName() + ".view.activity.BarcodeActivity", false, TemplateActivityEnum.four, groupStyles[2], DevicesEnabled.only_barcode));
-        subMenusList.add(new SubMenus("Archivos", IconGenericEnum.fontawesome_file_excel, getPackageName() + ".view.activity.SeleccionActivity", false, TemplateActivityEnum.two, groupStyles[3], DevicesEnabled.none));
+        subMenusList.add(new SubMenus("Activos", IconGenericEnum.fontawesome_file, getPackageName() + ".view.activity.SeleccionActivity", false, TemplateActivityEnum.two, groupStyles[3], DevicesEnabled.none));
         subMenusList.add(new SubMenus("Servidor", IconGenericEnum.fontawesome_cloud, getPackageName() + ".view.activity.ServidorActivity", false, TemplateActivityEnum.two, groupStyles[3], DevicesEnabled.none));
         subMenusList.add(new SubMenus("Usuarios", IconGenericEnum.fontawesome_user, getPackageName() + ".view.activity.UsuariosActivity", false, TemplateActivityEnum.two, groupStyles[3], DevicesEnabled.none));
-        subMenusList.add(new SubMenus("Filtros", IconGenericEnum.fontawesome_filter, getPackageName() + ".view.activity.FiltrosActivity", false, TemplateActivityEnum.two, groupStyles[3], DevicesEnabled.none));
         subMenusList.add(new SubMenus("Acerca", IconGenericEnum.fontawesome_info, getPackageName() + ".view.activity.AboutActivity", false, TemplateActivityEnum.two, groupStyles[3], DevicesEnabled.none));
         sendSubMenuList(subMenusList);
 
@@ -100,7 +99,7 @@ public class MainActivity extends MenuMainActivity {
                 //Toast.makeText(MainActivity.this, s, Toast.LENGTH_LONG).show();
             }
         });
-        updateUtils.updateVerify("https://www.astlix.com/swUpdates/astlixdemo/getlist.php");
+        updateUtils.updateVerify("https://www.astlix.com/swUpdates/activofijo/getlist.php");
     }
     private void revisarListaSeriales() {
         boolean found=false;

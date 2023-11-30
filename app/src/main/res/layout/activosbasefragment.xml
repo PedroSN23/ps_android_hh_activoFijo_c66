@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.activity.ActivosBaseActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="20">
+        <LinearLayout
+            android:id="@+id/encTablaArch"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/grisTrans"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="6"
+                android:text="@string/menu4s1Col1"
+                android:textColor="@color/menu4to"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:ignore="NestedWeights" />
+            <com.example.pp_android_handheld_library.view.clases.IconGeneric
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/menu4to"
+                android:textSize="18sp"
+                android:tag="fontawesome"
+                android:text="@string/eye"/>
+            <com.example.pp_android_handheld_library.view.clases.IconGeneric
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/menu4to"
+                android:textSize="18sp"
+                android:tag="fontawesome"
+                android:text="@string/pencil_alt"/>
+            <com.example.pp_android_handheld_library.view.clases.IconGeneric
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/menu4to"
+                android:textSize="18sp"
+                android:tag="fontawesome"
+                android:text="@string/filter"/>
+            <com.example.pp_android_handheld_library.view.clases.IconGeneric
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/menu4to"
+                android:textSize="18sp"
+                android:tag="fontawesome"
+                android:text="@string/zmdi_bookmark_outline"/>
+            <com.example.pp_android_handheld_library.view.clases.IconGeneric
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/menu4to"
+                android:textSize="18sp"
+                android:tag="fontawesome"
+                android:text="@string/key"/>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lvArchivos"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="11" />
+
+        <LinearLayout
+            android:id="@+id/menu4BotonesArchivo"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:baselineAligned="false">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/butNuevoFiltro"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="10"
+                app:lottie_fileName="ani1.json">
+            </com.airbnb.lottie.LottieAnimationView>
+
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/menu4ProgresoArchivo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grisTrans"
+        android:visibility="gone">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:theme="@style/ProgressBarmenu4"/>
+    </RelativeLayout>
+</RelativeLayout>

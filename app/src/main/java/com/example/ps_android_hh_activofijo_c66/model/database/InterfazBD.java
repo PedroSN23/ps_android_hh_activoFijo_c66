@@ -40,6 +40,7 @@ public class InterfazBD {
         int numRegistros = countRegistro("baseSQL");
         int usuariosRegistros = countRegistro("usuarios");
         int configuracionRegistros = countRegistro("configuracion");
+        int modelRegistros = countRegistro("model");
 
         if (numRegistros < 1) {
             content = new ContentValues();
@@ -49,6 +50,12 @@ public class InterfazBD {
             content.put("contrasena", "");
             content.put("slug", "");
             db.insert("baseSQL", null, content);
+        }
+        if (numRegistros < 1) {
+            content = new ContentValues();
+            content.put("_id", "1");
+            content.put("modo", "");
+            db.insert("model", null, content);
         }
 
         if (usuariosRegistros < 1) {
@@ -284,6 +291,34 @@ public class InterfazBD {
 
         return user;
     }
+    /*********************CONFIGURACION DE MODO*************************/
+
+    public void actualizarModo(boolean modo) {
+        ContentValues content;
+        open();
+        content = new ContentValues();
+        content.put("modo", modo);
+        db.update("model", content, "_id=1", null);
+    }
+
+    public boolean obtenerModo() {
+        boolean modo = false;
+
+        open();
+
+        Cursor cursor = db.query("model", new String[]{"modo"}, "_id=?", new String[]{"1"}, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            int modoInt = cursor.getInt(cursor.getColumnIndex("modo"));
+            modo = (modoInt == 1);
+        }
+
+        cursor.close();
+        return modo;
+    }
+
+
+
     /*********************CONSULTAS DE SLUG*************************/
 
     public void insertarSlug(String slug) {

@@ -1,70 +1,74 @@
 package com.example.ps_android_hh_activofijo_c66.view.activity;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
-import android.widget.LinearLayout;
-import android.widget.Switch;
-import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.fragment.app.Fragment;
 
 import com.example.pp_android_handheld_library.controller.DevicesEnabled;
 import com.example.pp_android_handheld_library.model.SubMenus;
 import com.example.pp_android_handheld_library.model.resources.IconGenericEnum;
 import com.example.pp_android_handheld_library.model.resources.TemplateActivityEnum;
-import com.example.ps_android_hh_activofijo_c66.R;
+import com.example.pp_android_handheld_library.view.herencia.GenericActivity;
+import com.example.ps_android_hh_activofijo_c66.view.fragment.SeleccionFragment;
 
-public class SeleccionActivity extends Activity {
+public class SeleccionActivity extends GenericActivity {
 
+    private SeleccionFragment seleccionFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SeleccionarArchivo();
+
     }
 
-    private void SeleccionarArchivo() {
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.seleccion_layout);
-        dialog.setCanceledOnTouchOutside(false);
+    @Override
+    protected void onNextPressed() {
 
-        Switch swit = dialog.findViewById(R.id.switchButton);
-        LinearLayout okButton = dialog.findViewById(R.id.okButton);
-        LinearLayout exitButton = dialog.findViewById(R.id.closeButton);
+    }
+    @Override
+    protected void onPrevPressed() {
 
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean switchState = swit.isChecked();
-                if (switchState) {
-                    Toast.makeText(SeleccionActivity.this, "Hola", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = new Intent(SeleccionActivity.this, ArchivosActivity.class);
-                    SubMenus subMenus1 = (new SubMenus("Búsqueda",
-                            IconGenericEnum.fontawesome_table,
-                            getPackageName() + ".view.activity.BusquedaActivity",
-                            false, TemplateActivityEnum.four,
-                            subMenus.getGroupStyle(),
-                            DevicesEnabled.none));
-                    intent.putExtra("submenu", subMenus1);
-                    intent.putExtra("devices", subMenus1);
-                    startActivity(intent);
-                    finish();
-
-                }
-            }
-        });
-
-        exitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SeleccionActivity.this.finish();
-            }
-        });
-
-        dialog.show();
     }
 
+    @Override
+    protected Fragment setContentFragment() {
+        seleccionFragment = new SeleccionFragment();
+        return seleccionFragment;
+    }
+
+    @Override
+    protected Fragment setControlsFragment() {
+        return null;
+    }
+    private void launchActivity(Class<?> targetActivity) {
+        Intent intent = new Intent(SeleccionActivity.this, targetActivity);
+        SubMenus subMenus1 = new SubMenus("Búsqueda",
+                IconGenericEnum.fontawesome_table,
+                getPackageName() + ".view.activity.ActivosBaseActivity",
+                false, TemplateActivityEnum.four,
+                subMenus.getGroupStyle(),
+                DevicesEnabled.none);
+
+        intent.putExtra("submenu", subMenus1);
+        intent.putExtra("devices", subMenus1);
+
+        pedrosActivityResultLauncher.launch(intent);
+    }
+
+    public void activosbaseMethod() {
+        launchActivity(ActivosBaseActivity.class);
+    }
+
+    public void archivosMethod() {
+        launchActivity(ArchivosActivity.class);
+    }
+
+    ActivityResultLauncher<Intent> pedrosActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                //setMainHandler();
+            }
+    );
 }

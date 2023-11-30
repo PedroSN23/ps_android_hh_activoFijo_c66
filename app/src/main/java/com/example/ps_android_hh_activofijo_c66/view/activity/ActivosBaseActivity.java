@@ -6,12 +6,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.pp_android_handheld_library.view.herencia.GenericActivity;
-import com.example.ps_android_hh_activofijo_c66.model.database.InterfazBD;
-import com.example.ps_android_hh_activofijo_c66.view.fragment.FiltrosFragment;
-import com.example.ps_android_hh_activofijo_c66.view.fragment.UsuariosFragment;
+import com.example.ps_android_hh_activofijo_c66.view.fragment.ActivosBaseFragment;
 
-public class FiltrosActivity extends  GenericActivity {
-    public InterfazBD interfazBD;
+public class ActivosBaseActivity extends  GenericActivity {
+    private ActivosBaseFragment activosBaseFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,12 +28,12 @@ public class FiltrosActivity extends  GenericActivity {
 
     @Override
     protected Fragment setContentFragment() {
-        return new FiltrosFragment();
+        activosBaseFragment = new ActivosBaseFragment();
+        return  activosBaseFragment;
     }
     @Override
     protected Fragment setControlsFragment() {
         return null;
     }
 }
-
 
