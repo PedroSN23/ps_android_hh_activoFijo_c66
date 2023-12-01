@@ -115,17 +115,17 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="50dp"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
         android:baselineAligned="false">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/guardarEnc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:lottie_fileName="next.json"
+            app:lottie_fileName="ani1.json"
             android:clickable="true"
             android:focusable="true" />
 

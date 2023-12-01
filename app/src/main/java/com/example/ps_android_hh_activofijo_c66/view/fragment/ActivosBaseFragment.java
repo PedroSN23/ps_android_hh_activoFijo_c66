@@ -50,37 +50,43 @@ public class ActivosBaseFragment extends Fragment {
         progreso = rootView.findViewById(R.id.menu4ProgresoArchivo);
         butNuevoFiltro = rootView.findViewById(R.id.butNuevoFiltro);
         butNuevoFiltro.setSpeed(2.5f);
-        interfazBD.vaciarEncabezados();
 
         activosBaseAdapter = new ActivosBaseAdapter(context);
         listView.setAdapter(activosBaseAdapter);
 
         listView.setOnItemClickListener((adapterView, view, i, l) -> crearDialogo(i));
 
-        obtener_datos();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                progreso.setVisibility(View.VISIBLE);
-                String[] datos = interfazBD.obtenerServidor();
-                ip = datos[0];
-                database = datos[1];
-                user = datos[2];
-                pass = datos[3];
-                ConexionMysql conMysql = new ConexionMysql(ip, database, user, pass);
-                List<Encabezados> encabezadosList = conMysql.obtenerEncabezados(interfazBD.obtenerSlug());
-                for (Encabezados encabezado : encabezadosList) {
-                    interfazBD.insertarEncabezado(encabezado);
-                }
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        progreso.setVisibility(View.GONE);
-                        activosBaseAdapter.notifyDataSetChanged();
+        List<Encabezados> listaEncabezados = interfazBD.obtenerEncabezados();
+        if (listaEncabezados == null || listaEncabezados.isEmpty()) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    progreso.setVisibility(View.VISIBLE);
+                    String[] datos = interfazBD.obtenerServidor();
+                    ip = datos[0];
+                    database = datos[1];
+                    user = datos[2];
+                    pass = datos[3];
+                    ConexionMysql conMysql = new ConexionMysql(ip, database, user, pass);
+                    List<Encabezados> encabezadosList = conMysql.obtenerEncabezados(interfazBD.obtenerSlug());
+                    for (Encabezados encabezado : encabezadosList) {
+                        interfazBD.insertarEncabezado(encabezado);
                     }
-                });
-            }
-        }).start();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progreso.setVisibility(View.GONE);
+                            obtener_datos();
+                            activosBaseAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            }).start();
+        } else {
+            obtener_datos();
+            activosBaseAdapter.notifyDataSetChanged();
+        }
+        obtenerActivos();
         butNuevoFiltro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +103,31 @@ public class ActivosBaseFragment extends Fragment {
         return rootView;
     }
 
+    public void obtenerActivos(){
+        /*
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String[] datos = interfazBD.obtenerServidor();
+                ip = datos[0];
+                database = datos[1];
+                user = datos[2];
+                pass = datos[3];
+                ConexionMysql conMysql = new ConexionMysql(ip, database, user, pass);
+                List<String> nombresColumnas = conMysql.obtenerActivos(interfazBD.obtenerSlug());
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (String nombreColumna : nombresColumnas) {
+                            System.out.println(nombreColumna);
+                        }
+                    }
+                });
+            }
+        }).start();
+
+         */
+    }
     private void crearDialogo(int index) {
         final int indexAdapter = index;
         View promptsView = View.inflate(context, R.layout.modificar_encabezado, null);
@@ -121,14 +152,10 @@ public class ActivosBaseFragment extends Fragment {
         switches[4].setChecked(activosBaseAdapter.encabezadosArrayList.get(index).isLlavePrimaria());
 
         final LottieAnimationView butGuardar = promptsView.findViewById(R.id.guardarEnc);
-        butGuardar.setSpeed(1.8f);
+
         final AlertDialog alertDialog = alertDialogBuilder.create();
 
         alertDialog.setOnShowListener(dialogInterface -> butGuardar.setOnClickListener(view -> {
-            butGuardar.playAnimation();
-            butGuardar.addAnimatorListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
                     activosBaseAdapter.encabezadosArrayList.get(indexAdapter).setVisible(switches[0].isChecked());
                     activosBaseAdapter.encabezadosArrayList.get(indexAdapter).setEditable(switches[1].isChecked());
 
@@ -161,8 +188,6 @@ public class ActivosBaseFragment extends Fragment {
 
                     activosBaseAdapter.notifyDataSetChanged();
                     alertDialog.dismiss();
-                }
-            });
         }));
 
         alertDialog.setOnCancelListener(null);
@@ -195,7 +220,7 @@ public class ActivosBaseFragment extends Fragment {
 
     public void GuardarConfiguracion() {
         if(configuracion!=null) {
-            if(!configuracion.getArchivoInName().isEmpty()&&!configuracion.getPrefijoOut().isEmpty()&&activosBaseAdapter.getCount()>0) {
+            if(activosBaseAdapter.getCount()>0) {
                 interfazBD.vaciarEncabezados();
                 for(Encabezados enc: activosBaseAdapter.encabezadosArrayList) {
                     interfazBD.insertarEncabezado(enc);

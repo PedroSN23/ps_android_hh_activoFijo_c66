@@ -151,15 +151,10 @@ public class ArchivosFragment extends Fragment {
         switches[4].setChecked(ArchivoAdapter.encabezadosArrayList.get(index).isLlavePrimaria());
 
         final LottieAnimationView butGuardar = promptsView.findViewById(R.id.guardarEnc);
-        butGuardar.setSpeed(1.8f);
 
         final AlertDialog alertDialog = alertDialogBuilder.create();
 
         alertDialog.setOnShowListener(dialogInterface -> butGuardar.setOnClickListener(view -> {
-            butGuardar.playAnimation();
-            butGuardar.addAnimatorListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
             ArchivoAdapter.encabezadosArrayList.get(indexAdapter).setVisible(switches[0].isChecked());
             ArchivoAdapter.encabezadosArrayList.get(indexAdapter).setEditable(switches[1].isChecked());
             if(switches[2].isChecked()&&!ArchivoAdapter.encabezadosArrayList.get(indexAdapter).isFiltro()) {
@@ -188,8 +183,6 @@ public class ArchivosFragment extends Fragment {
             }
             ArchivoAdapter.notifyDataSetChanged();
             alertDialog.dismiss();
-                }
-            });
         }));
 
         alertDialog.setOnCancelListener(null);

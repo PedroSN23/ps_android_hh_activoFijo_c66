@@ -47,6 +47,7 @@ import com.example.ps_android_hh_activofijo_c66.model.clases.Activos;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Cambios;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Configuracion;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Encabezados;
+import com.example.ps_android_hh_activofijo_c66.model.database.ConexionMysql;
 import com.example.ps_android_hh_activofijo_c66.model.database.InterfazBD;
 import com.example.ps_android_hh_activofijo_c66.view.activity.InventarioActivity;
 
@@ -66,10 +67,13 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
@@ -98,6 +102,10 @@ public class InventarioFragment extends Fragment {
     private int filtInd = -1;
     private ArrayList<String> filtrosColumna;
     private ArrayList<String> epcs;
+    private String ip, database, user, pass;
+    private boolean modo;
+
+    private ArrayList<Activos> activos;
     ArrayList<String>filtros;
     public InventarioFragment() {
     }
@@ -164,9 +172,6 @@ public class InventarioFragment extends Fragment {
 
             @Override
             public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-               /* if (Math.abs(dX) > MAX_SWIPE_DISTANCE) {
-                    dX = Math.signum(dX) * MAX_SWIPE_DISTANCE;
-                } */
 
                 if (dX > 0) { // Deslizar a la derecha
                     new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
@@ -193,66 +198,166 @@ public class InventarioFragment extends Fragment {
 
         interfazBD = new InterfazBD(getActivity());
         filtrosPrefijo = interfazBD.obtenerFiltros();
+        modo = interfazBD.obtenerModo();
         filtros = new ArrayList<>();
         myInnerHandler = new MyInnerHandlerInv(progressBar, getActivity(), cantidades[0], cantidades[1], excelReady, switchRfid, filtrosPrefijo);
 
-        SyncDataStInvExcel invSync = new SyncDataStInvExcel();
+        if(modo == true){
 
-        if(filtrosPrefijo.size()>0) {
-            configuracion = interfazBD.obtenerConfiguracion();
-            if (configuracion != null) {
-                encabezadosArrayList = interfazBD.obtenerEncabezados();
-                if(encabezadosArrayList.size()>0) {
-                    boolean pk = false;
+            final List<Map<String, String>>[] nombresColumnas = new List[1];
+            activos = new ArrayList<>();
+            int indexSel = 0;
+            progreso.setVisibility(View.VISIBLE);
+            if (filtrosPrefijo.size() > 0) {
+                    encabezadosArrayList = interfazBD.obtenerEncabezados();
+                    if (encabezadosArrayList.size() > 0) {
+                        boolean pk = false;
+                        for (int i = 0; i < encabezadosArrayList.size(); i++) {
+                            if (encabezadosArrayList.get(i).isIndexado()) {
+                                encabezadosIndex.add(encabezadosArrayList.get(i).getNombre());
+                                encabezadoPosicion.add(i);
+                                if (encabezadosArrayList.get(i).isLlavePrimaria()) {
+                                    encabezado.setText(encabezadosArrayList.get(i).getNombre());
+                                    indexPk = encabezadosIndex.size() - 1;
+                                    pk = true;
+                                }
+                            }
+                        }
+                        if (pk) {
+                        } else {
+                            Toast.makeText(getActivity(), getResources().getString(R.string.errNoPk), Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), getResources().getString(R.string.errNoEnc), Toast.LENGTH_LONG).show();
+                    }
+            } else {
+                Toast.makeText(getActivity(), getResources().getString(R.string.errNoFilt), Toast.LENGTH_LONG).show();
+            }
+
+            ArrayList<Integer> indexado = new ArrayList<>();
+            int pkInd=encabezadosArrayList.size();
+
+            for(int i=0; i<encabezadosArrayList.size(); i++) {
+                if(encabezadosArrayList.get(i).isLlavePrimaria()) {
+                    pkInd=i;
+                    if (indexSel==0){
+                        indexSel = i;
+                    }
+                }
+                if(encabezadosArrayList.get(i).isIndexado()) {
+                    indexado.add(i);
+                }
+                if (encabezadosArrayList.get(i).isFiltro()){
+                    filtInd=i;
+                }
+            }
+            if(pkInd<encabezadosArrayList.size() && indexado.size()>0) {
+
+            }
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String[] datos = interfazBD.obtenerServidor();
+                        ip = datos[0];
+                        database = datos[1];
+                        user = datos[2];
+                        pass = datos[3];
+                        ConexionMysql conMysql = new ConexionMysql(ip, database, user, pass);
+                        nombresColumnas[0] = conMysql.obtenerActivos(interfazBD.obtenerSlug());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        mostrarErrorEnToast("Error: " + e.getMessage());
+                    } finally {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                progreso.setVisibility(View.GONE);
+
+
+
+
+                                for (Map<String, String> activo : nombresColumnas[0]) {
+                                    System.out.println("Activo:");
+                                    for (Map.Entry<String, String> entry : activo.entrySet()) {
+                                        String nombreColumna = entry.getKey();
+                                        String valor = entry.getValue();
+                                        System.out.println(nombreColumna + ": " + valor);
+                                    }
+                                }
+                                for (Encabezados encabezado : encabezadosArrayList) {
+                                    encabezado.getNombre();
+                                }
+
+
+
+
+
+
+                            }
+                        });
+                    }
+                }
+            }).start();
+
+        } else {
+            SyncDataStInvExcel invSync = new SyncDataStInvExcel();
+            if (filtrosPrefijo.size() > 0) {
+                configuracion = interfazBD.obtenerConfiguracion();
+                if (configuracion != null) {
+                    encabezadosArrayList = interfazBD.obtenerEncabezados();
+                    if (encabezadosArrayList.size() > 0) {
+                        boolean pk = false;
+                        for (int i = 0; i < encabezadosArrayList.size(); i++) {
+                            if (encabezadosArrayList.get(i).isIndexado()) {
+                                encabezadosIndex.add(encabezadosArrayList.get(i).getNombre());
+                                encabezadoPosicion.add(i);
+                                if (encabezadosArrayList.get(i).isLlavePrimaria()) {
+                                    encabezado.setText(encabezadosArrayList.get(i).getNombre());
+                                    indexPk = encabezadosIndex.size() - 1;
+                                    pk = true;
+                                }
+                            }
+                        }
+                        if (pk) {
+                            asyncTask = invSync.execute(configuracion.getArchivoInPath());
+                        } else {
+                            Toast.makeText(getActivity(), getResources().getString(R.string.errNoPk), Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), getResources().getString(R.string.errNoEnc), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.errBDdat), Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(getActivity(), getResources().getString(R.string.errNoFilt), Toast.LENGTH_LONG).show();
+            }
+        }
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.list_spinner, encabezadosIndex);
+            spinerIndex.setAdapter(adapter);
+            spinerIndex.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                    String encabezadoSelect = encabezadosIndex.get(position);
                     for (int i = 0; i < encabezadosArrayList.size(); i++) {
-                        if (encabezadosArrayList.get(i).isIndexado()) {
-                            encabezadosIndex.add(encabezadosArrayList.get(i).getNombre());
-                            encabezadoPosicion.add(i);
-                            if (encabezadosArrayList.get(i).isLlavePrimaria()) {
-                                encabezado.setText(encabezadosArrayList.get(i).getNombre());
-                                indexPk = encabezadosIndex.size()-1;
-                                pk=true;
+                        if (encabezadosArrayList.get(i).getNombre().equals(encabezadoSelect)) {
+                            if (inventarioAdapter != null) {
+                                inventarioAdapter.setSelected(i);
+                                encabezado.setText(encabezadoSelect);
+                                inventarioAdapter.notifyDataSetChanged();
+                                break;
                             }
                         }
                     }
-                    if(pk) {
-                        asyncTask=invSync.execute(configuracion.getArchivoInPath());
-                    } else {
-                        Toast.makeText(getActivity(), getResources().getString(R.string.errNoPk), Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.errNoEnc), Toast.LENGTH_LONG).show();
                 }
-            } else {
-                Toast.makeText(getActivity(), getResources().getString(R.string.errBDdat), Toast.LENGTH_LONG).show();
-            }
-        } else {
-            Toast.makeText(getActivity(), getResources().getString(R.string.errNoFilt), Toast.LENGTH_LONG).show();
-        }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.list_spinner,encabezadosIndex);
-        spinerIndex.setAdapter(adapter);
-        spinerIndex.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                String encabezadoSelect = encabezadosIndex.get(position);
-                for (int i = 0; i<encabezadosArrayList.size(); i++){
-                    if (encabezadosArrayList.get(i).getNombre().equals(encabezadoSelect)){
-                        if (inventarioAdapter!=null){
-                            inventarioAdapter.setSelected(i);
-                            encabezado.setText(encabezadoSelect);
-                            inventarioAdapter.notifyDataSetChanged();
-                            break;
-                        }
-                    }
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
                 }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
+            });
 
-        spinerIndex.setSelection(indexPk,true);
+            spinerIndex.setSelection(indexPk, true);
 
         filterbut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -324,6 +429,14 @@ public class InventarioFragment extends Fragment {
             }
         }
         return false;
+    }
+    private void mostrarErrorEnToast(String mensaje) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getContext(), mensaje, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     public void ReiniciarInventario() {
         if(excelReady.get()) {
@@ -613,6 +726,22 @@ public class InventarioFragment extends Fragment {
                                 }
                                 if(!found) {
                                     activos.add(new Activos(r, dataHead, dataComp, pkInd));
+                                    for(Activos activos: activos){
+                                        System.out.println("LOS ACTIVOS SON: ");
+                                        System.out.println("EL ID ES : " +activos.getId());
+                                        System.out.println("EL ROW ES : " +activos.getRow());
+                                        System.out.println("EL CANTIDAD ES : " +activos.getCantidadDatos());
+                                        System.out.println("EL DATA ES : " + Arrays.toString(activos.getData()));
+                                        if (activos.getData() != null) {
+                                            for (String dato : activos.getData()) {
+                                                System.out.println(dato);
+                                            }
+                                        } else {
+                                            System.out.println("El arreglo de datos es nulo.");
+                                        }
+
+
+                                    }
                                 } else {
                                     repetidos++;
                                 }

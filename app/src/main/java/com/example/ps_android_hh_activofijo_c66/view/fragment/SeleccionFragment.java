@@ -35,11 +35,11 @@ public class SeleccionFragment extends Fragment {
         dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.setView(view);
-
+        Boolean active = interfazBD.obtenerModo();
         Switch switchButton = view.findViewById(R.id.switchButton);
         LinearLayout okButton = view.findViewById(R.id.okButton);
         LinearLayout exitButton = view.findViewById(R.id.closeButton);
-        switchButton.setChecked(interfazBD.obtenerModo());
+        switchButton.setChecked(active);
 
         Vibrator vibrator = (Vibrator) requireActivity().getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -72,6 +72,9 @@ public class SeleccionFragment extends Fragment {
                             seleccionActivity.archivosMethod();
                         }
                     }
+                }
+                if(switchState != active){
+                    interfazBD.vaciarEncabezados();
                 }
                 interfazBD.actualizarModo(switchState);
                 dialog.dismiss();

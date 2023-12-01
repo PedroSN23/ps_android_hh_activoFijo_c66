@@ -14,6 +14,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class ConexionMysql {
@@ -131,6 +134,66 @@ public class ConexionMysql {
 
         return filtros;
     }
+
+
+    /*******************************************ACTIVOS*********************************/
+    public List<Map<String, String>> obtenerActivos(String slug) {
+        List<Map<String, String>> activos = new ArrayList<>();
+        List<String> nombresColumnas = obtenerNombresColumnas(slug);
+
+        try {
+            StringBuilder queryBuilder = new StringBuilder("SELECT ");
+            for (int i = 0; i < nombresColumnas.size(); i++) {
+                queryBuilder.append(nombresColumnas.get(i));
+
+                if (i < nombresColumnas.size() - 1) {
+                    queryBuilder.append(", ");
+                }
+            }
+            String nombreTabla = "activos_" + slug;
+            queryBuilder.append(" FROM ").append(nombreTabla);
+
+            try (PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString())) {
+
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                        Map<String, String> fila = new HashMap<>();
+                        for (String nombreColumna : nombresColumnas) {
+                            fila.put(nombreColumna, rs.getString(nombreColumna));
+                        }
+                        activos.add(fila);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return activos;
+    }
+
+
+    public List<String> obtenerNombresColumnas(String slug) {
+        List<String> nombresColumnas = new ArrayList<>();
+        try {
+            String query = "SELECT nombre FROM columns WHERE company_id = (SELECT id FROM companies WHERE slug = ?)";
+
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setString(1, slug);
+
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                        String nombre = rs.getString("nombre");
+                        nombresColumnas.add(nombre);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return nombresColumnas;
+    }
+
 
 
 }
