@@ -14,9 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class ConexionMysql {
@@ -137,8 +135,8 @@ public class ConexionMysql {
 
 
     /*******************************************ACTIVOS*********************************/
-    public List<Map<String, String>> obtenerActivos(String slug) {
-        List<Map<String, String>> activos = new ArrayList<>();
+    public List<String[]> obtenerActivos(String slug) {
+        List<String[]> activos = new ArrayList<>();
         List<String> nombresColumnas = obtenerNombresColumnas(slug);
 
         try {
@@ -157,9 +155,9 @@ public class ConexionMysql {
 
                 try (ResultSet rs = pstmt.executeQuery()) {
                     while (rs.next()) {
-                        Map<String, String> fila = new HashMap<>();
-                        for (String nombreColumna : nombresColumnas) {
-                            fila.put(nombreColumna, rs.getString(nombreColumna));
+                        String[] fila = new String[nombresColumnas.size()];
+                        for (int i = 0; i < nombresColumnas.size(); i++) {
+                            fila[i] = rs.getString(nombresColumnas.get(i));
                         }
                         activos.add(fila);
                     }
@@ -171,6 +169,7 @@ public class ConexionMysql {
 
         return activos;
     }
+
 
 
     public List<String> obtenerNombresColumnas(String slug) {

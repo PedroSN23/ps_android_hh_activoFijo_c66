@@ -1,6 +1,7 @@
 package com.example.ps_android_hh_activofijo_c66.model.clases;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Activos {
     private int row;
@@ -23,18 +24,19 @@ public class Activos {
         this.inventariado = false;
         this.idSel=0;
         this.errTipo=0;
-    }
-    public Activos( String[] head, String[] data, int pkInd) {
-        indexModify = new ArrayList<>();
-        this.head=head;
-        this.id = data[pkInd];
-        this.data = data;
-        this.modificado = false;
-        this.inventariado = false;
-        this.idSel=0;
-        this.errTipo=0;
-    }
 
+        System.out.println("Constructor Activos:");
+        System.out.println("row: " + row);
+        System.out.println("head: " + Arrays.toString(head));
+        System.out.println("id: " + id);
+        System.out.println("data: " + Arrays.toString(data));
+        System.out.println("modificado: " + modificado);
+        System.out.println("inventariado: " + inventariado);
+        System.out.println("idSel: " + idSel);
+        System.out.println("errTipo: " + errTipo);
+
+
+    }
 
     public int getErrTipo() {
         return errTipo;

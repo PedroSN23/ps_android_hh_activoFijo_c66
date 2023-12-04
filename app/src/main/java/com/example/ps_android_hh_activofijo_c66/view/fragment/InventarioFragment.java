@@ -67,13 +67,11 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
@@ -104,7 +102,6 @@ public class InventarioFragment extends Fragment {
     private ArrayList<String> epcs;
     private String ip, database, user, pass;
     private boolean modo;
-
     private ArrayList<Activos> activos;
     ArrayList<String>filtros;
     public InventarioFragment() {
@@ -203,33 +200,32 @@ public class InventarioFragment extends Fragment {
         myInnerHandler = new MyInnerHandlerInv(progressBar, getActivity(), cantidades[0], cantidades[1], excelReady, switchRfid, filtrosPrefijo);
 
         if(modo == true){
-
-            final List<Map<String, String>>[] datosConexion = new List[1];
+//295 295 abajo 294
             activos = new ArrayList<>();
             int indexSel = 0;
             progreso.setVisibility(View.VISIBLE);
             if (filtrosPrefijo.size() > 0) {
-                    encabezadosArrayList = interfazBD.obtenerEncabezados();
-                    if (encabezadosArrayList.size() > 0) {
-                        boolean pk = false;
-                        for (int i = 0; i < encabezadosArrayList.size(); i++) {
-                            if (encabezadosArrayList.get(i).isIndexado()) {
-                                encabezadosIndex.add(encabezadosArrayList.get(i).getNombre());
-                                encabezadoPosicion.add(i);
-                                if (encabezadosArrayList.get(i).isLlavePrimaria()) {
-                                    encabezado.setText(encabezadosArrayList.get(i).getNombre());
-                                    indexPk = encabezadosIndex.size() - 1;
-                                    pk = true;
-                                }
+                encabezadosArrayList = interfazBD.obtenerEncabezados();
+                if (encabezadosArrayList.size() > 0) {
+                    boolean pk = false;
+                    for (int i = 0; i < encabezadosArrayList.size(); i++) {
+                        if (encabezadosArrayList.get(i).isIndexado()) {
+                            encabezadosIndex.add(encabezadosArrayList.get(i).getNombre());
+                            encabezadoPosicion.add(i);
+                            if (encabezadosArrayList.get(i).isLlavePrimaria()) {
+                                encabezado.setText(encabezadosArrayList.get(i).getNombre());
+                                indexPk = encabezadosIndex.size() - 1;
+                                pk = true;
                             }
                         }
-                        if (pk) {
-                        } else {
-                            Toast.makeText(getActivity(), getResources().getString(R.string.errNoPk), Toast.LENGTH_LONG).show();
-                        }
-                    } else {
-                        Toast.makeText(getActivity(), getResources().getString(R.string.errNoEnc), Toast.LENGTH_LONG).show();
                     }
+                    if (pk) {
+                    } else {
+                        Toast.makeText(getActivity(), getResources().getString(R.string.errNoPk), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.errNoEnc), Toast.LENGTH_LONG).show();
+                }
             } else {
                 Toast.makeText(getActivity(), getResources().getString(R.string.errNoFilt), Toast.LENGTH_LONG).show();
             }
@@ -255,6 +251,9 @@ public class InventarioFragment extends Fragment {
 
             }
             int finalPkInd = pkInd;
+
+            final List<String[]>[] datosConexion = new List[]{null};
+            int finalPkInd1 = pkInd;
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -275,20 +274,10 @@ public class InventarioFragment extends Fragment {
                             public void run() {
                                 progreso.setVisibility(View.GONE);
 
-                                for (Map<String, String> activo : datosConexion[0]) {
-                                    System.out.println("Activo:");
-                                    for (Map.Entry<String, String> entry : activo.entrySet()) {
-                                        String nombreColumna = entry.getKey();
-                                        String valor = entry.getValue();
-                                        System.out.println(nombreColumna + ": " + valor);
-                                    }
-                                }
-                                for (Encabezados encabezado : encabezadosArrayList) {
-                                    encabezado.getNombre();
+                                for (int i = 0; i < datosConexion[0].size(); i++) {
+                                    activos.add(new Activos(i + 1, datosConexion[0].get(i), datosConexion[0].get(i), finalPkInd1));
                                 }
 
-
-                                activos.add(new Activos(encabezadosArrayList, datosConexion, finalPkInd));
 
                                 inventarioAdapter = new InventarioAdapter(getActivity(),activos, finalPkInd);
                                 mList.setAdapter(inventarioAdapter);
@@ -395,6 +384,116 @@ public class InventarioFragment extends Fragment {
         return v;
     }
 
+    public void runConex(){
+        ArrayList<String> encabezadosIndex = new ArrayList<>();
+        int indexPk = 0;
+        activos = new ArrayList<>();
+        int indexSel = 0;
+        progreso.setVisibility(View.VISIBLE);
+        if (filtrosPrefijo.size() > 0) {
+            encabezadosArrayList = interfazBD.obtenerEncabezados();
+            if (encabezadosArrayList.size() > 0) {
+                boolean pk = false;
+                for (int i = 0; i < encabezadosArrayList.size(); i++) {
+                    if (encabezadosArrayList.get(i).isIndexado()) {
+                        encabezadosIndex.add(encabezadosArrayList.get(i).getNombre());
+                        encabezadoPosicion.add(i);
+                        if (encabezadosArrayList.get(i).isLlavePrimaria()) {
+                            encabezado.setText(encabezadosArrayList.get(i).getNombre());
+                            indexPk = encabezadosIndex.size() - 1;
+                            pk = true;
+                        }
+                    }
+                }
+                if (pk) {
+                } else {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.errNoPk), Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(getActivity(), getResources().getString(R.string.errNoEnc), Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(getActivity(), getResources().getString(R.string.errNoFilt), Toast.LENGTH_LONG).show();
+        }
+
+        ArrayList<Integer> indexado = new ArrayList<>();
+        int pkInd=encabezadosArrayList.size();
+
+        for(int i=0; i<encabezadosArrayList.size(); i++) {
+            if(encabezadosArrayList.get(i).isLlavePrimaria()) {
+                pkInd=i;
+                if (indexSel==0){
+                    indexSel = i;
+                }
+            }
+            if(encabezadosArrayList.get(i).isIndexado()) {
+                indexado.add(i);
+            }
+            if (encabezadosArrayList.get(i).isFiltro()){
+                filtInd=i;
+            }
+        }
+        if(pkInd<encabezadosArrayList.size() && indexado.size()>0) {
+
+        }
+        int finalPkInd = pkInd;
+
+        final List<String[]>[] datosConexion = new List[]{null};
+        int finalPkInd1 = pkInd;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String[] datos = interfazBD.obtenerServidor();
+                    ip = datos[0];
+                    database = datos[1];
+                    user = datos[2];
+                    pass = datos[3];
+                    ConexionMysql conMysql = new ConexionMysql(ip, database, user, pass);
+                    datosConexion[0] = conMysql.obtenerActivos(interfazBD.obtenerSlug());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mostrarErrorEnToast("Error: " + e.getMessage());
+                } finally {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progreso.setVisibility(View.GONE);
+
+                            for (int i = 0; i < datosConexion[0].size(); i++) {
+                                activos.add(new Activos(i + 1, datosConexion[0].get(i), datosConexion[0].get(i), finalPkInd1));
+                            }
+
+
+                            inventarioAdapter = new InventarioAdapter(getActivity(),activos, finalPkInd);
+                            mList.setAdapter(inventarioAdapter);
+                            myInnerHandler.respaldarAdapter(inventarioAdapter);
+                            myInnerHandler.setCantFaltante(inventarioAdapter.getCantidad());
+                            myInnerHandler.resetCantCorrecta();
+                            ArrayList<String[]> inventario = interfazBD.obtenerInventario();
+                            int cantAgreg=0;
+                            for(String[] inv: inventario) {
+                                if(inventarioAdapter.newTagRead(inv[0])==1) {
+                                    cantAgreg++;
+                                }
+                            }
+                            ArrayList<Cambios> cambios = interfazBD.obtenerCambios();
+                            for(Cambios cambio: cambios) {
+                                inventarioAdapter.realizarCambio(cambio);
+                            }
+                            myInnerHandler.agregarCantidades(cantAgreg);
+                            excelReady.set(true);
+                            sortIcon.setText(getResources().getString(IconGenericEnum.fontawesome_sort_down.getCode()));
+                            sortIcon.init(IconGenericEnum.fontawesome_sort_up.getType());
+                            Collections.sort(inventarioAdapter.activos, (activos, a1) -> activos.compareTo(a1.isInventariado(), a1.getId(), 1));
+                            inventarioAdapter.notifyDataSetChanged();
+
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
     public boolean estadoSwitch(){
         return switchRfid.isChecked();
     }
@@ -466,9 +565,14 @@ public class InventarioFragment extends Fragment {
                         interfazBD.eliminarCambios();
                         interfazBD.eliminarInventario();
                         epcs.clear();
-                        excelReady.set(false);
-                        SyncDataStInvExcel invSync = new SyncDataStInvExcel();
-                        invSync.execute(configuracion.getArchivoInPath(), String.format(Locale.getDefault(), "%d", inventarioAdapter.getSelected()));
+
+                        if(modo == true){
+                            runConex();
+                        } else {
+                            excelReady.set(false);
+                            SyncDataStInvExcel invSync = new SyncDataStInvExcel();
+                            invSync.execute(configuracion.getArchivoInPath(), String.format(Locale.getDefault(), "%d", inventarioAdapter.getSelected()));
+                        }
                     })
                     .setNegativeButton(getResources().getString(R.string.butCancel), (dialogInterface, i) -> dialogInterface.cancel());
             final AlertDialog alert = builder.create();
@@ -486,8 +590,13 @@ public class InventarioFragment extends Fragment {
                     .setCancelable(false)
                     .setPositiveButton(getResources().getString(R.string.butCont), (dialogInterface, i) -> {
                         dialogInterface.cancel();
-                        SyncDataSaveInv saveSync = new SyncDataSaveInv();
-                        saveSync.execute(configuracion.getArchivoInPath(), configuracion.getPrefijoOut());
+                        if(modo == true){
+                            SyncDataSaveInv syncDataSaveInv = new SyncDataSaveInv();
+                            syncDataSaveInv.execute();
+                        } else {
+                            SyncDataSaveInv saveSync = new SyncDataSaveInv();
+                            saveSync.execute(configuracion.getArchivoInPath(), configuracion.getPrefijoOut());
+                        }
                     })
                     .setNegativeButton(getResources().getString(R.string.butCancel), (dialogInterface, i) -> dialogInterface.cancel());
             final AlertDialog alert = builder.create();
@@ -745,22 +854,6 @@ public class InventarioFragment extends Fragment {
                                 }
                                 if(!found) {
                                     activos.add(new Activos(r, dataHead, dataComp, pkInd));
-                                    for(Activos activos: activos){
-                                        System.out.println("LOS ACTIVOS SON: ");
-                                        System.out.println("EL ID ES : " +activos.getId());
-                                        System.out.println("EL ROW ES : " +activos.getRow());
-                                        System.out.println("EL CANTIDAD ES : " +activos.getCantidadDatos());
-                                        System.out.println("EL DATA ES : " + Arrays.toString(activos.getData()));
-                                        if (activos.getData() != null) {
-                                            for (String dato : activos.getData()) {
-                                                System.out.println(dato);
-                                            }
-                                        } else {
-                                            System.out.println("El arreglo de datos es nulo.");
-                                        }
-
-
-                                    }
                                 } else {
                                     repetidos++;
                                 }
