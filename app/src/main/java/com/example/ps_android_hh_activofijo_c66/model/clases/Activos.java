@@ -24,6 +24,17 @@ public class Activos {
         this.idSel=0;
         this.errTipo=0;
     }
+    public Activos( String[] head, String[] data, int pkInd) {
+        indexModify = new ArrayList<>();
+        this.head=head;
+        this.id = data[pkInd];
+        this.data = data;
+        this.modificado = false;
+        this.inventariado = false;
+        this.idSel=0;
+        this.errTipo=0;
+    }
+
 
     public int getErrTipo() {
         return errTipo;

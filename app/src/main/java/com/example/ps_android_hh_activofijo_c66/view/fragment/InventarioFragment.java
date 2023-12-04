@@ -204,7 +204,7 @@ public class InventarioFragment extends Fragment {
 
         if(modo == true){
 
-            final List<Map<String, String>>[] nombresColumnas = new List[1];
+            final List<Map<String, String>>[] datosConexion = new List[1];
             activos = new ArrayList<>();
             int indexSel = 0;
             progreso.setVisibility(View.VISIBLE);
@@ -254,6 +254,7 @@ public class InventarioFragment extends Fragment {
             if(pkInd<encabezadosArrayList.size() && indexado.size()>0) {
 
             }
+            int finalPkInd = pkInd;
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -264,7 +265,7 @@ public class InventarioFragment extends Fragment {
                         user = datos[2];
                         pass = datos[3];
                         ConexionMysql conMysql = new ConexionMysql(ip, database, user, pass);
-                        nombresColumnas[0] = conMysql.obtenerActivos(interfazBD.obtenerSlug());
+                        datosConexion[0] = conMysql.obtenerActivos(interfazBD.obtenerSlug());
                     } catch (Exception e) {
                         e.printStackTrace();
                         mostrarErrorEnToast("Error: " + e.getMessage());
@@ -274,10 +275,7 @@ public class InventarioFragment extends Fragment {
                             public void run() {
                                 progreso.setVisibility(View.GONE);
 
-
-
-
-                                for (Map<String, String> activo : nombresColumnas[0]) {
+                                for (Map<String, String> activo : datosConexion[0]) {
                                     System.out.println("Activo:");
                                     for (Map.Entry<String, String> entry : activo.entrySet()) {
                                         String nombreColumna = entry.getKey();
@@ -290,9 +288,30 @@ public class InventarioFragment extends Fragment {
                                 }
 
 
+                                activos.add(new Activos(encabezadosArrayList, datosConexion, finalPkInd));
 
-
-
+                                inventarioAdapter = new InventarioAdapter(getActivity(),activos, finalPkInd);
+                                mList.setAdapter(inventarioAdapter);
+                                myInnerHandler.respaldarAdapter(inventarioAdapter);
+                                myInnerHandler.setCantFaltante(inventarioAdapter.getCantidad());
+                                myInnerHandler.resetCantCorrecta();
+                                ArrayList<String[]> inventario = interfazBD.obtenerInventario();
+                                int cantAgreg=0;
+                                for(String[] inv: inventario) {
+                                    if(inventarioAdapter.newTagRead(inv[0])==1) {
+                                        cantAgreg++;
+                                    }
+                                }
+                                ArrayList<Cambios> cambios = interfazBD.obtenerCambios();
+                                for(Cambios cambio: cambios) {
+                                    inventarioAdapter.realizarCambio(cambio);
+                                }
+                                myInnerHandler.agregarCantidades(cantAgreg);
+                                excelReady.set(true);
+                                sortIcon.setText(getResources().getString(IconGenericEnum.fontawesome_sort_down.getCode()));
+                                sortIcon.init(IconGenericEnum.fontawesome_sort_up.getType());
+                                Collections.sort(inventarioAdapter.activos, (activos, a1) -> activos.compareTo(a1.isInventariado(), a1.getId(), 1));
+                                inventarioAdapter.notifyDataSetChanged();
 
                             }
                         });
