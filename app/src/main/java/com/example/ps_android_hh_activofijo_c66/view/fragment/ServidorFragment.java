@@ -125,7 +125,9 @@ public class ServidorFragment extends Fragment {
 
                 ConexionMysql conMysql = new ConexionMysql(ip, database, user, pass);
 
-                String slug = conMysql.obtenerSlug(serial);
+                String[] data = conMysql.obtenerData(serial);
+                String slug = data[0];
+                String id = data[1];
 
                 if (conMysql.getConnected()) {
                     success = true;
@@ -138,7 +140,7 @@ public class ServidorFragment extends Fragment {
                     if (finalSuccess) {
                         connectionStatus.setAnimation(R.raw.checked);
                             if(slug != interfazDb.obtenerSlug()){
-                                interfazDb.insertarSlug(slug);
+                                interfazDb.insertarData(slug, id);
                             }
                     } else {
                         connectionStatus.setAnimation(R.raw.error);

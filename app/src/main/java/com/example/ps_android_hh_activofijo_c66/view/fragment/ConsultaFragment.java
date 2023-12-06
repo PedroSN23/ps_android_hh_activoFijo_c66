@@ -38,6 +38,7 @@ import com.example.ps_android_hh_activofijo_c66.model.clases.Activos;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Configuracion;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Encabezados;
 import com.example.ps_android_hh_activofijo_c66.model.clases.ViewWeightAnimationWrapper;
+import com.example.ps_android_hh_activofijo_c66.model.database.ConexionMysql;
 import com.example.ps_android_hh_activofijo_c66.model.database.InterfazBD;
 import com.example.ps_android_hh_activofijo_c66.view.activity.ConsultaActivity;
 import com.example.ps_android_hh_activofijo_c66.view.adapter.ConsultaAdapter;
@@ -62,6 +63,7 @@ import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -85,6 +87,7 @@ public class ConsultaFragment extends Fragment {
     private RelativeLayout tomar_foto;
     private int llavePrimaria;
     private ArrayList<EditText> et;
+    private int filtInd = -1;
     private ConsultaHandler consultaHandler;
     private RelativeLayout progressBar;
     private TextView progreso;
@@ -96,8 +99,10 @@ public class ConsultaFragment extends Fragment {
     private IconGeneric imagensiguiente;
     private IconGeneric imagenanterior;
     private String curentPhotoPath;
-
     private String key_bund = null;
+    private String ip, database, user, pass;
+    private String errorMsg;
+    private boolean modo;
 
     public ConsultaFragment() {
     }
@@ -117,51 +122,169 @@ public class ConsultaFragment extends Fragment {
         progressBar = v.findViewById(R.id.menu2ProgresoForm);
         progreso = v.findViewById(R.id.progresoForm);
 
+        interfazBD = new InterfazBD(getActivity());
         et = new ArrayList<>();
+
+        filtros = interfazBD.obtenerFiltros();
 
         father = v.findViewById(R.id.linearInsertForm);
 
         interfazBD = new InterfazBD(getActivity());
 
         consultaHandler = new ConsultaHandler(progressBar,getActivity(), excelReady);
-        SyncDataStFormExcel invSync = new SyncDataStFormExcel();
-        interfazBD = new InterfazBD(getActivity());
-        filtros = interfazBD.obtenerFiltros();
+        modo = interfazBD.obtenerModo();
 
-        if(filtros.size()>0) {
-            configuracion = interfazBD.obtenerConfiguracion();
-            if (configuracion != null) {
-                encabezadosArrayList = interfazBD.obtenerEncabezados();
-                if(encabezadosArrayList.size()>0) {
-                    boolean pk = false;
-                    for (int i = 0; i < encabezadosArrayList.size(); i++) {
-                        if (encabezadosArrayList.get(i).isIndexado()) {
-                            if (encabezadosArrayList.get(i).isLlavePrimaria()) {
-                                pk = true;
-                                llavePrimaria=i;
-                                break;
+        if (modo) {
+
+            activos = new ArrayList<>();
+            int indexSel = 0;
+            if (filtros.size() > 0) {
+                configuracion = interfazBD.obtenerConfiguracion();
+                if (configuracion != null) {
+                    encabezadosArrayList = interfazBD.obtenerEncabezados();
+                    if (encabezadosArrayList.size() > 0) {
+                        boolean pk = false;
+                        for (int i = 0; i < encabezadosArrayList.size(); i++) {
+                            if (encabezadosArrayList.get(i).isIndexado()) {
+                                if (encabezadosArrayList.get(i).isLlavePrimaria()) {
+                                    pk = true;
+                                    llavePrimaria = i;
+                                    break;
+                                }
                             }
                         }
-                    }
-                    if(pk) {
-                        asyncTask = invSync.execute(configuracion.getArchivoInPath());
+                        if (pk) {
+                        } else {
+                            Toast.makeText(getActivity(), getResources().getString(R.string.errNoPk), Toast.LENGTH_LONG).show();
+                            getActivity().finish();
+                        }
                     } else {
-                        Toast.makeText(getActivity(), getResources().getString(R.string.errNoPk), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), getResources().getString(R.string.errNoEnc), Toast.LENGTH_LONG).show();
                         getActivity().finish();
                     }
                 } else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.errNoEnc), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.errBDdat), Toast.LENGTH_LONG).show();
                     getActivity().finish();
                 }
             } else {
-                Toast.makeText(getActivity(), getResources().getString(R.string.errBDdat), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getResources().getString(R.string.errNoFilt), Toast.LENGTH_LONG).show();
                 getActivity().finish();
             }
-        } else {
-            Toast.makeText(getActivity(), getResources().getString(R.string.errNoFilt), Toast.LENGTH_LONG).show();
-            getActivity().finish();
-        }
 
+            ArrayList<Integer> indexado = new ArrayList<>();
+            int pkInd=encabezadosArrayList.size();
+
+            for(int i=0; i<encabezadosArrayList.size(); i++) {
+                if(encabezadosArrayList.get(i).isLlavePrimaria()) {
+                    pkInd=i;
+                    if (indexSel==0){
+                        indexSel = i;
+                    }
+                }
+                if(encabezadosArrayList.get(i).isIndexado()) {
+                    indexado.add(i);
+                }
+                if (encabezadosArrayList.get(i).isFiltro()){
+                    filtInd=i;
+                }
+            }
+            if(pkInd<encabezadosArrayList.size() && indexado.size()>0) {
+
+            }
+            int finalPkInd = pkInd;
+
+            final List<String[]>[] datosConexion = new List[]{null};
+            int finalPkInd1 = pkInd;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String[] datos = interfazBD.obtenerServidor();
+                        ip = datos[0];
+                        database = datos[1];
+                        user = datos[2];
+                        pass = datos[3];
+                        ConexionMysql conMysql = new ConexionMysql(ip, database, user, pass);
+                        datosConexion[0] = conMysql.obtenerActivos(interfazBD.obtenerSlug());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        mostrarErrorEnToast("Error: " + e.getMessage());
+                    } finally {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressBar.setVisibility(View.GONE);
+                                for (int i = 0; i < datosConexion[0].size(); i++) {
+                                    activos.add(new Activos(i + 1, datosConexion[0].get(i), datosConexion[0].get(i), finalPkInd1));
+                                }
+                                for (int x = 0; x < encabezadosArrayList.size(); x++) {
+                                    if (encabezadosArrayList.get(x).isVisible()) {
+                                        View ll = View.inflate(getActivity(), R.layout.generic_object, null);
+                                        TextInputLayout tv = ll.findViewById(R.id.genTextViewForm);
+                                        tv.setHint(encabezadosArrayList.get(x).getNombre());
+                                        TextInputEditText etTemp = ll.findViewById(R.id.getnEditTextForm);
+                                        if (encabezadosArrayList.get(x).isEditable()) {
+                                            tv.setHintTextColor(ColorStateList.valueOf(ContextCompat.getColor(getActivity(), R.color.bien)));
+                                            tv.setDefaultHintTextColor(ColorStateList.valueOf(ContextCompat.getColor(getActivity(), R.color.bien)));
+                                            etTemp.setClickable(true);
+                                            etTemp.setFocusable(true);
+                                            etTemp.setFocusableInTouchMode(true);
+                                        }
+
+                                        et.add(etTemp);
+                                        father.addView(ll);
+                                    }
+                                }
+                                excelReady.set(true);
+
+                                if(key_bund == null){
+                                    crearDialogo();
+                                } else {
+                                    notDialog();
+                                }
+                            }
+                        });
+                    }
+                }
+            }).start();
+
+        } else {
+            SyncDataStFormExcel invSync = new SyncDataStFormExcel();
+
+            if (filtros.size() > 0) {
+                configuracion = interfazBD.obtenerConfiguracion();
+                if (configuracion != null) {
+                    encabezadosArrayList = interfazBD.obtenerEncabezados();
+                    if (encabezadosArrayList.size() > 0) {
+                        boolean pk = false;
+                        for (int i = 0; i < encabezadosArrayList.size(); i++) {
+                            if (encabezadosArrayList.get(i).isIndexado()) {
+                                if (encabezadosArrayList.get(i).isLlavePrimaria()) {
+                                    pk = true;
+                                    llavePrimaria = i;
+                                    break;
+                                }
+                            }
+                        }
+                        if (pk) {
+                            asyncTask = invSync.execute(configuracion.getArchivoInPath());
+                        } else {
+                            Toast.makeText(getActivity(), getResources().getString(R.string.errNoPk), Toast.LENGTH_LONG).show();
+                            getActivity().finish();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), getResources().getString(R.string.errNoEnc), Toast.LENGTH_LONG).show();
+                        getActivity().finish();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.errBDdat), Toast.LENGTH_LONG).show();
+                    getActivity().finish();
+                }
+            } else {
+                Toast.makeText(getActivity(), getResources().getString(R.string.errNoFilt), Toast.LENGTH_LONG).show();
+                getActivity().finish();
+            }
+        }
         tomar_foto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -192,7 +315,14 @@ public class ConsultaFragment extends Fragment {
         return activeText;
     }
 
-
+    private void mostrarErrorEnToast(String mensaje) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getContext(), mensaje, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     public void GuardarFormularioForm() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(getResources().getString(R.string.menu2s1GuardarForm))

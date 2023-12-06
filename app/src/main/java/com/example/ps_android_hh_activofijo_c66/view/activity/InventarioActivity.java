@@ -213,6 +213,12 @@ public class InventarioActivity extends RFIDBarcodeControllActivity {
                 "EXPORTAR",
                 false,
                 ColorEnum.excel.getCode()));
+        controlButtons.add(new ControlButtonsCircular(5, "SINCRONIZAR",
+                IconGenericEnum.fontawesome_sync,
+                false,
+                "SINCRONIZAR",
+                false,
+                ColorEnum.status_red.getCode()));
 
         controlsFragment = new ControlsFragment(controlButtons, subMenus.getGroupStyle());
         controlsFragment.addControlsFragmentAdapter((view, pressed) -> {
@@ -237,13 +243,20 @@ public class InventarioActivity extends RFIDBarcodeControllActivity {
                         inventarioFragment.ReiniciarInventario();
                         break;
                     case 4:
-                       SyncDataSaveInven syncDataSaveInv = new SyncDataSaveInven(this, busy, interfazBD);
-                        if(syncDataSaveInv.getError()) {
-                            Toast.makeText(this, syncDataSaveInv.getErrMsg(), Toast.LENGTH_LONG).show();
+                        if(interfazBD.obtenerModo()){
+                            inventarioFragment.exportarAExcel();
                         } else {
-                            busy.set(true);
-                            syncDataSaveInv.execute();
+                            SyncDataSaveInven syncDataSaveInv = new SyncDataSaveInven(this, busy, interfazBD);
+                            if (syncDataSaveInv.getError()) {
+                                Toast.makeText(this, syncDataSaveInv.getErrMsg(), Toast.LENGTH_LONG).show();
+                            } else {
+                                busy.set(true);
+                                syncDataSaveInv.execute();
+                            }
                         }
+                        break;
+                    case 5:
+                        inventarioFragment.syncDataEpcs();
                         break;
                 }
                 toggleShowMenuPack(controlsFragment);

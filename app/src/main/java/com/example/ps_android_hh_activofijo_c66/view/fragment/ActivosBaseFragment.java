@@ -86,7 +86,6 @@ public class ActivosBaseFragment extends Fragment {
             obtener_datos();
             activosBaseAdapter.notifyDataSetChanged();
         }
-        obtenerActivos();
         butNuevoFiltro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,32 +100,6 @@ public class ActivosBaseFragment extends Fragment {
         });
 
         return rootView;
-    }
-
-    public void obtenerActivos(){
-        /*
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String[] datos = interfazBD.obtenerServidor();
-                ip = datos[0];
-                database = datos[1];
-                user = datos[2];
-                pass = datos[3];
-                ConexionMysql conMysql = new ConexionMysql(ip, database, user, pass);
-                List<String> nombresColumnas = conMysql.obtenerActivos(interfazBD.obtenerSlug());
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        for (String nombreColumna : nombresColumnas) {
-                            System.out.println(nombreColumna);
-                        }
-                    }
-                });
-            }
-        }).start();
-
-         */
     }
     private void crearDialogo(int index) {
         final int indexAdapter = index;
@@ -150,6 +123,15 @@ public class ActivosBaseFragment extends Fragment {
         switches[2].setChecked(activosBaseAdapter.encabezadosArrayList.get(index).isFiltro());
         switches[3].setChecked(activosBaseAdapter.encabezadosArrayList.get(index).isIndexado());
         switches[4].setChecked(activosBaseAdapter.encabezadosArrayList.get(index).isLlavePrimaria());
+
+        switches[4].setEnabled(false);
+        switches[1].setEnabled(false);
+
+        /* if (activosBaseAdapter.encabezadosArrayList.get(index).isIndexado() || activosBaseAdapter.encabezadosArrayList.get(index).isLlavePrimaria()) {
+            switches[3].setEnabled(false);
+            switches[4].setEnabled(false);
+        }
+         */
 
         final LottieAnimationView butGuardar = promptsView.findViewById(R.id.guardarEnc);
 

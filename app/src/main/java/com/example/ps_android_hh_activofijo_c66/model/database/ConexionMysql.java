@@ -3,6 +3,7 @@ package com.example.ps_android_hh_activofijo_c66.model.database;
 
 import android.content.Context;
 
+import com.example.ps_android_hh_activofijo_c66.model.clases.Activos;
 import com.example.ps_android_hh_activofijo_c66.model.clases.Encabezados;
 
 import java.io.PrintWriter;
@@ -70,16 +71,20 @@ public class ConexionMysql {
 
     /*******************************************INSERCIONES*********************************/
 
-    public String obtenerSlug(String serial) {
+    public String[] obtenerData(String serial) {
+        String[] result = new String[2];
         String slug = null;
+        String id = null;
+
         try {
-            String query = "SELECT slug FROM companies WHERE id = (SELECT company_id FROM restrictions WHERE android_id = ?)";
+            String query = "SELECT slug, id FROM companies WHERE id = (SELECT company_id FROM restrictions WHERE android_id = ?)";
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, serial);
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 slug = rs.getString("slug");
+                id = rs.getString("id");
             }
 
             try {
@@ -101,12 +106,18 @@ public class ConexionMysql {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return slug;
+
+        result[0] = slug;
+        result[1] = id;
+
+        return result;
     }
+
 
 
     public ArrayList<Encabezados> obtenerEncabezados(String slug){
         ArrayList<Encabezados> filtros = new ArrayList<>();
+        Integer editableS = 0;
         try {
             String query = "SELECT id, excel_nombre, es_llavep, es_buscable ,es_editable, es_hh_show , es_filtro FROM columns WHERE company_id = (SELECT id FROM companies WHERE slug = ?)";
             PreparedStatement pstmt = (PreparedStatement) conn.prepareStatement(query);
@@ -121,7 +132,7 @@ public class ConexionMysql {
                 Integer visible = Integer.valueOf(rs.getString("es_hh_show"));
                 Integer filtro = Integer.valueOf(rs.getString("es_filtro"));
 
-                Encabezados encabezados = new Encabezados(id, excel_nombre, llavep, indexable, editable, visible, filtro);
+                Encabezados encabezados = new Encabezados(id, excel_nombre, llavep, indexable, editableS, visible, filtro);
                 filtros.add(encabezados);
             }
             rs.close();
@@ -192,6 +203,39 @@ public class ConexionMysql {
         }
         return nombresColumnas;
     }
+
+    public void insertarDatosInventariados(String slug, String id, ArrayList<Activos> activos) {
+        try {
+            String queryNombre = "SELECT nombre FROM columns WHERE company_id = ? AND es_llavep = 1";
+            String nombreColumna = null;
+
+            try (PreparedStatement pstmtNombre = conn.prepareStatement(queryNombre)) {
+                pstmtNombre.setString(1, id);
+                ResultSet rsNombre = pstmtNombre.executeQuery();
+
+                if (rsNombre.next()) {
+                    nombreColumna = rsNombre.getString("nombre");
+                }
+            }
+
+            String queryActivos = "UPDATE activos_" + slug + " SET inventariado = inventariado + 1 WHERE " + nombreColumna + " = ?";
+
+            try (PreparedStatement pstmtActivos = conn.prepareStatement(queryActivos)) {
+                for (Activos activo : activos) {
+                    String epc = activo.getId();
+                    System.out.println("LOS ACTIVO A PUNTO DE SUBIRSE SON " + epc);
+
+                    pstmtActivos.setString(1, epc);
+                    pstmtActivos.executeUpdate();
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 
 

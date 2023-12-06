@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ConexionBd extends SQLiteOpenHelper {
     public ConexionBd(Context context) {
-        super(context, "activoFijo.db", null, 15);
+        super(context, "activoFijo.db", null, 16);
     }
 
     @Override
@@ -17,7 +17,8 @@ public class ConexionBd extends SQLiteOpenHelper {
                 "base text not null," +
                 "usuario text not null," +
                 "contrasena text not null,"+
-                "slug text not null);";
+                "slug text not null,"+
+                "id_companie text not null);";
 
         String model = "create table if not exists model (" +
                 "_id integer primary key autoincrement," +

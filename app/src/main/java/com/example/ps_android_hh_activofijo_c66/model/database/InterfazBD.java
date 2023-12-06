@@ -49,6 +49,7 @@ public class InterfazBD {
             content.put("usuario", "");
             content.put("contrasena", "");
             content.put("slug", "");
+            content.put("id_companie", "");
             db.insert("baseSQL", null, content);
         }
         if (numRegistros < 1) {
@@ -321,11 +322,12 @@ public class InterfazBD {
 
     /*********************CONSULTAS DE SLUG*************************/
 
-    public void insertarSlug(String slug) {
+    public void insertarData(String slug, String id) {
         ContentValues content;
         open();
         content = new ContentValues();
         content.put("slug", slug);
+        content.put("id_companie", id);
         db.update("baseSQL", content, "_id=1", null);
     }
 
@@ -341,6 +343,19 @@ public class InterfazBD {
 
         cursor.close();
         return slug;
+    }
+    public String obtenerIdCompanie() {
+        String id = null;
+        open();
+
+        Cursor cursor = db.query("baseSQL", new String[]{"id_companie"}, "_id=?", new String[]{"1"}, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            id = cursor.getString(cursor.getColumnIndex("id_companie"));
+        }
+
+        cursor.close();
+        return id;
     }
 
     /*********************ENCABEZADOS*************************/
@@ -397,6 +412,9 @@ public class InterfazBD {
     public void vaciarEncabezados() {
         truncarTabla("encabezados");
     }
+
+
+
 
     /********************************FILTROS*****************************/
     public ArrayList<String> obtenerFiltros() {

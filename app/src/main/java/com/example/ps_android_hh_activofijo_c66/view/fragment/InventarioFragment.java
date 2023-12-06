@@ -4,11 +4,13 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,15 +55,20 @@ import com.example.ps_android_hh_activofijo_c66.view.activity.InventarioActivity
 
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellValue;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -70,6 +77,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -115,7 +123,7 @@ public class InventarioFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mList.setLayoutManager(layoutManager);
         epcs = new ArrayList<>();
-        int indexPk = 0;
+        final int[] indexPk = {0};
         inpSel = 0;
 
         spinerIndex = v.findViewById(R.id.indexSpinner);
@@ -200,10 +208,14 @@ public class InventarioFragment extends Fragment {
         myInnerHandler = new MyInnerHandlerInv(progressBar, getActivity(), cantidades[0], cantidades[1], excelReady, switchRfid, filtrosPrefijo);
 
         if(modo == true){
-//295 295 abajo 294
+
+            //295 295 abajo 294
+
+            progressBar.setVisibility(View.VISIBLE);
             activos = new ArrayList<>();
-            int indexSel = 0;
-            progreso.setVisibility(View.VISIBLE);
+            filtrosColumna = new ArrayList<>();
+            filtrosColumna.add("Sin Filtro");
+            final int[] indexSel = {0};
             if (filtrosPrefijo.size() > 0) {
                 encabezadosArrayList = interfazBD.obtenerEncabezados();
                 if (encabezadosArrayList.size() > 0) {
@@ -214,7 +226,7 @@ public class InventarioFragment extends Fragment {
                             encabezadoPosicion.add(i);
                             if (encabezadosArrayList.get(i).isLlavePrimaria()) {
                                 encabezado.setText(encabezadosArrayList.get(i).getNombre());
-                                indexPk = encabezadosIndex.size() - 1;
+                                indexPk[0] = encabezadosIndex.size() - 1;
                                 pk = true;
                             }
                         }
@@ -236,8 +248,8 @@ public class InventarioFragment extends Fragment {
             for(int i=0; i<encabezadosArrayList.size(); i++) {
                 if(encabezadosArrayList.get(i).isLlavePrimaria()) {
                     pkInd=i;
-                    if (indexSel==0){
-                        indexSel = i;
+                    if (indexSel[0] ==0){
+                        indexSel[0] = i;
                     }
                 }
                 if(encabezadosArrayList.get(i).isIndexado()) {
@@ -272,13 +284,11 @@ public class InventarioFragment extends Fragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                progreso.setVisibility(View.GONE);
+                                progressBar.setVisibility(View.GONE);
 
                                 for (int i = 0; i < datosConexion[0].size(); i++) {
                                     activos.add(new Activos(i + 1, datosConexion[0].get(i), datosConexion[0].get(i), finalPkInd1));
                                 }
-
-
                                 inventarioAdapter = new InventarioAdapter(getActivity(),activos, finalPkInd);
                                 mList.setAdapter(inventarioAdapter);
                                 myInnerHandler.respaldarAdapter(inventarioAdapter);
@@ -302,6 +312,64 @@ public class InventarioFragment extends Fragment {
                                 Collections.sort(inventarioAdapter.activos, (activos, a1) -> activos.compareTo(a1.isInventariado(), a1.getId(), 1));
                                 inventarioAdapter.notifyDataSetChanged();
 
+                                encabezadosArrayList = interfazBD.obtenerEncabezados();
+
+                                if (filtrosPrefijo.size() > 0) {
+                                    if (encabezadosArrayList.size() > 0) {
+                                        boolean pk = false;
+
+                                        for (int i = 0; i < encabezadosArrayList.size(); i++) {
+                                            if (encabezadosArrayList.get(i).isIndexado()) {
+                                                encabezadosIndex.add(encabezadosArrayList.get(i).getNombre());
+                                                encabezadoPosicion.add(i);
+
+                                                if (encabezadosArrayList.get(i).isLlavePrimaria()) {
+                                                    encabezado.setText(encabezadosArrayList.get(i).getNombre());
+                                                    indexPk[0] = encabezadosIndex.size() - 1;
+                                                    pk = true;
+                                                }
+                                            }
+                                        }
+
+                                        if (!pk) {
+                                            Toast.makeText(getActivity(), getResources().getString(R.string.errNoPk), Toast.LENGTH_LONG).show();
+                                        }
+                                    } else {
+                                        Toast.makeText(getActivity(), getResources().getString(R.string.errNoEnc), Toast.LENGTH_LONG).show();
+                                    }
+                                } else {
+                                    Toast.makeText(getActivity(), getResources().getString(R.string.errNoFilt), Toast.LENGTH_LONG).show();
+                                }
+
+                                ArrayList<Integer> indexado = new ArrayList<>();
+                                int pkInd = encabezadosArrayList.size();
+
+                                for (int i = 0; i < encabezadosArrayList.size(); i++) {
+                                    if (encabezadosArrayList.get(i).isLlavePrimaria()) {
+                                        pkInd = i;
+
+                                    }
+                                    if (encabezadosArrayList.get(i).isIndexado()) {
+                                        indexado.add(i);
+                                    }
+                                    if (encabezadosArrayList.get(i).isFiltro()) {
+                                        filtInd = i;
+                                    }
+                                }
+
+                                if (pkInd < encabezadosArrayList.size() && indexado.size() > 0) {
+                                    HashSet<String> uniqueFilters = new HashSet<>();
+
+                                    for (String[] data : datosConexion[0]) {
+                                        String filterValue = data[filtInd];
+
+                                        if (!uniqueFilters.contains(filterValue)) {
+                                            uniqueFilters.add(filterValue);
+                                            filtrosColumna.add(filterValue);
+                                        }
+                                    }
+                                }
+
                             }
                         });
                     }
@@ -322,7 +390,7 @@ public class InventarioFragment extends Fragment {
                                 encabezadoPosicion.add(i);
                                 if (encabezadosArrayList.get(i).isLlavePrimaria()) {
                                     encabezado.setText(encabezadosArrayList.get(i).getNombre());
-                                    indexPk = encabezadosIndex.size() - 1;
+                                    indexPk[0] = encabezadosIndex.size() - 1;
                                     pk = true;
                                 }
                             }
@@ -365,7 +433,7 @@ public class InventarioFragment extends Fragment {
                 }
             });
 
-            spinerIndex.setSelection(indexPk, true);
+            spinerIndex.setSelection(indexPk[0], true);
 
         filterbut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -385,11 +453,11 @@ public class InventarioFragment extends Fragment {
     }
 
     public void runConex(){
+        progressBar.setVisibility(View.VISIBLE);
         ArrayList<String> encabezadosIndex = new ArrayList<>();
         int indexPk = 0;
         activos = new ArrayList<>();
         int indexSel = 0;
-        progreso.setVisibility(View.VISIBLE);
         if (filtrosPrefijo.size() > 0) {
             encabezadosArrayList = interfazBD.obtenerEncabezados();
             if (encabezadosArrayList.size() > 0) {
@@ -458,12 +526,11 @@ public class InventarioFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            progreso.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
 
                             for (int i = 0; i < datosConexion[0].size(); i++) {
                                 activos.add(new Activos(i + 1, datosConexion[0].get(i), datosConexion[0].get(i), finalPkInd1));
                             }
-
 
                             inventarioAdapter = new InventarioAdapter(getActivity(),activos, finalPkInd);
                             mList.setAdapter(inventarioAdapter);
@@ -639,6 +706,75 @@ public class InventarioFragment extends Fragment {
         }
     }
 
+    public void syncDataEpcs() {
+        progressBar.setVisibility(View.VISIBLE);
+
+        if (modo) {
+            ArrayList<Activos> activosInventariados = inventarioAdapter.getActivosInventariados();
+
+            if(activosInventariados != null && !activosInventariados.isEmpty() ) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Confirmar Sincronización");
+                builder.setMessage("¿Estás seguro de que quieres sincronizar los datos?");
+
+                builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    String[] datos = interfazBD.obtenerServidor();
+                                    ip = datos[0];
+                                    database = datos[1];
+                                    user = datos[2];
+                                    pass = datos[3];
+                                    ConexionMysql conMysql = new ConexionMysql(ip, database, user, pass);
+                                    conMysql.insertarDatosInventariados(interfazBD.obtenerSlug(), interfazBD.obtenerIdCompanie(), activosInventariados);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    mostrarErrorEnToast("Error: " + e.getMessage());
+                                } finally {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            progressBar.setVisibility(View.GONE);
+                                            interfazBD.eliminarCambios();
+                                            interfazBD.eliminarInventario();
+                                            epcs.clear();
+                                            runConex();
+                                            mostrarErrorEnToast("DATOS SINCRONIZADOS");
+                                        }
+                                    });
+                                }
+                            }
+                        }).start();
+                    }
+                });
+
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        progressBar.setVisibility(View.GONE);
+                        mostrarErrorEnToast("Sincronización cancelada");
+                    }
+                });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+            } else {
+                progressBar.setVisibility(View.GONE);
+                mostrarErrorEnToast("NO HAY DATOS INVENTARIADOS");
+            }
+        } else {
+            progressBar.setVisibility(View.GONE);
+            mostrarErrorEnToast("ERROR: SE ESTA TRABAJANDO POR ARCHIVO");
+        }
+    }
+
+
     private void rutinaEspera() {
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -699,7 +835,6 @@ public class InventarioFragment extends Fragment {
 
         final RadioGroup rg = new RadioGroup(getActivity());
 
-        // Acceder a las columnas
         if (filtrosColumna.size() > 0) {
             for (int i = 0; i < filtrosColumna.size(); i++) {
                 RadioButton rb = new RadioButton(getActivity());
@@ -754,6 +889,8 @@ public class InventarioFragment extends Fragment {
 
         alertDialog.show();
     }
+
+
     private class SyncDataStInvExcel extends AsyncTask<String, Integer, Integer> {
         private String errorMsg;
         private ArrayList<Activos> activos;
@@ -1195,5 +1332,69 @@ public class InventarioFragment extends Fragment {
             }
         }
     }
+    public void exportarAExcel() {
+        if (isExternalStorageWritable()) {
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Datos");
 
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+            String fechaActual = dateFormat.format(new Date());
+
+            Row headerRow = sheet.createRow(0);
+            ArrayList<Encabezados> encabezados = encabezadosArrayList;
+
+            CellStyle estiloNegrita = workbook.createCellStyle();
+            Font fuenteNegrita = workbook.createFont();
+            fuenteNegrita.setBold(true);
+            estiloNegrita.setFont(fuenteNegrita);
+
+            for (int i = 0; i < encabezados.size(); i++) {
+                Encabezados encabezado = encabezados.get(i);
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(encabezado.getNombre());
+                cell.setCellStyle(estiloNegrita);
+            }
+
+            Cell inventariadoHeader = headerRow.createCell(headerRow.getLastCellNum());
+            inventariadoHeader.setCellValue("Inventariado");
+            inventariadoHeader.setCellStyle(estiloNegrita);
+
+            for (int i = 0; i < activos.size(); i++) {
+                Row row = sheet.createRow(i + 1);
+                Activos activo = activos.get(i);
+
+                String[] datos = activo.getData();
+
+                for (int j = 0; j < datos.length; j++) {
+                    Cell cell = row.createCell(j);
+                    cell.setCellValue(datos[j]);
+                }
+
+                Cell inventariadoCell = row.createCell(headerRow.getLastCellNum());
+                inventariadoCell.setCellValue(activo.isInventariado() ? "Sí" : "No");
+            }
+
+            try {
+                String nombreArchivo = "Inventario_Base_Datos_" + fechaActual + ".xlsx";
+
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), nombreArchivo);
+
+                FileOutputStream fileOut = new FileOutputStream(file);
+                workbook.write(fileOut);
+                fileOut.close();
+
+                Toast.makeText(getActivity(), "Datos exportados a Excel: " + nombreArchivo, Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(getActivity(), "Error al exportar datos a Excel", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(getActivity(), "No es posible escribir en el almacenamiento externo", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED.equals(state);
+    }
 }
