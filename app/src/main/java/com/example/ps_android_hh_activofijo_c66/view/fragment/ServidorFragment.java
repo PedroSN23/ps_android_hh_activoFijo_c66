@@ -22,6 +22,7 @@ import com.example.ps_android_hh_activofijo_c66.model.clases.Usuario;
 import com.example.ps_android_hh_activofijo_c66.model.database.ConexionMysql;
 import com.example.ps_android_hh_activofijo_c66.model.database.InterfazBD;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -131,6 +132,18 @@ public class ServidorFragment extends Fragment {
 
                 if (conMysql.getConnected()) {
                     success = true;
+                }
+                if (interfazDb.obtenerFiltros() == null || interfazDb.obtenerFiltros().isEmpty()) {
+
+                    ArrayList<String> Dataprefijo = conMysql.obtenerPrefijo(interfazDb.obtenerSlug(), interfazDb.obtenerIdCompanie());
+                ArrayList<String> prefijos = new ArrayList<>();
+                for (String prefijoActual : Dataprefijo) {
+                    String letras = prefijoActual.replaceAll("[0-9]", "");
+                    prefijos.add(letras);
+                }
+                for (String prefijo : prefijos) {
+                    interfazDb.insertarFiltro(prefijo);
+                    }
                 }
                 boolean finalSuccess = success;
                 requireActivity().runOnUiThread(() -> {

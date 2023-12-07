@@ -126,6 +126,7 @@ public class InventarioFragment extends Fragment {
         final int[] indexPk = {0};
         inpSel = 0;
 
+        interfazBD = new InterfazBD(getActivity());
         spinerIndex = v.findViewById(R.id.indexSpinner);
         ArrayList<String> encabezadosIndex = new ArrayList<>();
         encabezadoPosicion = new ArrayList<>();
@@ -139,10 +140,7 @@ public class InventarioFragment extends Fragment {
         cantidades[1]= v.findViewById(R.id.cantLeidosval);
 
         switchRfid = v.findViewById(R.id.menu1s1switchRfid);
-
         myInnerHandler = new MyInnerHandlerInv(progressBar, getActivity(), cantidades[0], cantidades[1], excelReady, switchRfid, filtrosPrefijo);
-
-
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             private static final float MAX_SWIPE_DISTANCE = 150;
 
@@ -201,7 +199,6 @@ public class InventarioFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(mList);
 
-        interfazBD = new InterfazBD(getActivity());
         filtrosPrefijo = interfazBD.obtenerFiltros();
         modo = interfazBD.obtenerModo();
         filtros = new ArrayList<>();
@@ -1337,7 +1334,7 @@ public class InventarioFragment extends Fragment {
             Workbook workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet("Datos");
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
             String fechaActual = dateFormat.format(new Date());
 
             Row headerRow = sheet.createRow(0);
@@ -1375,7 +1372,7 @@ public class InventarioFragment extends Fragment {
             }
 
             try {
-                String nombreArchivo = "Inventario_Base_Datos_" + fechaActual + ".xlsx";
+                String nombreArchivo = "Inventaro Salida " + fechaActual + ".xlsx";
 
                 File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), nombreArchivo);
 

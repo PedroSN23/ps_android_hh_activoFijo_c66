@@ -15,7 +15,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class ConexionMysql {
@@ -223,7 +225,6 @@ public class ConexionMysql {
             try (PreparedStatement pstmtActivos = conn.prepareStatement(queryActivos)) {
                 for (Activos activo : activos) {
                     String epc = activo.getId();
-                    System.out.println("LOS ACTIVO A PUNTO DE SUBIRSE SON " + epc);
 
                     pstmtActivos.setString(1, epc);
                     pstmtActivos.executeUpdate();
@@ -234,6 +235,52 @@ public class ConexionMysql {
             e.printStackTrace();
         }
     }
+
+    public ArrayList<String> obtenerPrefijo(String slug, String id) {
+        ArrayList<String> resultados = new ArrayList<>();
+
+        try {
+            String queryNombre = "SELECT nombre FROM columns WHERE company_id = ? AND es_llavep = 1";
+            String nombreColumna = null;
+
+            try (PreparedStatement pstmtNombre = conn.prepareStatement(queryNombre)) {
+                pstmtNombre.setString(1, id);
+                ResultSet rsNombre = pstmtNombre.executeQuery();
+
+                if (rsNombre.next()) {
+                    nombreColumna = rsNombre.getString("nombre");
+                }
+            }
+
+            if (nombreColumna != null) {
+                String queryPrefijos = "SELECT SUBSTRING(" + nombreColumna + ", 1, 6) AS prefijo FROM activos_" + slug;
+
+                try (PreparedStatement pstmtPrefijos = conn.prepareStatement(queryPrefijos)) {
+                    ResultSet rsPrefijos = pstmtPrefijos.executeQuery();
+
+                    Set<String> prefijosUnicos = new HashSet<>();
+
+                    while (rsPrefijos.next()) {
+                        String prefijo = rsPrefijos.getString("prefijo");
+
+                        // Verifica que el prefijo no sea nulo y no esté repetido
+                        if (prefijo != null && !prefijo.isEmpty() && prefijosUnicos.add(prefijo)) {
+                            resultados.add(prefijo);
+                        }
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultados;
+    }
+
+
+
+
 
 
 

@@ -55,7 +55,7 @@ public class InterfazBD {
         if (numRegistros < 1) {
             content = new ContentValues();
             content.put("_id", "1");
-            content.put("modo", "");
+            content.put("modo", "0");
             db.insert("model", null, content);
         }
 

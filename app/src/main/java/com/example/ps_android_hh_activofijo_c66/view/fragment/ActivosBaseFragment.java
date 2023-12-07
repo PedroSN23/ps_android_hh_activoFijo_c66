@@ -25,6 +25,7 @@ import com.example.ps_android_hh_activofijo_c66.model.database.ConexionMysql;
 import com.example.ps_android_hh_activofijo_c66.model.database.InterfazBD;
 import com.example.ps_android_hh_activofijo_c66.view.adapter.ActivosBaseAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActivosBaseFragment extends Fragment {
@@ -71,6 +72,17 @@ public class ActivosBaseFragment extends Fragment {
                     List<Encabezados> encabezadosList = conMysql.obtenerEncabezados(interfazBD.obtenerSlug());
                     for (Encabezados encabezado : encabezadosList) {
                         interfazBD.insertarEncabezado(encabezado);
+                    }
+                    if (interfazBD.obtenerFiltros() == null || interfazBD.obtenerFiltros().isEmpty()) {
+                    ArrayList<String> Dataprefijo = conMysql.obtenerPrefijo(interfazBD.obtenerSlug(), interfazBD.obtenerIdCompanie());
+                    ArrayList<String> prefijos = new ArrayList<>();
+                    for (String prefijoActual : Dataprefijo) {
+                        String letras = prefijoActual.replaceAll("[0-9]", "");
+                        prefijos.add(letras);
+                    }
+                    for (String prefijo : prefijos) {
+                        interfazBD.insertarFiltro(prefijo);
+                        }
                     }
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
